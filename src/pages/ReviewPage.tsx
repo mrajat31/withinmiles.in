@@ -13,17 +13,20 @@ export default function ReviewPage() {
   const [rating, setRating] = useState(5)
   const [text, setText] = useState('')
   const [tripName, setTripName] = useState('')
-  const [photoUrl, setPhotoUrl] = useState('')
+  const [photoUrls, setPhotoUrls] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function handlePhoto(file: File) {
+  async function handlePhotos(files: FileList) {
     setUploading(true)
     setError(null)
     try {
-      setPhotoUrl(await uploadReviewPhoto(file))
+      for (const file of Array.from(files)) {
+        const url = await uploadReviewPhoto(file)
+        setPhotoUrls((prev) => [...prev, url])
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
     } finally {
@@ -41,7 +44,7 @@ export default function ReviewPage() {
         rating,
         text: text.trim(),
         trip_name: tripName.trim() || null,
-        photo_url: photoUrl || null,
+        photo_urls: photoUrls,
       })
       setSubmitted(true)
     } catch (err) {
@@ -98,22 +101,37 @@ export default function ReviewPage() {
             <textarea required rows={5} value={text} onChange={(e) => setText(e.target.value)} className={inputCls} />
           </label>
 
-          {/* Optional photo */}
+          {/* Optional photos */}
           <div className="mt-4">
             <p className="text-sm font-medium text-slate-700">{t('reviews.addPhoto')}</p>
-            {photoUrl && (
-              <img src={photoUrl} alt="" className="mt-2 h-40 w-full rounded-xl object-cover" />
+            {photoUrls.length > 0 && (
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {photoUrls.map((url, i) => (
+                  <div key={url} className="relative">
+                    <img src={url} alt="" className="h-24 w-full rounded-xl object-cover" />
+                    <button
+                      type="button"
+                      aria-label="Remove photo"
+                      onClick={() => setPhotoUrls((prev) => prev.filter((_, j) => j !== i))}
+                      className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-black/60 text-xs text-white"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
             <label className="mt-2 inline-block cursor-pointer rounded-full bg-brand-50 px-5 py-2.5 text-sm font-semibold text-brand-800 transition hover:bg-brand-100">
-              {uploading ? t('reviews.uploading') : photoUrl ? t('reviews.changePhoto') : t('reviews.uploadPhoto')}
+              {uploading ? t('reviews.uploading') : photoUrls.length > 0 ? t('reviews.addMore') : t('reviews.uploadPhoto')}
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 className="hidden"
                 disabled={uploading}
                 onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) handlePhoto(file)
+                  if (e.target.files?.length) handlePhotos(e.target.files)
+                  e.target.value = ''
                 }}
               />
             </label>

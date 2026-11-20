@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Review } from '../lib/types'
-import { fetchApprovedReviews } from '../lib/reviews'
+import { fetchApprovedReviews, reviewPhotos } from '../lib/reviews'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { GOOGLE_REVIEW_URL } from '../lib/trips'
 
@@ -53,23 +53,38 @@ export default function ReviewsSection() {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {reviews.slice(0, 6).map((r) => (
-            <figure key={r.id} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
-              {r.photo_url && (
-                <img src={r.photo_url} alt="" loading="lazy" className="h-44 w-full object-cover" />
-              )}
-              <div className="p-7">
-                <Stars value={r.rating} />
-                <blockquote className="mt-4 text-sm leading-relaxed text-slate-600">
-                  "{r.text}"
-                </blockquote>
-                <figcaption className="mt-5">
-                  <p className="font-semibold text-slate-900">{r.name}</p>
-                  {r.trip_name && <p className="text-xs text-slate-400">{r.trip_name}</p>}
-                </figcaption>
-              </div>
-            </figure>
-          ))}
+          {reviews.slice(0, 6).map((r) => {
+            const photos = reviewPhotos(r)
+            return (
+              <figure key={r.id} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
+                {photos[0] && (
+                  <img src={photos[0]} alt="" loading="lazy" className="h-44 w-full object-cover" />
+                )}
+                <div className="p-7">
+                  <Stars value={r.rating} />
+                  <blockquote className="mt-4 text-sm leading-relaxed text-slate-600">
+                    "{r.text}"
+                  </blockquote>
+                  {photos.length > 1 && (
+                    <div className="mt-4 flex gap-2">
+                      {photos.slice(1, 4).map((p) => (
+                        <img key={p} src={p} alt="" loading="lazy" className="h-14 w-14 rounded-lg object-cover" />
+                      ))}
+                      {photos.length > 4 && (
+                        <span className="grid h-14 w-14 place-items-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-500">
+                          +{photos.length - 4}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <figcaption className="mt-5">
+                    <p className="font-semibold text-slate-900">{r.name}</p>
+                    {r.trip_name && <p className="text-xs text-slate-400">{r.trip_name}</p>}
+                  </figcaption>
+                </div>
+              </figure>
+            )
+          })}
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">

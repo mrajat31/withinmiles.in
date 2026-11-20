@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Review } from '../../lib/types'
-import { fetchAllReviews, setReviewApproval, deleteReview } from '../../lib/reviews'
+import { fetchAllReviews, setReviewApproval, deleteReview, reviewPhotos } from '../../lib/reviews'
 
 export default function ReviewsManager() {
   const { t } = useTranslation()
@@ -86,8 +86,12 @@ export default function ReviewsManager() {
                 </span>
               </div>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{r.text}</p>
-              {r.photo_url && (
-                <img src={r.photo_url} alt="" className="mt-3 h-32 w-44 rounded-xl object-cover" />
+              {reviewPhotos(r).length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {reviewPhotos(r).map((p) => (
+                    <img key={p} src={p} alt="" className="h-24 w-32 rounded-xl object-cover" />
+                  ))}
+                </div>
               )}
             </li>
           ))}

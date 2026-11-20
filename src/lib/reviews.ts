@@ -83,11 +83,17 @@ export async function submitReview(input: {
   rating: number
   text: string
   trip_name: string | null
-  photo_url?: string | null
+  photo_urls?: string[]
 }): Promise<void> {
   if (!supabase) throw new Error('Reviews are not enabled yet')
   const { error } = await supabase.from('reviews').insert({ ...input, is_approved: false })
   if (error) throw error
+}
+
+/** All photos of a review (new multi-photo field, falling back to the legacy single photo). */
+export function reviewPhotos(r: Review): string[] {
+  if (r.photo_urls && r.photo_urls.length > 0) return r.photo_urls
+  return r.photo_url ? [r.photo_url] : []
 }
 
 /** Upload a customer's review photo (anonymous allowed); returns public URL. */

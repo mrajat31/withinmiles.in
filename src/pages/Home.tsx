@@ -12,7 +12,7 @@ import {
   INSTAGRAM_URL,
 } from '../lib/trips'
 
-/** Put your real group photo at public/images/hero.jpg — it loads automatically.
+/** Put your real group photo at public/images/hero.jpg, it loads automatically.
  *  Until then this scenic placeholder is shown. */
 const HERO_FALLBACK =
   'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80'
@@ -71,7 +71,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* This week's trips — the star of the page */}
+      {/* This week's trips, the star of the page */}
       <section id="latest" className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>

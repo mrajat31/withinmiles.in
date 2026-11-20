@@ -1,13 +1,13 @@
--- ============================================================
--- Within Miles — Supabase setup
+﻿-- ============================================================
+-- Within Miles, Supabase setup
 -- Run this whole file in: Supabase Dashboard → SQL Editor → New query → Run
 -- ============================================================
 
 -- Team profiles with role-based access control
 -- Roles:
---   'owner'     — super admin: delete trips, approve reviews, manage team
---   'zone_head' — add/edit trips (titles, prices, dates, photos)
---   'volunteer' — can only update trip photos
+--   'owner'    , super admin: delete trips, approve reviews, manage team
+--   'zone_head', add/edit trips (titles, prices, dates, photos)
+--   'volunteer', can only update trip photos
 -- ⚠️ After signing in once and saving your profile, make yourself owner:
 --    Table Editor → profiles → your row → set role = 'owner'
 create table if not exists public.profiles (
@@ -159,7 +159,7 @@ create policy "Team can delete trips"
   to authenticated
   using (public.is_owner());
 
--- Volunteers may only change a trip's photo — nothing else
+-- Volunteers may only change a trip's photo, nothing else
 create or replace function public.restrict_volunteer_trip_update()
 returns trigger
 language plpgsql

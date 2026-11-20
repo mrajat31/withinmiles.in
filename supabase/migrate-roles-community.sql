@@ -1,5 +1,5 @@
--- ============================================================
--- withinmiles.in — Migration: 3-tier roles (owner / zone_head / volunteer)
+﻿-- ============================================================
+-- withinmiles.in, Migration: 3-tier roles (owner / zone_head / volunteer)
 -- Run this in: Supabase Dashboard → SQL Editor → Run
 -- Safe to run once on the existing project.
 -- ============================================================
@@ -74,7 +74,7 @@ create policy "Team can delete trips"
   on public.trips for delete to authenticated
   using (public.is_owner());
 
--- Volunteers may only change a trip's photo — nothing else
+-- Volunteers may only change a trip's photo, nothing else
 create or replace function public.restrict_volunteer_trip_update()
 returns trigger language plpgsql security definer set search_path = public
 as $$

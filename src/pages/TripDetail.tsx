@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Trip } from '../lib/types'
@@ -47,7 +47,7 @@ export default function TripDetail() {
   const dateRange = trip.departure_note
     ? trip.departure_note
     : trip.start_date && trip.end_date
-      ? `${new Date(trip.start_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short' })} – ${new Date(trip.end_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short', year: 'numeric' })}`
+      ? `${new Date(trip.start_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short' })} - ${new Date(trip.end_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short', year: 'numeric' })}`
       : t('tripDetail.flexible')
 
   const facts = [

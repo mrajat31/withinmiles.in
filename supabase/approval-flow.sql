@@ -1,5 +1,5 @@
--- ============================================================
--- withinmiles.in — Migration: trip approval workflow
+﻿-- ============================================================
+-- withinmiles.in, Migration: trip approval workflow
 -- Zone Heads create/edit trips → status 'pending' → Owner approves → live.
 -- Run this in: Supabase Dashboard → SQL Editor → Run
 -- ============================================================

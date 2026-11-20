@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+﻿import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Trip, TripInput } from '../../lib/types'
 import { TRIP_CATEGORIES, REGIONS } from '../../lib/types'
@@ -254,7 +254,7 @@ export default function TripForm({ trip, photoOnly = false, onDone, onCancel }: 
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-medium text-slate-700">
             {f('bestMonths')}
-            <input value={form.best_months} onChange={(e) => set('best_months', e.target.value)} placeholder="June–September" className={inputCls} />
+            <input value={form.best_months} onChange={(e) => set('best_months', e.target.value)} placeholder="June-September" className={inputCls} />
           </label>
           <label className="block text-sm font-medium text-slate-700">
             {f('departureNote')}

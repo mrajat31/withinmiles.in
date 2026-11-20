@@ -36,14 +36,27 @@ export default function About() {
 
   return (
     <div>
-      <section className="relative h-[40vh] min-h-[300px]">
-        <img src={aboutImage} alt="Travellers on a trail" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-brand-950/30" />
-      </section>
-
-      <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-        <p className="text-lg leading-relaxed text-slate-600">{t('about.story1')}</p>
-        <p className="mt-6 text-lg leading-relaxed text-slate-600">{t('about.story2')}</p>
+      {/* Story over the owner-managed background image */}
+      <section className="relative flex min-h-[75vh] items-center overflow-hidden">
+        <img
+          src={aboutImage}
+          alt="Travellers on a trail"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/70 to-brand-950/40" />
+        <div className="relative mx-auto w-full max-w-7xl px-4 py-20 sm:px-6">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sand-300">
+              withinmiles.in
+            </p>
+            <p className="mt-6 text-xl font-medium leading-relaxed text-white sm:text-2xl">
+              {t('about.story1')}
+            </p>
+            <p className="mt-6 text-base leading-relaxed text-white/75 sm:text-lg">
+              {t('about.story2')}
+            </p>
+          </div>
+        </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">

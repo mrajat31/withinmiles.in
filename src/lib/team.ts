@@ -23,8 +23,9 @@ export async function fetchPublicProfiles(): Promise<Profile[]> {
     .eq('is_public', true)
     .order('created_at', { ascending: true })
   if (error) throw error
-  const profiles = (data ?? []) as Profile[]
-  return profiles.length > 0 ? profiles : sampleTeam
+  // No sample fallback once the real database is live:
+  // hidden profiles stay hidden.
+  return (data ?? []) as Profile[]
 }
 
 export async function fetchMyProfile(): Promise<Profile | null> {

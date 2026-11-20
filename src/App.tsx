@@ -9,6 +9,7 @@ import Trips from './pages/Trips'
 import TripDetail from './pages/TripDetail'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import ReviewPage from './pages/ReviewPage'
 import Admin from './pages/admin/Admin'
 
 function ScrollToTop() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/trips/:slug" element={<TripDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/review" element={<ReviewPage />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>

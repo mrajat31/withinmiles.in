@@ -42,6 +42,41 @@ export async function fetchApprovedReviews(): Promise<Review[]> {
   return reviews.length > 0 ? reviews : sampleReviews
 }
 
+/** Owner only: all reviews including pending (enforced by RLS). */
+export async function fetchAllReviews(): Promise<Review[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return (data ?? []) as Review[]
+}
+
+/** Owner only: paste-in reviews received on WhatsApp (published immediately). */
+export async function addReviewAdmin(input: {
+  name: string
+  rating: number
+  text: string
+  trip_name: string | null
+}): Promise<void> {
+  if (!supabase) throw new Error('Supabase is not configured')
+  const { error } = await supabase.from('reviews').insert({ ...input, is_approved: true })
+  if (error) throw error
+}
+
+export async function setReviewApproval(id: string, approved: boolean): Promise<void> {
+  if (!supabase) throw new Error('Supabase is not configured')
+  const { error } = await supabase.from('reviews').update({ is_approved: approved }).eq('id', id)
+  if (error) throw error
+}
+
+export async function deleteReview(id: string): Promise<void> {
+  if (!supabase) throw new Error('Supabase is not configured')
+  const { error } = await supabase.from('reviews').delete().eq('id', id)
+  if (error) throw error
+}
+
 /** Visitors submit reviews; they stay hidden until approved in Supabase. */
 export async function submitReview(input: {
   name: string

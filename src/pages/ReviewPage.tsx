@@ -1,0 +1,97 @@
+import { useState, type FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
+import { submitReview } from '../lib/reviews'
+import { isSupabaseConfigured } from '../lib/supabase'
+
+const inputCls =
+  'mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100'
+
+/** Standalone review page: share withinmiles.in/review with customers. */
+export default function ReviewPage() {
+  const { t } = useTranslation()
+  const [name, setName] = useState('')
+  const [rating, setRating] = useState(5)
+  const [text, setText] = useState('')
+  const [tripName, setTripName] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setBusy(true)
+    setError(null)
+    try {
+      await submitReview({
+        name: name.trim(),
+        rating,
+        text: text.trim(),
+        trip_name: tripName.trim() || null,
+      })
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="mx-auto max-w-xl px-4 py-16 sm:px-6">
+      <div className="text-center">
+        <h1 className="font-display text-4xl font-bold text-slate-900">{t('reviewPage.title')}</h1>
+        <p className="mt-3 text-slate-500">{t('reviewPage.subtitle')}</p>
+      </div>
+
+      {submitted ? (
+        <div className="mt-10 rounded-3xl bg-emerald-50 p-10 text-center ring-1 ring-emerald-200">
+          <p className="text-3xl">🎉</p>
+          <p className="mt-3 text-lg font-semibold text-emerald-800">{t('reviews.submitted')}</p>
+        </div>
+      ) : !isSupabaseConfigured ? (
+        <p className="mt-10 text-center text-slate-400">{t('trips.error')}</p>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="mt-10 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100"
+        >
+          <label className="block text-sm font-medium text-slate-700">
+            {t('reviews.yourName')} *
+            <input required value={name} onChange={(e) => setName(e.target.value)} className={inputCls} />
+          </label>
+          <label className="mt-4 block text-sm font-medium text-slate-700">
+            {t('reviews.tripName')}
+            <input value={tripName} onChange={(e) => setTripName(e.target.value)} className={inputCls} />
+          </label>
+          <div className="mt-4">
+            <p className="text-sm font-medium text-slate-700">{t('reviews.rating')}</p>
+            <div className="mt-1 flex gap-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setRating(n)}
+                  className={`text-3xl transition hover:scale-110 ${n <= rating ? 'text-sand-400' : 'text-slate-200'}`}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+          </div>
+          <label className="mt-4 block text-sm font-medium text-slate-700">
+            {t('reviews.yourReview')} *
+            <textarea required rows={5} value={text} onChange={(e) => setText(e.target.value)} className={inputCls} />
+          </label>
+          {error && <p className="mt-3 text-sm text-rose-600">{error}</p>}
+          <button
+            type="submit"
+            disabled={busy}
+            className="mt-6 w-full rounded-full bg-brand-600 py-3.5 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
+          >
+            {t('reviews.submit')}
+          </button>
+        </form>
+      )}
+    </div>
+  )
+}

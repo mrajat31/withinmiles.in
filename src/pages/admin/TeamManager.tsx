@@ -55,7 +55,7 @@ export default function TeamManager() {
               )}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-slate-900">{p.full_name || '—'}</p>
+              <p className="truncate font-semibold text-slate-900">{p.full_name || '-'}</p>
               <p className="text-sm text-slate-500">{p.title ?? ''}</p>
             </div>
             <label className="flex items-center gap-2 text-sm text-slate-600">

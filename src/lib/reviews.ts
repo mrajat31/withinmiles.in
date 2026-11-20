@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured } from './supabase'
+﻿import { supabase, isSupabaseConfigured } from './supabase'
 import type { Review } from './types'
 
 /** Sample reviews shown until Supabase is connected. */
@@ -7,7 +7,7 @@ export const sampleReviews: Review[] = [
     id: 'r1',
     name: 'Priya S.',
     rating: 5,
-    text: 'The Harishchandragad night trek was magical — zero crowds, an incredible sunrise at Konkan Kada, and captains who genuinely cared. Felt like travelling with old friends!',
+    text: 'The Harishchandragad night trek was magical, zero crowds, an incredible sunrise at Konkan Kada, and captains who genuinely cared. Felt like travelling with old friends!',
     trip_name: 'Harishchandragad Night Trek',
     is_approved: true,
   },
@@ -15,7 +15,7 @@ export const sampleReviews: Review[] = [
     id: 'r2',
     name: 'Rohan & Sneha',
     rating: 5,
-    text: 'Our first trek ever and we were nervous — the team made it so easy. Everything was planned to perfection. Already booked our next trip!',
+    text: 'Our first trek ever and we were nervous, the team made it so easy. Everything was planned to perfection. Already booked our next trip!',
     trip_name: 'Kedarkantha Winter Trek',
     is_approved: true,
   },

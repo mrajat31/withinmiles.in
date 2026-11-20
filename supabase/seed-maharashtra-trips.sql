@@ -1,5 +1,5 @@
--- ============================================================
--- withinmiles.in — Maharashtra Trips Catalog (14 trips)
+﻿-- ============================================================
+-- withinmiles.in, Maharashtra Trips Catalog (14 trips)
 -- Run this whole file in: Supabase Dashboard → SQL Editor → Run
 -- Safe to re-run: existing trips (matched by slug) are updated.
 -- ============================================================
@@ -51,7 +51,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 09:30 PM – 10:30 PM: Reach Pune and drop-off at respective pickup points.$$,
  array[$$Pune to Pune private non-AC/pushback bus transport (including tolls, parking, and driver allowances)$$,$$Lakeside tent stay on a sharing basis with mats and blankets$$,$$Dedicated women's changing rooms and washroom access at the campsite$$,$$Day 1 Evening Tea and Unlimited Dinner (Veg / Non-Veg)$$,$$Day 2 Morning Tea, Breakfast, Packed Tiffin (3 Chapatis & Bhaji), and Evening Tea$$,$$To-and-fro Koyna backwater boat ride and Koyna Forest Department entry permits$$,$$Bonfire and music session$$,$$Experienced withinmiles.in trek leaders and basic first-aid support$$],
  array[$$Lunch during Saturday's onward journey from Pune (self-sponsored highway halt)$$,$$Personal expenses, mineral water bottles, cold drinks, or camera charges at the forest gate$$,$$Any medical or emergency evacuation costs$$,$$Anything not specifically mentioned in the inclusions$$],
- array[$$Original Government Photo ID (Aadhaar / Driving License / PAN — mandatory for forest permit verification)$$,$$Good grip trekking or sports shoes (mandatory)$$,$$Comfortable trek wear (full-sleeve t-shirt and full track pants recommended for the jungle trail)$$,$$Warm jacket or hoodie for the chilly lakeside night$$,$$Extra pair of clothes$$,$$Daypack (20–30L)$$,$$Minimum 2 liters of water$$,$$Personal medicines, torch/headlamp, sunglasses, cap, and cash for personal snacks$$]),
+ array[$$Original Government Photo ID (Aadhaar / Driving License / PAN, mandatory for forest permit verification)$$,$$Good grip trekking or sports shoes (mandatory)$$,$$Comfortable trek wear (full-sleeve t-shirt and full track pants recommended for the jungle trail)$$,$$Warm jacket or hoodie for the chilly lakeside night$$,$$Extra pair of clothes$$,$$Daypack (20–30L)$$,$$Minimum 2 liters of water$$,$$Personal medicines, torch/headlamp, sunglasses, cap, and cash for personal snacks$$]),
 
 -- 2. Dategad & Chalkewadi
 ($$dategad-chalkewadi$$, $$The "Sword & Blade" Trail: Dategad & Chalkewadi$$,
@@ -78,7 +78,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 
 -- 3. Rajgad
 ($$rajgad-pali-darwaza$$, $$Rajgad: King of Forts Trek (Via Pali Darwaza)$$,
- $$Ascend the legendary "King of Forts" via the royal stone-step route of Pali Darwaza. Traverse all three iconic machis—Padmavati, Suvela, and Sanjivani—and climb the rock-cut steps to Balekilla for sweeping panoramic views of Torna and the Sahyadri ranges.$$,
+ $$Ascend the legendary "King of Forts" via the royal stone-step route of Pali Darwaza. Traverse all three iconic machis-Padmavati, Suvela, and Sanjivani-and climb the rock-cut steps to Balekilla for sweeping panoramic views of Torna and the Sahyadri ranges.$$,
  $$Pune, Maharashtra$$, 'maharashtra', 'trek', 1, 0, 1700, null, null,
  $$/images/rajgad-pali-darwaza.jpg$$,
  array[$$Enter Rajgad through the grand Pali Darwaza via the historic stone-step trail$$,$$Explore Suvela Machi, the natural needle hole (Nedhe), and Chunyacha Buruj$$,$$Climb the rock-cut steps to Balekilla (The Citadel) overlooking Torna and the Sahyadris$$,$$Walk the fortified defensive ramparts of Sanjivani Machi$$,$$Authentic local Maharashtrian vegetarian lunch served at Padmavati Machi$$,$$Tight-knit, small batch experience (Moderate difficulty, High endurance)$$],
@@ -90,7 +90,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 07:15 AM: Reach base village Pali, freshen up, and attend the trek briefing.
 07:30 AM: Begin the ascent via the royal stone-step route of Pali.
 09:15 AM: Enter Rajgad through the grand Pali Darwaza and regroup at Padmavati Machi.
-09:30 AM: Explore Suvela Machi—walk the fortified arm, witness the Nedhe (needle hole), and inspect Chunyacha Buruj.
+09:30 AM: Explore Suvela Machi-walk the fortified arm, witness the Nedhe (needle hole), and inspect Chunyacha Buruj.
 11:00 AM: Climb the rock-cut steps up to Balekilla (The Citadel) for panoramic Sahyadri views.
 12:30 PM: Traverse along the defensive ramparts of Sanjivani Machi.
 01:45 PM: Return to Padmavati Machi for a hot, authentic Maharashtrian vegetarian lunch.
@@ -109,7 +109,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
  $$/images/placeholder-trip.svg$$,
  array[$$Witness the towering Nanemachi Waterfall and cascading Satsada Waterfall tucked inside a dense forest gorge$$,$$Beginner-friendly ~7 km round-trip trail (1 to 1.5 hours each way) with minimal elevation gain$$,$$Scenic forest trail featuring shallow stream crossings and wet basalt rock beds$$,$$Strict eco-friendly, zero-littering, and silent trail policy curated by withinmiles.in$$,$$Advisory: Zero mobile network at Gugulshi base village; full-sleeve clothing & deep-grip shoes mandatory$$],
  true, false,
- $$June–October$$, $$Pune (Shivajinagar, Swargate, Chandni Chowk)$$, $$Every weekend (Monsoon & Post-Monsoon)$$, $$Tentative — may be updated$$,
+ $$June–October$$, $$Pune (Shivajinagar, Swargate, Chandni Chowk)$$, $$Every weekend (Monsoon & Post-Monsoon)$$, $$Tentative, may be updated$$,
  $$Day 1: Pune – Gugulshi Village – Nanemachi & Satsada Waterfalls – Pune
 04:30 AM – 05:30 AM: Depart from Pune (Shivajinagar, Swargate, Chandni Chowk via Tamhini Ghat).
 07:30 AM: Hot morning breakfast and tea en route.
@@ -122,7 +122,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 07:30 PM – 08:30 PM: Reach Pune and drop-off at respective pickup points.$$,
  array[$$Private non-AC transport (Pune to Pune)$$,$$Morning hot breakfast and tea$$,$$Authentic home-cooked local lunch at Gugulshi base village$$,$$Evening tea en route$$,$$Forest / village entry permits and local guide charges$$,$$Experienced withinmiles.in trek leaders and basic first-aid support$$],
  array[$$Personal expenses and packaged drinking water$$,$$Anything not mentioned in the inclusions$$],
- array[$$Trekking shoes or sports shoes with deep rubber grip (mandatory)$$,$$Full-sleeve t-shirts and full-length trek pants (mandatory — shorts/sleeveless not permitted)$$,$$Minimum 2–3 liters of water per person$$,$$Compact daypack with a waterproof rain cover & ziplock pouches for electronics$$,$$Poncho, rain jacket, or windcheater$$,$$Electrolytes (ORS / Glucon-D) and ready-to-eat dry snacks (chikki, dry fruits, energy bars)$$,$$Torch/headlamp, Original Government ID Proof, and personal medical kit$$,$$Post-trek dry clothes, extra socks, sandals, towel, and plastic bag for muddy shoes (leave in bus)$$]),
+ array[$$Trekking shoes or sports shoes with deep rubber grip (mandatory)$$,$$Full-sleeve t-shirts and full-length trek pants (mandatory, shorts/sleeveless not permitted)$$,$$Minimum 2–3 liters of water per person$$,$$Compact daypack with a waterproof rain cover & ziplock pouches for electronics$$,$$Poncho, rain jacket, or windcheater$$,$$Electrolytes (ORS / Glucon-D) and ready-to-eat dry snacks (chikki, dry fruits, energy bars)$$,$$Torch/headlamp, Original Government ID Proof, and personal medical kit$$,$$Post-trek dry clothes, extra socks, sandals, towel, and plastic bag for muddy shoes (leave in bus)$$]),
 
 -- 5. Korigad
 ($$korigad-fort$$, $$Korigad Fort Trek (Pune to Pune)$$,
@@ -148,10 +148,10 @@ Day 2: Boating, Vasota Jungle Trek & Return
 
 -- 6. Rajmachi
 ($$rajmachi-twin-fort$$, $$Rajmachi Twin Fort Trek (Shrivardhan & Manaranjan)$$,
- $$Nestled deep in the Sahyadri ranges near Lonavala, Rajmachi is an iconic twin-fort citadel featuring two fortified peaks—Shrivardhan and Manaranjan—guarding the ancient Borghat trade route. Ascend through lush forest trails and ancient Buddhist rock-cut caves to soak in sweeping views of Kataldhar waterfall, Ulhas Valley, and Duke's Nose.$$,
+ $$Nestled deep in the Sahyadri ranges near Lonavala, Rajmachi is an iconic twin-fort citadel featuring two fortified peaks-Shrivardhan and Manaranjan-guarding the ancient Borghat trade route. Ascend through lush forest trails and ancient Buddhist rock-cut caves to soak in sweeping views of Kataldhar waterfall, Ulhas Valley, and Duke's Nose.$$,
  $$Lonavala, Maharashtra$$, 'maharashtra', 'trek', 1, 0, 1499, null, null,
  $$/images/rajmachi-twin-fort.jpg$$,
- array[$$Summit both twin citadels—Shrivardhan (the higher watchtower peak) and Manaranjan (overlooking Konkan)$$,$$Explore the 2nd-century BC Buddhist rock-cut Kondhane Caves and seasonal waterfalls along the trail$$,$$Panoramic views of Ulhas Valley, Tungarli Lake, Kataldhar gorge, and surrounding Sahyadri peaks$$,$$Authentic home-cooked Maharashtrian village meal at Udhewadi base village$$,$$Curated small-batch experience led by experienced withinmiles.in trek leaders$$],
+ array[$$Summit both twin citadels-Shrivardhan (the higher watchtower peak) and Manaranjan (overlooking Konkan)$$,$$Explore the 2nd-century BC Buddhist rock-cut Kondhane Caves and seasonal waterfalls along the trail$$,$$Panoramic views of Ulhas Valley, Tungarli Lake, Kataldhar gorge, and surrounding Sahyadri peaks$$,$$Authentic home-cooked Maharashtrian village meal at Udhewadi base village$$,$$Curated small-batch experience led by experienced withinmiles.in trek leaders$$],
  true, false,
  $$June–February$$, $$Pune (Swargate, Shivajinagar, Wakad / Hinjawadi Flyover)$$, $$Every weekend / Flexible$$, null,
  $$Day 1: Pune – Kondhane – Udhewadi – Shrivardhan & Manaranjan Forts – Pune
@@ -189,7 +189,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 01:30 PM: Relish an authentic home-cooked Maharashtrian vegetarian lunch at a local village home.
 03:00 PM: Begin final descent back to the base.
 04:00 PM: Reach base village and board the bus.
-04:45 PM: Sightseeing at Dhom Dam—unwind by the backwaters and catch the evening golden hour.
+04:45 PM: Sightseeing at Dhom Dam-unwind by the backwaters and catch the evening golden hour.
 05:45 PM: Start return journey toward Pune (with an evening tea break en route).
 08:30 PM – 09:15 PM: Reach Pune and drop-off at respective pickup points.$$,
  array[$$Private non-AC transport (Pune to Pune)$$,$$Morning hot breakfast and tea$$,$$Authentic home-cooked local vegetarian lunch$$,$$Evening tea en route$$,$$Fort entry fees and local permissions (if any)$$,$$First-aid kit, safety support, and experienced withinmiles.in trek leaders$$],
@@ -198,7 +198,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 
 -- 8. Torna
 ($$torna-fort$$, $$Torna Fort (Prachandagad) Trek (Pune to Pune)$$,
- $$Conquer the highest hill fort in Pune district—Torna (Prachandagad), the very first fort captured by Chhatrapati Shivaji Maharaj at age 16. Ascend steep ridges and iron-railed rock patches from Velhe village to walk across the sprawling Zunjar Machi and Budhla Machi with panoramic views of Rajgad, Sinhagad, and Bhatghar Dam.$$,
+ $$Conquer the highest hill fort in Pune district-Torna (Prachandagad), the very first fort captured by Chhatrapati Shivaji Maharaj at age 16. Ascend steep ridges and iron-railed rock patches from Velhe village to walk across the sprawling Zunjar Machi and Budhla Machi with panoramic views of Rajgad, Sinhagad, and Bhatghar Dam.$$,
  $$Velhe, Pune, Maharashtra$$, 'maharashtra', 'trek', 1, 0, 1700, null, null,
  $$/images/torna-fort.jpg$$,
  array[$$Summit Torna (Prachandagad), the highest fort in Pune district at 1,403 meters (4,603 ft)$$,$$Traverse the dramatic rock-cut ridges of Zunjar Machi and Budhla Machi$$,$$Explore historic landmarks including Bini Darwaza, Kothi Darwaza, Menghai Devi Temple, and Tonjai Temple$$,$$Sweeping panoramic views of Rajgad, Raigad, Lingana, Sinhagad, and Bhatghar Dam backwaters$$,$$Authentic home-cooked Maharashtrian village lunch served at Velhe base village$$],
@@ -217,7 +217,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 07:30 PM – 08:00 PM: Reach Pune and drop-off at respective pickup points.$$,
  array[$$Private non-AC transport (Pune to Pune)$$,$$Morning hot breakfast and tea$$,$$Authentic local Maharashtrian village lunch$$,$$Evening tea en route$$,$$Forest / village entry fees and local permissions (if any)$$,$$First-aid kit, safety support, and experienced withinmiles.in trek leaders$$],
  array[$$Personal expenses and packaged drinking water$$,$$Medical or emergency evacuation expenses$$,$$Anything not mentioned in the inclusions$$],
- array[$$3 litres of water (mandatory — steep climb and exposed machis)$$,$$Good grip trekking or sports shoes (mandatory)$$,$$Rainwear / poncho and dry bag for electronics$$,$$Electrolytes, glucose, or light trail snacks$$,$$Compact daypack (20–30L)$$,$$Original Government Photo ID, personal medication, and an extra pair of clothes$$]),
+ array[$$3 litres of water (mandatory, steep climb and exposed machis)$$,$$Good grip trekking or sports shoes (mandatory)$$,$$Rainwear / poncho and dry bag for electronics$$,$$Electrolytes, glucose, or light trail snacks$$,$$Compact daypack (20–30L)$$,$$Original Government Photo ID, personal medication, and an extra pair of clothes$$]),
 
 -- 9. Kamalgad
 ($$kamalgad-fort$$, $$Kamalgad Fort Trek (Pune to Pune)$$,
@@ -246,7 +246,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
  $$Tucked away in the lush Bhor region south of Pune, Rohida Fort (Vichitragad) is an intact, beginner-friendly hill fort renowned for its three impressive entrance gates, ancient rock-cut water cisterns, and sweeping views of Raireshwar, Kenjalgad, and the Bhatghar Dam backwaters.$$,
  $$Bhor, Pune, Maharashtra$$, 'maharashtra', 'trek', 1, 0, 1400, null, null,
  $$/images/placeholder-trip.svg$$,
- array[$$Beginner-to-moderate scenic trek near Bhor with well-preserved stone fortifications and rock-cut steps$$,$$Pass through three historic entrance gates—Ganesh Darwaza, Sadar Darwaza, and Bini Darwaza$$,$$Visit the ancient Rohideshwar Temple, seven rock-cut water cisterns, and bastion viewpoints at the summit$$,$$Panoramic views of Raireshwar plateau, Kenjalgad, Kamalgad, and Bhatghar Dam backwaters$$,$$Authentic home-cooked Maharashtrian village lunch served at Bajarwadi base village$$],
+ array[$$Beginner-to-moderate scenic trek near Bhor with well-preserved stone fortifications and rock-cut steps$$,$$Pass through three historic entrance gates-Ganesh Darwaza, Sadar Darwaza, and Bini Darwaza$$,$$Visit the ancient Rohideshwar Temple, seven rock-cut water cisterns, and bastion viewpoints at the summit$$,$$Panoramic views of Raireshwar plateau, Kenjalgad, Kamalgad, and Bhatghar Dam backwaters$$,$$Authentic home-cooked Maharashtrian village lunch served at Bajarwadi base village$$],
  true, false,
  $$June–February$$, $$Pune (Shivajinagar, Swargate, Katraj Chowk)$$, $$Every weekend / Flexible$$, null,
  $$Day 1: Pune – Bajarwadi – Rohida Fort (Vichitragad) – Pune
@@ -265,7 +265,7 @@ Day 2: Boating, Vasota Jungle Trek & Return
 
 -- 11. Pratapgad
 ($$pratapgad-fort$$, $$Pratapgad Fort Trek & Heritage Trail (Pune to Pune)$$,
- $$Stand where history was forged at Pratapgad—the legendary mountain fortress near Mahabaleshwar, site of the historic 1659 Battle of Pratapgad. Ascend through lush Sahyadri valleys to explore its double fortifications, towering equestrian statue of Chhatrapati Shivaji Maharaj, and sweeping views of the Konkan and Koyna valleys.$$,
+ $$Stand where history was forged at Pratapgad-the legendary mountain fortress near Mahabaleshwar, site of the historic 1659 Battle of Pratapgad. Ascend through lush Sahyadri valleys to explore its double fortifications, towering equestrian statue of Chhatrapati Shivaji Maharaj, and sweeping views of the Konkan and Koyna valleys.$$,
  $$Mahabaleshwar / Satara, Maharashtra$$, 'maharashtra', 'trek', 1, 0, 1500, null, null,
  $$/images/pratapgad-fort.jpg$$,
  array[$$Explore the iconic 17th-century hill fortress of Pratapgad, famed for the historic Battle of Pratapgad$$,$$Walk across the Upper Fort (Balekilla) and Lower Fort (Machi) ramparts with panoramic Konkan valley views$$,$$Visit the revered Bhavani Mata Temple, Afzal Buruj, and the bronze equestrian statue of Chhatrapati Shivaji Maharaj$$,$$Scenic ghat drive via Panchgani and Mahabaleshwar with optional strawberry/tableland viewpoints en route$$,$$Authentic home-cooked Maharashtrian lunch served near the base village$$],
@@ -310,15 +310,15 @@ Post-Trek: Relish a hot lunch at the base village and depart for Pune and Mumbai
 
 -- 13. AMK
 ($$amk-expedition$$, $$Alang–Madan–Kulang (AMK) Climbing, Rappelling & Camping$$,
- $$Conquer Maharashtra's most thrilling and demanding triad—Alang, Madan, and Kulang (AMK)—in the Kalsubai range of the Sahyadris. This two-day technical expedition combines high-altitude rock climbing, rappelling, ridge traverses, and mountain camping at 4,825 ft.$$,
+ $$Conquer Maharashtra's most thrilling and demanding triad-Alang, Madan, and Kulang (AMK)-in the Kalsubai range of the Sahyadris. This two-day technical expedition combines high-altitude rock climbing, rappelling, ridge traverses, and mountain camping at 4,825 ft.$$,
  $$Kalsubai Range, Nashik, Maharashtra$$, 'maharashtra', 'adventure', 2, 1, 2699, null, null,
  $$/images/amk-expedition.jpg$$,
- array[$$Summit all three legendary fortresses of the Kalsubai range—Alang, Madan, and Kulang (4,825 ft)$$,$$Technical rock climbing and high-altitude rappelling on Madan Fort supervised by certified experts$$,$$Overnight mountain tent camping with sunset and sunrise views across the Sahyadris$$,$$Hard-grade endurance expedition designed for experienced trekkers (Age 12–50, max weight 95 kg)$$,$$Optional individual drone video shoot add-on available (₹500)$$],
+ array[$$Summit all three legendary fortresses of the Kalsubai range-Alang, Madan, and Kulang (4,825 ft)$$,$$Technical rock climbing and high-altitude rappelling on Madan Fort supervised by certified experts$$,$$Overnight mountain tent camping with sunset and sunrise views across the Sahyadris$$,$$Hard-grade endurance expedition designed for experienced trekkers (Age 12–50, max weight 95 kg)$$,$$Optional individual drone video shoot add-on available (₹500)$$],
  true, true,
  $$November–March$$, $$Pune (Shivajinagar, Nashik Phata, Bhosari, Chakan), Kasara Railway Station (Mumbai Local connection), or Ambewadi Base Village$$, $$Every Friday Night Departure (Jan–March Batches)$$, $$₹2,699 (Pune to Pune) | ₹2,499 (Kasara to Kasara) | ₹1,999 (Base to Base)$$,
  $$Day 1: Overnight Travel – Ambewadi – Alang Fort – Madan Fort Climb & Camping
-Friday Night Departure — Pune: Shivajinagar (09:30 PM), Nashik Phata ST Stand (10:00 PM), Bhosari (10:15 PM), Chakan.
-Friday Night Departure — Mumbai: Board 09:30 PM CSMT–Kasara Fast Local (CSMT 09:32 PM, Dadar 09:50 PM, Ghatkopar 10:06 PM, Thane 10:27 PM, Dombivli 10:51 PM, Kalyan 11:03 PM, Kasara ~12:13 AM).
+Friday Night Departure, Pune: Shivajinagar (09:30 PM), Nashik Phata ST Stand (10:00 PM), Bhosari (10:15 PM), Chakan.
+Friday Night Departure, Mumbai: Board 09:30 PM CSMT–Kasara Fast Local (CSMT 09:32 PM, Dadar 09:50 PM, Ghatkopar 10:06 PM, Thane 10:27 PM, Dombivli 10:51 PM, Kalyan 11:03 PM, Kasara ~12:13 AM).
 01:30 AM – 01:45 AM: Meet at Kasara Railway Station and depart for Ambewadi base village via pre-booked jeeps.
 04:00 AM – 05:00 AM: Reach Ambewadi base village (Mumbai & Pune batches regroup) and rest briefly.
 05:30 AM: Hot morning tea and breakfast.
@@ -340,7 +340,7 @@ Day 2: Madan Fort Rappelling – Kulang Fort – Return
 07:30 PM: Approximate arrival at Kasara Railway Station (onward drop-off to Pune thereafter).$$,
  array[$$Private transport (Pune-to-Pune bus or Kasara-to-Kasara jeep, as per selected package)$$,$$Meals: 2 Breakfasts with Tea, 2 Lunches, and 1 Dinner$$,$$Technical rock climbing and rappelling sessions with all safety equipment$$,$$Mountain tent camping on sharing basis$$,$$Certified technical team, trek guide, and first-aid support$$,$$Forest department entry fees$$],
  array[$$Mumbai local train ticket to and from Kasara$$,$$Optional individual drone video shoot (₹500)$$,$$Personal expenses, packaged drinking water, and trail snacks$$,$$Anything not mentioned in the inclusions$$],
- array[$$3 liters of water (mandatory)$$,$$Trekking shoes with good grip (mandatory)$$,$$30L–60L backpack$$,$$Full-sleeve t-shirts and full-length track pants$$,$$Extra pair of clothes$$,$$Sleeping bag, bedsheet, or shawl for overnight mountain camping$$,$$Torch with extra batteries (compulsory)$$,$$Sunscreen and cap$$,$$Dry fruits, dry snacks, and energy bars$$,$$Original Government ID Proof (Aadhaar or PAN Card — compulsory) and personal medicines$$]),
+ array[$$3 liters of water (mandatory)$$,$$Trekking shoes with good grip (mandatory)$$,$$30L–60L backpack$$,$$Full-sleeve t-shirts and full-length track pants$$,$$Extra pair of clothes$$,$$Sleeping bag, bedsheet, or shawl for overnight mountain camping$$,$$Torch with extra batteries (compulsory)$$,$$Sunscreen and cap$$,$$Dry fruits, dry snacks, and energy bars$$,$$Original Government ID Proof (Aadhaar or PAN Card, compulsory) and personal medicines$$]),
 
 -- 14. Moroshicha Bhairavgad
 ($$moroshicha-bhairavgad$$, $$Moroshicha Bhairavgad Climbing & Rappelling$$,
@@ -351,8 +351,8 @@ Day 2: Madan Fort Rappelling – Kulang Fort – Return
  true, false,
  $$November–March$$, $$Pune (Shivajinagar, Nashik Phata, Bhosari, Chakan), Mumbai (Dadar, Sion, Thane, Kalyan), or Moroshi Base Village$$, $$Saturday Night Departures (Jan–March Batches)$$, $$₹1,799 (Pune to Pune / Mumbai to Mumbai) | ₹1,199 (Without Transport)$$,
  $$Day 1: Overnight Departure – Moroshi Base Village – Bhairavgad Climbing & Rappelling – Return
-Saturday Night Departure — Mumbai: Dadar (10:00 PM), Sion Station Circle (10:15 PM), Teen Hat Naka Thane (11:00 PM), Durgadi Chowk Kalyan (12:00 AM).
-Saturday Night Departure — Pune: Bank of Maharashtra Shivajinagar (10:00 PM), Nashik Phata (10:30 PM), Bhosari (10:45 PM), Chakan Main Signal (11:15 PM).
+Saturday Night Departure, Mumbai: Dadar (10:00 PM), Sion Station Circle (10:15 PM), Teen Hat Naka Thane (11:00 PM), Durgadi Chowk Kalyan (12:00 AM).
+Saturday Night Departure, Pune: Bank of Maharashtra Shivajinagar (10:00 PM), Nashik Phata (10:30 PM), Bhosari (10:45 PM), Chakan Main Signal (11:15 PM).
 03:00 AM – 04:00 AM: Reach Moroshi base village and rest in the bus.
 04:45 AM: Wake-up call and complete morning routines.
 05:00 AM: Enjoy hot morning tea and breakfast.

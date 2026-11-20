@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured } from './supabase'
+﻿import { supabase, isSupabaseConfigured } from './supabase'
 import type { Profile } from './types'
 
 /** Sample team shown until Supabase is connected. */
@@ -7,7 +7,7 @@ export const sampleTeam: Profile[] = [
     id: 'sample-founder',
     full_name: 'Rajat',
     title: 'Founder & Trip Lead',
-    bio: 'Started withinmiles.in with one belief — the best memories are made away from the crowds. Has led 100+ treks across the Sahyadris and Himalayas.',
+    bio: 'Started withinmiles.in with one belief, the best memories are made away from the crowds. Has led 100+ treks across the Sahyadris and Himalayas.',
     photo_url: null,
     instagram: 'withinmiles.in',
     role: 'owner',

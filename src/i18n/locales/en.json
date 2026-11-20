@@ -189,5 +189,35 @@
   },
   "common": {
     "language": "Language"
+  },
+  "bot": {
+    "role": "Your travel buddy · withinmiles.in",
+    "open": "Chat with Bunny",
+    "greeting1": "Arre hi! I'm Bunny 🐰 — your travel buddy at withinmiles.in.",
+    "greeting2": "Mountains are calling, beaches are waiting... bas bag pack karna baaki hai! What are you in the mood for?",
+    "whatNext": "Chalo, what next? 😄",
+    "optBrowse": "🗺️ Browse by destination",
+    "optThisWeek": "🔥 This week's trips",
+    "optSurprise": "✨ Help me choose",
+    "optHuman": "💬 Talk to a human",
+    "pickRegion": "Pick a place — I know all the good spots! 🏔️",
+    "pickTrip": "Here's what I've got — tap one and let's plan it! 👇",
+    "noTrips": "Hmm, nothing there right now — but new trips drop all the time! Try another place? 🧭",
+    "vibeQ": "Okay okay, tell me the vibe — what does your heart say? ❤️",
+    "vibe_mountains": "🏔️ Mountains & treks",
+    "vibe_beach": "🏖️ Beach & chill",
+    "vibe_spiritual": "🛕 Spiritual",
+    "vibe_roadtrip": "🚙 Road trip",
+    "tripPitch": "Solid choice! {{title}} — {{days}}D/{{nights}}N, from {{price}} per person. Trust me, log iski kasam khate hain! 🔥",
+    "askPax": "How many travellers? (Solo is cool too — you'll come back with 10 new friends 😄)",
+    "askDate": "When do you want to escape?",
+    "flexible": "I'm flexible",
+    "summary": "Done! Plan is ready 🎒",
+    "summaryNudge": "Tap below and my (human) team will lock your spot on WhatsApp. Seats fill fast — just saying! ⏳",
+    "foundSome": "Found something for you! 🎯",
+    "fallback": "Hmm, I didn't catch that 🐰 Try a destination name like 'Goa' or 'Himachal' — or pick an option below!",
+    "restart": "↩ Start over",
+    "bookNow": "📲 Book on WhatsApp",
+    "inputPlaceholder": "Type a place... e.g. Goa"
   }
 }

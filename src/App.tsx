@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
+import BunnyChat from './components/BunnyChat'
 import Home from './pages/Home'
 import Trips from './pages/Trips'
 import TripDetail from './pages/TripDetail'
@@ -35,6 +36,7 @@ export default function App() {
       </main>
       <Footer />
       <WhatsAppFloat />
+      <BunnyChat />
     </div>
   )
 }

@@ -15,6 +15,12 @@ export default function Footer() {
             <span className="font-display text-xl font-semibold text-white">withinmiles.in</span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-brand-200/80">{t('footer.tagline')}</p>
+          <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/5 px-3.5 py-1.5 text-xs font-medium text-sand-300 ring-1 ring-sand-400/30">
+            <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2.5">
+              <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {t('footer.mtdc')}
+          </p>
         </div>
 
         <div>

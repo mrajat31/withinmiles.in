@@ -16,6 +16,15 @@ interface Msg {
 
 type Step = 'start' | 'regions' | 'vibe' | 'trips' | 'pax' | 'date' | 'summary'
 
+/** Hiker / traveller avatar for Bunny. */
+function HikerIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM17.5 10.78c-1.23-.37-2.22-1.17-2.8-2.18l-1-1.6c-.41-.65-1.11-1-1.84-1-.78 0-1.59.5-1.78 1.44S7 23 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3c1 1.15 2.41 2.01 4 2.34V23H19V9h-1.5v1.78zM7.43 13.13l-2.12-.41c-.54-.11-.9-.63-.79-1.17l.76-3.93c.21-1.08 1.26-1.79 2.34-1.58l1.16.23-1.35 6.86z" />
+    </svg>
+  )
+}
+
 const VIBE_TO_CATEGORY: Record<string, string> = {
   mountains: 'trek',
   beach: 'beach',
@@ -161,7 +170,7 @@ export default function BunnyChat() {
 
   const whatsappUrl = (() => {
     if (!chosen) return `https://wa.me/${WHATSAPP_NUMBER}`
-    const msg = `Hi withinmiles.in! Bunny helped me plan 🐰\nTrip: ${tripTitle(chosen, lang)} (${formatPrice(chosen.price)})\nTravellers: ${pax}\nPreferred dates: ${date}\nPlease help me book!`
+    const msg = `Hi withinmiles.in! Bunny helped me plan 🎒\nTrip: ${tripTitle(chosen, lang)} (${formatPrice(chosen.price)})\nTravellers: ${pax}\nPreferred dates: ${date}\nPlease help me book!`
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`
   })()
 
@@ -257,16 +266,22 @@ export default function BunnyChat() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={t('bot.open')}
-        className="fixed bottom-22 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-brand-900 text-2xl shadow-lg shadow-brand-900/30 transition hover:scale-105"
+        className="fixed bottom-22 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-brand-900 shadow-lg shadow-brand-900/30 ring-1 ring-sand-400/40 transition hover:scale-105"
       >
-        {open ? <span className="text-xl text-white">✕</span> : '🐰'}
+        {open ? (
+          <span className="text-xl text-white">✕</span>
+        ) : (
+          <HikerIcon className="h-7 w-7 text-sand-300" />
+        )}
       </button>
 
       {/* Chat panel */}
       {open && (
         <div className="fixed bottom-40 right-5 z-50 flex max-h-[65vh] w-[21rem] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200 sm:w-[23rem]">
           <div className="flex items-center gap-3 bg-brand-900 px-4 py-3 text-white">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-white/15 text-xl">🐰</span>
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-white/15">
+              <HikerIcon className="h-6 w-6 text-sand-300" />
+            </span>
             <div>
               <p className="font-semibold leading-tight">Bunny</p>
               <p className="text-xs text-brand-200/80">{t('bot.role')}</p>

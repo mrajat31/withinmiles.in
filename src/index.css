@@ -2,27 +2,29 @@
 
 @theme {
   --font-sans: "Inter", "Noto Sans Devanagari", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", "Noto Sans Devanagari", serif;
+  --font-display: "Fraunces", "Noto Sans Devanagari", serif;
 
-  --color-brand-50: #f0fdfa;
-  --color-brand-100: #ccfbf1;
-  --color-brand-200: #99f6e4;
-  --color-brand-300: #5eead4;
-  --color-brand-400: #2dd4bf;
-  --color-brand-500: #14b8a6;
-  --color-brand-600: #0d9488;
-  --color-brand-700: #0f766e;
-  --color-brand-800: #115e59;
-  --color-brand-900: #134e4a;
-  --color-brand-950: #042f2e;
+  /* Premium graphite / ink scale */
+  --color-brand-50: #f7f7f5;
+  --color-brand-100: #ebebe6;
+  --color-brand-200: #d6d6cd;
+  --color-brand-300: #b8b8ab;
+  --color-brand-400: #8c8c7f;
+  --color-brand-500: #62625a;
+  --color-brand-600: #32322c;
+  --color-brand-700: #232320;
+  --color-brand-800: #191916;
+  --color-brand-900: #111110;
+  --color-brand-950: #0b0b09;
 
-  --color-sand-50: #fffbeb;
-  --color-sand-100: #fef3c7;
-  --color-sand-200: #fde68a;
-  --color-sand-300: #fcd34d;
-  --color-sand-400: #fbbf24;
-  --color-sand-500: #f59e0b;
-  --color-sand-600: #d97706;
+  /* Refined gold / champagne scale */
+  --color-sand-50: #fbf7ec;
+  --color-sand-100: #f5ebd0;
+  --color-sand-200: #ecd9a4;
+  --color-sand-300: #e2c377;
+  --color-sand-400: #d4a94a;
+  --color-sand-500: #bf8f2f;
+  --color-sand-600: #9c7324;
 }
 
 html {

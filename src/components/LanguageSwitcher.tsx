@@ -19,7 +19,9 @@ export default function LanguageSwitcher({ dark = false }: { dark?: boolean }) {
           onClick={() => i18n.changeLanguage(lang.code)}
           className={`rounded-full px-2.5 py-1 transition-colors ${
             current === lang.code
-              ? 'bg-brand-600 text-white shadow-sm'
+              ? dark
+                ? 'bg-sand-400 text-brand-950 shadow-sm'
+                : 'bg-brand-600 text-white shadow-sm'
               : dark
                 ? 'text-white/70 hover:text-white'
                 : 'text-slate-500 hover:text-slate-800'

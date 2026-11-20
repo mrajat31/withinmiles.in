@@ -7,7 +7,7 @@ import { whatsappGeneralLink } from '../lib/trips'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
-    isActive ? 'text-brand-700 bg-brand-50' : 'text-slate-600 hover:text-brand-700'
+    isActive ? 'text-white bg-white/10' : 'text-white/70 hover:text-white'
   }`
 
 export default function Navbar() {
@@ -22,11 +22,11 @@ export default function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-brand-950/95 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <Logo className="h-9 w-10 text-slate-900" />
-          <span className="font-display text-xl font-semibold tracking-tight text-slate-900">
+          <Logo className="h-9 w-10 text-white" />
+          <span className="font-display text-xl font-semibold tracking-tight text-white">
             withinmiles.in
           </span>
         </Link>
@@ -40,19 +40,19 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <LanguageSwitcher />
+          <LanguageSwitcher dark />
           <a
             href={whatsappGeneralLink()}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
+            className="rounded-full bg-sand-400 px-4 py-2 text-sm font-semibold text-brand-950 shadow-sm transition hover:bg-sand-300"
           >
             {t('hero.ctaSecondary')}
           </a>
         </div>
 
         <button
-          className="grid h-10 w-10 place-items-center rounded-lg text-slate-700 md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-lg text-white md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label="Menu"
         >
@@ -67,7 +67,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-slate-100 bg-white px-4 pb-4 pt-2 md:hidden">
+        <div className="border-t border-white/10 bg-brand-950 px-4 pb-4 pt-2 md:hidden">
           <div className="flex flex-col gap-1">
             {links.map((l) => (
               <NavLink
@@ -82,12 +82,12 @@ export default function Navbar() {
             ))}
           </div>
           <div className="mt-3 flex items-center justify-between gap-3">
-            <LanguageSwitcher />
+            <LanguageSwitcher dark />
             <a
               href={whatsappGeneralLink()}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white"
+              className="rounded-full bg-sand-400 px-4 py-2 text-sm font-semibold text-brand-950"
             >
               {t('hero.ctaSecondary')}
             </a>

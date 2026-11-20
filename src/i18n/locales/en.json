@@ -134,6 +134,7 @@
   },
   "footer": {
     "tagline": "Crowd-free, handcrafted travel experiences across India and beyond. We sell happiness.",
+    "mtdc": "Registered with Maharashtra Tourism",
     "quickLinks": "Quick Links",
     "connect": "Connect",
     "rights": "All rights reserved."
@@ -193,7 +194,7 @@
   "bot": {
     "role": "Your travel buddy · withinmiles.in",
     "open": "Chat with Bunny",
-    "greeting1": "Arre hi! I'm Bunny 🐰 — your travel buddy at withinmiles.in.",
+    "greeting1": "Arre hi! I'm Bunny 🎒 — your travel buddy at withinmiles.in.",
     "greeting2": "Mountains are calling, beaches are waiting... bas bag pack karna baaki hai! What are you in the mood for?",
     "whatNext": "Chalo, what next? 😄",
     "optBrowse": "🗺️ Browse by destination",
@@ -215,7 +216,7 @@
     "summary": "Done! Plan is ready 🎒",
     "summaryNudge": "Tap below and my (human) team will lock your spot on WhatsApp. Seats fill fast — just saying! ⏳",
     "foundSome": "Found something for you! 🎯",
-    "fallback": "Hmm, I didn't catch that 🐰 Try a destination name like 'Goa' or 'Himachal' — or pick an option below!",
+    "fallback": "Hmm, I didn't catch that 🎒 Try a destination name like 'Goa' or 'Himachal' — or pick an option below!",
     "restart": "↩ Start over",
     "bookNow": "📲 Book on WhatsApp",
     "inputPlaceholder": "Type a place... e.g. Goa"

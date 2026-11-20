@@ -10,10 +10,11 @@ import {
   sortUpcoming,
   whatsappGeneralLink,
   INSTAGRAM_URL,
-  REGION_IMAGES,
 } from '../lib/trips'
 
-const HERO_IMAGE =
+/** Put your real group photo at public/images/hero.jpg — it loads automatically.
+ *  Until then this scenic placeholder is shown. */
+const HERO_FALLBACK =
   'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80'
 
 export default function Home() {
@@ -35,8 +36,11 @@ export default function Home() {
       {/* Compact hero */}
       <section className="relative flex min-h-[58vh] items-center overflow-hidden">
         <img
-          src={HERO_IMAGE}
-          alt="Mountain landscape"
+          src="/images/hero.jpg"
+          onError={(e) => {
+            if (e.currentTarget.src !== HERO_FALLBACK) e.currentTarget.src = HERO_FALLBACK
+          }}
+          alt="Travellers on an adventure"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/60 to-brand-950/30" />
@@ -44,9 +48,9 @@ export default function Home() {
           <p className="animate-fade-up text-sm font-semibold uppercase tracking-[0.3em] text-sand-300">
             {t('hero.tagline')}
           </p>
-          <h1 className="animate-fade-up-delay-1 mt-4 max-w-3xl font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+          <h1 className="animate-fade-up-delay-1 mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
             {t('hero.title')}{' '}
-            <span className="italic text-brand-300">{t('hero.titleAccent')}</span>
+            <span className="italic text-sand-300">{t('hero.titleAccent')}</span>
           </h1>
           <div className="animate-fade-up-delay-2 mt-8 flex flex-wrap gap-4">
             <a
@@ -105,27 +109,26 @@ export default function Home() {
               <Link
                 key={region}
                 to={`/trips?region=${region}`}
-                className="group relative h-40 overflow-hidden rounded-2xl sm:h-48"
+                className="group relative flex h-36 flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br from-brand-800 to-brand-950 p-4 ring-1 ring-white/10 transition hover:ring-sand-400/60 sm:h-40"
               >
-                <img
-                  src={REGION_IMAGES[region]}
-                  alt={t(`regions.${region}`)}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <div className="absolute bottom-3 left-4 right-3">
-                  <p className="font-display text-lg font-semibold text-white">
-                    {t(`regions.${region}`)}
+                {/* Mountain watermark */}
+                <svg
+                  viewBox="0 0 100 100"
+                  className="absolute -right-3 -top-3 h-28 w-28 text-white opacity-[0.06] transition group-hover:opacity-[0.12]"
+                  fill="currentColor"
+                >
+                  <path d="M22 70 L44 42 L50 49 L61 32 L90 70 Z" />
+                </svg>
+                <p className="font-display text-lg font-semibold text-white">
+                  {t(`regions.${region}`)}
+                </p>
+                {regionCounts[region] ? (
+                  <p className="text-xs text-sand-300">
+                    {t('home.tripCount', { count: regionCounts[region] })}
                   </p>
-                  {regionCounts[region] ? (
-                    <p className="text-xs text-white/70">
-                      {t('home.tripCount', { count: regionCounts[region] })}
-                    </p>
-                  ) : (
-                    <p className="text-xs text-white/70">{t('home.comingSoon')}</p>
-                  )}
-                </div>
+                ) : (
+                  <p className="text-xs text-white/50">{t('home.comingSoon')}</p>
+                )}
               </Link>
             ))}
           </div>

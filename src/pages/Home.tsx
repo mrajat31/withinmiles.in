@@ -77,7 +77,7 @@ export default function Home() {
         ))}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/60 to-brand-950/30" />
         <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6">
-          <h1 className="animate-fade-up mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight text-white sm:text-6xl">
+          <h1 className="animate-fade-up mt-4 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-6xl">
             {t('hero.title')}{' '}
             <span className="text-sand-300">{t('hero.titleAccent')}</span>
           </h1>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchHeroImageRows, addHeroImage, deleteHeroImage, type HeroImage } from '../../lib/heroImages'
 import { uploadTripImage } from '../../lib/trips'
+import { fetchSetting, setSetting } from '../../lib/settings'
 
 export default function HeroManager() {
   const { t } = useTranslation()
@@ -9,6 +10,8 @@ export default function HeroManager() {
   const [images, setImages] = useState<HeroImage[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [aboutImage, setAboutImage] = useState<string | null>(null)
+  const [aboutUploading, setAboutUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   async function reload() {
@@ -24,7 +27,22 @@ export default function HeroManager() {
 
   useEffect(() => {
     reload()
+    fetchSetting('about_image').then(setAboutImage).catch(() => {})
   }, [])
+
+  async function handleAboutUpload(file: File) {
+    setAboutUploading(true)
+    setError(null)
+    try {
+      const url = await uploadTripImage(file)
+      await setSetting('about_image', url)
+      setAboutImage(url)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setAboutUploading(false)
+    }
+  }
 
   async function handleUpload(file: File) {
     setUploading(true)
@@ -85,6 +103,28 @@ export default function HeroManager() {
           )}
         </div>
       )}
+
+      {/* About page image */}
+      <div className="mt-10 border-t border-slate-100 pt-8">
+        <h2 className="font-display text-xl font-semibold text-slate-900">{f('aboutTitle')}</h2>
+        <p className="mt-1 text-sm text-slate-500">{f('aboutHint')}</p>
+        {aboutImage && (
+          <img src={aboutImage} alt="" className="mt-4 h-44 w-full max-w-xl rounded-2xl object-cover" />
+        )}
+        <label className="mt-4 inline-block cursor-pointer rounded-full bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700">
+          {aboutUploading ? f('uploading') : f('upload')}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            disabled={aboutUploading}
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) handleAboutUpload(file)
+            }}
+          />
+        </label>
+      </div>
     </div>
   )
 }

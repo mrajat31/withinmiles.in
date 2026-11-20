@@ -2,16 +2,23 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Profile } from '../lib/types'
 import { fetchPublicProfiles } from '../lib/team'
+import { fetchSetting } from '../lib/settings'
 
-const ABOUT_IMAGE =
+const ABOUT_FALLBACK =
   'https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1600&q=80'
 
 export default function About() {
   const { t } = useTranslation()
   const [team, setTeam] = useState<Profile[]>([])
+  const [aboutImage, setAboutImage] = useState<string>(ABOUT_FALLBACK)
 
   useEffect(() => {
     fetchPublicProfiles().then(setTeam).catch(() => setTeam([]))
+    fetchSetting('about_image')
+      .then((url) => {
+        if (url) setAboutImage(url)
+      })
+      .catch(() => {})
   }, [])
 
   const missions = [
@@ -30,7 +37,7 @@ export default function About() {
   return (
     <div>
       <section className="relative h-[40vh] min-h-[300px]">
-        <img src={ABOUT_IMAGE} alt="Travellers on a trail" className="h-full w-full object-cover" />
+        <img src={aboutImage} alt="Travellers on a trail" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-brand-950/30" />
       </section>
 

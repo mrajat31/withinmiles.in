@@ -124,8 +124,8 @@
   "about": {
     "title": "About Within Miles",
     "subtitle": "Born from a love for the road",
-    "story1": "Within Miles started with a simple belief, the best experiences in life are often just within miles of you, waiting to be explored. What began as weekend treks with friends has grown into a travel community that has taken hundreds of travellers across India's mountains, beaches, forts and beyond.",
-    "story2": "Every trip we run is personally curated and led by our team. We handle the logistics, safety and planning, you bring the enthusiasm. From a one-night Sahyadri trek to international escapes, we make group travel easy, safe and unforgettable.",
+    "story1": "withinmiles.in began with one simple belief: happiness is never far away, it is just within miles. Our founder has travelled across 14 countries and led more than 300 trips, and what started as weekend treks with friends has grown into a family of hundreds of travellers exploring India's mountains, forts, beaches and beyond.",
+    "story2": "Our team is a mix of certified trek leaders, technical adventure experts and passionate volunteers. We believe in mindful travel: small crowd-free batches, a strict no-littering trail policy, and deep respect for the local communities and mountains that host us. You bring the enthusiasm; we handle everything else.",
     "missionTitle": "Our Promise",
     "mission1Title": "Safety First",
     "mission1Text": "Trained leaders, verified stays, first-aid readiness and well-planned routes on every single trip.",
@@ -188,7 +188,9 @@
       "upload": "Upload photo",
       "uploading": "Uploading...",
       "deleteConfirm": "Remove this photo from the homepage slideshow?",
-      "empty": "No photos yet. Upload your first one, until then a scenic placeholder shows."
+      "empty": "No photos yet. Upload your first one, until then a scenic placeholder shows.",
+      "aboutTitle": "About page photo",
+      "aboutHint": "The big image at the top of the About page."
     },
     "membersTab": {
       "hint": "Approve after confirming the ₹500 membership fee on WhatsApp. Membership runs for 1 year from approval.",

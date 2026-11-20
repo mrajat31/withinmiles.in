@@ -4,9 +4,12 @@
 -- ============================================================
 
 -- Team profiles with role-based access control
--- Roles: 'admin' (full control) and 'member' (add/edit trips, own profile).
--- ⚠️ After team members sign up and save their profile once, make yourself admin:
---    Table Editor → profiles → your row → set role = 'admin'
+-- Roles:
+--   'owner'     — super admin: delete trips, approve reviews, manage team
+--   'zone_head' — add/edit trips (titles, prices, dates, photos)
+--   'volunteer' — can only update trip photos
+-- ⚠️ After signing in once and saving your profile, make yourself owner:
+--    Table Editor → profiles → your row → set role = 'owner'
 create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   created_at timestamptz not null default now(),
@@ -15,24 +18,31 @@ create table if not exists public.profiles (
   bio text,
   photo_url text,
   instagram text,
-  role text not null default 'member' check (role in ('admin', 'member')),
+  role text not null default 'volunteer' check (role in ('owner', 'zone_head', 'volunteer')),
   is_public boolean not null default true
 );
 
 alter table public.profiles enable row level security;
 
--- Helper: is the current user an admin?
-create or replace function public.is_admin()
+-- Helpers: current user's team role / owner check
+create or replace function public.app_role()
+returns text
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select role from public.profiles where id = auth.uid();
+$$;
+
+create or replace function public.is_owner()
 returns boolean
 language sql
 stable
 security definer
 set search_path = public
 as $$
-  select exists (
-    select 1 from public.profiles
-    where id = auth.uid() and role = 'admin'
-  );
+  select public.app_role() = 'owner';
 $$;
 
 create policy "Public can view public profiles"
@@ -44,23 +54,43 @@ create policy "Team can view all profiles"
   to authenticated
   using (true);
 
--- Members manage their own profile but can never set their own role
+-- Members manage their own profile; a trigger stops role self-promotion
 create policy "Users can create own profile"
   on public.profiles for insert
   to authenticated
-  with check (id = auth.uid() and role = 'member');
+  with check (id = auth.uid() and role = 'volunteer');
 
 create policy "Users can update own profile"
   on public.profiles for update
   to authenticated
   using (id = auth.uid())
-  with check (id = auth.uid() and role = 'member');
+  with check (id = auth.uid());
 
-create policy "Admins manage all profiles"
+create policy "Owner manages all profiles"
   on public.profiles for all
   to authenticated
-  using (public.is_admin())
-  with check (public.is_admin());
+  using (public.is_owner())
+  with check (public.is_owner());
+
+-- Only the owner may change anyone's role
+create or replace function public.protect_profile_role()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if new.role is distinct from old.role and not public.is_owner() then
+    raise exception 'Only the owner can change roles';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists profiles_protect_role on public.profiles;
+create trigger profiles_protect_role
+  before update on public.profiles
+  for each row execute function public.protect_profile_role();
 
 -- Trips table
 create table if not exists public.trips (
@@ -86,7 +116,16 @@ create table if not exists public.trips (
   image_url text not null,
   highlights text[] not null default '{}',
   is_active boolean not null default true,
-  is_featured boolean not null default false
+  is_featured boolean not null default false,
+  best_months text,
+  pickup_points text,
+  departure_note text,
+  price_note text,
+  itinerary text,
+  includes text[] not null default '{}',
+  excludes text[] not null default '{}',
+  things_to_carry text[] not null default '{}',
+  created_by uuid default auth.uid() references auth.users (id) on delete set null
 );
 
 -- Row Level Security:
@@ -106,17 +145,38 @@ create policy "Team can view all trips"
 create policy "Team can insert trips"
   on public.trips for insert
   to authenticated
-  with check (true);
+  with check (public.app_role() in ('owner', 'zone_head'));
 
 create policy "Team can update trips"
   on public.trips for update
   to authenticated
-  using (true);
+  using (public.app_role() in ('owner', 'zone_head', 'volunteer'));
 
 create policy "Team can delete trips"
   on public.trips for delete
   to authenticated
-  using (public.is_admin());
+  using (public.is_owner());
+
+-- Volunteers may only change a trip's photo — nothing else
+create or replace function public.restrict_volunteer_trip_update()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if public.app_role() = 'volunteer'
+     and (to_jsonb(new) - 'image_url') is distinct from (to_jsonb(old) - 'image_url') then
+    raise exception 'Volunteers can only update trip photos';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trips_volunteer_guard on public.trips;
+create trigger trips_volunteer_guard
+  before update on public.trips
+  for each row execute function public.restrict_volunteer_trip_update();
 
 -- Storage bucket for trip images (public read, team write)
 insert into storage.buckets (id, name, public)
@@ -167,5 +227,17 @@ create policy "Anyone can submit a review"
 create policy "Team can manage reviews"
   on public.reviews for all
   to authenticated
-  using (public.is_admin())
-  with check (public.is_admin());
+  using (public.is_owner())
+  with check (public.is_owner());
+
+-- ============================================================
+-- Access grants (required): RLS policies above do the real
+-- protection; these standard grants let the API roles reach
+-- the tables at all.
+-- ============================================================
+grant usage on schema public to anon, authenticated;
+grant all on all tables in schema public to anon, authenticated;
+grant all on all sequences in schema public to anon, authenticated;
+grant execute on all functions in schema public to anon, authenticated;
+alter default privileges in schema public
+  grant all on tables to anon, authenticated;

@@ -65,8 +65,9 @@ export default function TeamManager() {
                 onChange={(e) => change(p.id, { role: e.target.value as Profile['role'] })}
                 className="rounded-lg border border-slate-200 px-2 py-1.5 text-sm"
               >
-                <option value="member">{f('member')}</option>
-                <option value="admin">{f('admin')}</option>
+                <option value="volunteer">{f('volunteer')}</option>
+                <option value="zone_head">{f('zone_head')}</option>
+                <option value="owner">{f('owner')}</option>
               </select>
             </label>
             <label className="flex items-center gap-2 text-sm text-slate-600">

@@ -6,6 +6,7 @@ import { createTrip, updateTrip, uploadTripImage, slugify } from '../../lib/trip
 
 interface Props {
   trip: Trip | null
+  photoOnly?: boolean
   onDone: () => void
   onCancel: () => void
 }
@@ -13,7 +14,7 @@ interface Props {
 const inputCls =
   'mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100'
 
-export default function TripForm({ trip, onDone, onCancel }: Props) {
+export default function TripForm({ trip, photoOnly = false, onDone, onCancel }: Props) {
   const { t } = useTranslation()
   const f = (key: string) => t(`admin.form.${key}`)
 
@@ -34,6 +35,14 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
     end_date: trip?.end_date ?? '',
     image_url: trip?.image_url ?? '',
     highlights: (trip?.highlights ?? []).join('\n'),
+    best_months: trip?.best_months ?? '',
+    pickup_points: trip?.pickup_points ?? '',
+    departure_note: trip?.departure_note ?? '',
+    price_note: trip?.price_note ?? '',
+    itinerary: trip?.itinerary ?? '',
+    includes: (trip?.includes ?? []).join('\n'),
+    excludes: (trip?.excludes ?? []).join('\n'),
+    things_to_carry: (trip?.things_to_carry ?? []).join('\n'),
     is_active: trip?.is_active ?? true,
     is_featured: trip?.is_featured ?? false,
   })
@@ -62,6 +71,17 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
     e.preventDefault()
     setSaving(true)
     setError(null)
+    // Volunteers: only the photo is sent (the database enforces this too)
+    if (photoOnly && trip) {
+      try {
+        await updateTrip(trip.id, { image_url: form.image_url.trim() })
+        onDone()
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err))
+        setSaving(false)
+      }
+      return
+    }
     const input: TripInput = {
       slug: trip?.slug ?? slugify(form.title_en),
       title_en: form.title_en.trim(),
@@ -83,6 +103,14 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
         .split('\n')
         .map((h) => h.trim())
         .filter(Boolean),
+      best_months: form.best_months.trim() || null,
+      pickup_points: form.pickup_points.trim() || null,
+      departure_note: form.departure_note.trim() || null,
+      price_note: form.price_note.trim() || null,
+      itinerary: form.itinerary.trim() || null,
+      includes: form.includes.split('\n').map((x) => x.trim()).filter(Boolean),
+      excludes: form.excludes.split('\n').map((x) => x.trim()).filter(Boolean),
+      things_to_carry: form.things_to_carry.split('\n').map((x) => x.trim()).filter(Boolean),
       is_active: form.is_active,
       is_featured: form.is_featured,
     }
@@ -106,6 +134,7 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
       </h1>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+        {!photoOnly && <>
         <div className="grid gap-5 sm:grid-cols-3">
           <label className="block text-sm font-medium text-slate-700 sm:col-span-3">
             {f('titleEn')} *
@@ -186,6 +215,7 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
             <input type="date" value={form.end_date} onChange={(e) => set('end_date', e.target.value)} className={inputCls} />
           </label>
         </div>
+        </>}
 
         <div>
           <p className="text-sm font-medium text-slate-700">{f('image')} *</p>
@@ -215,9 +245,52 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
           </div>
         </div>
 
+        {!photoOnly && <>
         <label className="block text-sm font-medium text-slate-700">
           {f('highlights')}
           <textarea rows={4} value={form.highlights} onChange={(e) => set('highlights', e.target.value)} className={inputCls} />
+        </label>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <label className="block text-sm font-medium text-slate-700">
+            {f('bestMonths')}
+            <input value={form.best_months} onChange={(e) => set('best_months', e.target.value)} placeholder="June–September" className={inputCls} />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            {f('departureNote')}
+            <input value={form.departure_note} onChange={(e) => set('departure_note', e.target.value)} placeholder="Every weekend" className={inputCls} />
+          </label>
+        </div>
+
+        <label className="block text-sm font-medium text-slate-700">
+          {f('pickup')}
+          <input value={form.pickup_points} onChange={(e) => set('pickup_points', e.target.value)} className={inputCls} />
+        </label>
+
+        <label className="block text-sm font-medium text-slate-700">
+          {f('priceNote')}
+          <input value={form.price_note} onChange={(e) => set('price_note', e.target.value)} className={inputCls} />
+        </label>
+
+        <label className="block text-sm font-medium text-slate-700">
+          {f('itinerary')}
+          <textarea rows={8} value={form.itinerary} onChange={(e) => set('itinerary', e.target.value)} className={inputCls} />
+        </label>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <label className="block text-sm font-medium text-slate-700">
+            {f('includes')}
+            <textarea rows={5} value={form.includes} onChange={(e) => set('includes', e.target.value)} className={inputCls} />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            {f('excludes')}
+            <textarea rows={5} value={form.excludes} onChange={(e) => set('excludes', e.target.value)} className={inputCls} />
+          </label>
+        </div>
+
+        <label className="block text-sm font-medium text-slate-700">
+          {f('carry')}
+          <textarea rows={4} value={form.things_to_carry} onChange={(e) => set('things_to_carry', e.target.value)} className={inputCls} />
         </label>
 
         <div className="flex flex-wrap gap-6">
@@ -230,6 +303,7 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
             {f('isFeatured')}
           </label>
         </div>
+        </>}
 
         {error && <p className="text-sm font-medium text-rose-600">{error}</p>}
 

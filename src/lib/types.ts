@@ -20,6 +20,15 @@ export interface Trip {
   is_active: boolean
   is_featured: boolean
   created_at?: string
+  // Extended catalog fields (optional)
+  best_months?: string | null
+  pickup_points?: string | null
+  departure_note?: string | null
+  price_note?: string | null
+  itinerary?: string | null
+  includes?: string[] | null
+  excludes?: string[] | null
+  things_to_carry?: string[] | null
 }
 
 export type TripInput = Omit<Trip, 'id' | 'created_at'>
@@ -65,7 +74,9 @@ export interface Profile {
   bio: string | null
   photo_url: string | null
   instagram: string | null
-  role: 'admin' | 'member'
+  role: 'owner' | 'zone_head' | 'volunteer'
   is_public: boolean
   created_at?: string
 }
+
+export const ROLES = ['owner', 'zone_head', 'volunteer'] as const

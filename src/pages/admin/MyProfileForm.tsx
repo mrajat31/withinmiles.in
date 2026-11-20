@@ -85,7 +85,7 @@ export default function MyProfileForm() {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto mt-8 max-w-xl space-y-5">
-      {profile?.role === 'admin' && (
+      {profile?.role === 'owner' && (
         <p className="rounded-xl bg-sand-50 px-4 py-2.5 text-sm font-medium text-sand-600 ring-1 ring-sand-200">
           ★ {f('adminBadge')}
         </p>

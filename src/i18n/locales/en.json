@@ -107,7 +107,13 @@
     "flexible": "Flexible / Multiple batches",
     "bookWhatsApp": "Book on WhatsApp",
     "enquire": "Have questions? Chat with us",
-    "aboutTrip": "About This Trip"
+    "aboutTrip": "About This Trip",
+    "bestMonths": "Best months",
+    "pickup": "Pickup points",
+    "itinerary": "Day-by-Day Itinerary",
+    "includes": "What's Included",
+    "excludes": "Not Included",
+    "carry": "Things to Carry"
   },
   "about": {
     "title": "About Within Miles",
@@ -157,6 +163,7 @@
     "inactive": "Hidden",
     "featuredBadge": "Featured",
     "edit": "Edit",
+    "updatePhoto": "Update Photo",
     "delete": "Delete",
     "save": "Save Trip",
     "saving": "Saving...",
@@ -166,7 +173,7 @@
     "tab_profile": "My Profile",
     "tab_team": "Team",
     "profile": {
-      "adminBadge": "You are an Admin — you can delete trips and manage the team",
+      "adminBadge": "You are the Owner — full control over trips, reviews and the team",
       "fullName": "Full name",
       "roleTitle": "Role / designation",
       "roleTitlePlaceholder": "e.g. Trip Captain",
@@ -178,10 +185,11 @@
       "saved": "Profile saved!"
     },
     "teamTab": {
-      "hint": "Manage roles and visibility. Admins can delete trips, approve reviews and manage this team.",
+      "hint": "Owner: full control · Zone Head: add & edit trips · Volunteer: update trip photos only.",
       "role": "Role",
-      "admin": "Admin",
-      "member": "Member",
+      "owner": "Owner",
+      "zone_head": "Zone Head",
+      "volunteer": "Volunteer",
       "isPublic": "On website"
     },
     "setupTitle": "Connect Supabase to enable the admin panel",
@@ -206,6 +214,14 @@
       "uploadImage": "Upload image",
       "uploading": "Uploading...",
       "highlights": "Highlights (one per line)",
+      "bestMonths": "Best months to visit",
+      "departureNote": "Departures (e.g. Every weekend)",
+      "pickup": "Pickup points",
+      "priceNote": "Price variants / note",
+      "itinerary": "Itinerary (day by day)",
+      "includes": "Includes (one per line)",
+      "excludes": "Excludes (one per line)",
+      "carry": "Things to carry (one per line)",
       "isActive": "Visible on website",
       "isFeatured": "Featured on homepage"
     }
@@ -216,6 +232,12 @@
   "team": {
     "title": "Meet the Team",
     "subtitle": "The people who make the magic happen"
+  },
+  "community": {
+    "cardLabel": "{{price}} for Community members",
+    "detailLabel": "Community price: {{price}}",
+    "detailText": "WithinMiles Community members get 5% off every trip.",
+    "join": "Join the WithinMiles Community"
   },
   "bot": {
     "role": "Your travel buddy · withinmiles.in",

@@ -9,6 +9,8 @@ import {
   formatPrice,
   whatsappBookingLink,
   whatsappGeneralLink,
+  communityPrice,
+  COMMUNITY_INVITE_URL,
 } from '../lib/trips'
 
 export default function TripDetail() {
@@ -42,8 +44,9 @@ export default function TripDetail() {
     )
   }
 
-  const dateRange =
-    trip.start_date && trip.end_date
+  const dateRange = trip.departure_note
+    ? trip.departure_note
+    : trip.start_date && trip.end_date
       ? `${new Date(trip.start_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short' })} – ${new Date(trip.end_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short', year: 'numeric' })}`
       : t('tripDetail.flexible')
 
@@ -51,6 +54,8 @@ export default function TripDetail() {
     { label: t('tripDetail.destination'), value: trip.destination },
     { label: t('tripDetail.duration'), value: t('trips.days', { days: trip.duration_days, nights: trip.duration_nights }) },
     { label: t('tripDetail.dates'), value: dateRange },
+    ...(trip.best_months ? [{ label: t('tripDetail.bestMonths'), value: trip.best_months }] : []),
+    ...(trip.pickup_points ? [{ label: t('tripDetail.pickup'), value: trip.pickup_points }] : []),
     { label: t('tripDetail.price'), value: `${formatPrice(trip.price)} ${t('trips.perPerson')}` },
   ]
 
@@ -107,6 +112,68 @@ export default function TripDetail() {
               </ul>
             </>
           )}
+
+          {trip.itinerary && (
+            <>
+              <h2 className="mt-10 font-display text-2xl font-semibold text-slate-900">
+                {t('tripDetail.itinerary')}
+              </h2>
+              <div className="mt-4 whitespace-pre-line rounded-2xl bg-slate-50 p-6 text-sm leading-relaxed text-slate-700 ring-1 ring-slate-100">
+                {trip.itinerary}
+              </div>
+            </>
+          )}
+
+          {((trip.includes?.length ?? 0) > 0 || (trip.excludes?.length ?? 0) > 0) && (
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              {(trip.includes?.length ?? 0) > 0 && (
+                <div>
+                  <h2 className="font-display text-xl font-semibold text-slate-900">
+                    {t('tripDetail.includes')}
+                  </h2>
+                  <ul className="mt-4 space-y-2">
+                    {trip.includes!.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm text-slate-600">
+                        <span className="mt-0.5 font-bold text-emerald-600">✓</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {(trip.excludes?.length ?? 0) > 0 && (
+                <div>
+                  <h2 className="font-display text-xl font-semibold text-slate-900">
+                    {t('tripDetail.excludes')}
+                  </h2>
+                  <ul className="mt-4 space-y-2">
+                    {trip.excludes!.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm text-slate-600">
+                        <span className="mt-0.5 font-bold text-rose-500">✕</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {(trip.things_to_carry?.length ?? 0) > 0 && (
+            <>
+              <h2 className="mt-10 font-display text-xl font-semibold text-slate-900">
+                {t('tripDetail.carry')}
+              </h2>
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                {trip.things_to_carry!.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm text-slate-600">
+                    <span className="mt-0.5 text-sand-500">•</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
 
         {/* Booking card */}
@@ -120,6 +187,25 @@ export default function TripDetail() {
                 </div>
               ))}
             </dl>
+            {trip.price_note && (
+              <p className="mt-3 text-xs leading-relaxed text-slate-400">{trip.price_note}</p>
+            )}
+            <div className="mt-4 rounded-xl bg-sand-50 px-4 py-3 ring-1 ring-sand-200">
+              <p className="text-sm font-semibold text-sand-600">
+                {t('community.detailLabel', { price: formatPrice(communityPrice(trip.price)) })}
+              </p>
+              <p className="mt-0.5 text-xs text-slate-500">{t('community.detailText')}</p>
+              {COMMUNITY_INVITE_URL && (
+                <a
+                  href={COMMUNITY_INVITE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1.5 inline-block text-xs font-semibold text-brand-700 hover:underline"
+                >
+                  {t('community.join')} →
+                </a>
+              )}
+            </div>
             <a
               href={whatsappBookingLink(trip, lang)}
               target="_blank"

@@ -17,7 +17,9 @@ export default function AdminDashboard() {
   const [editing, setEditing] = useState<Trip | 'new' | null>(null)
   const [tab, setTab] = useState<Tab>('trips')
   const [me, setMe] = useState<Profile | null>(null)
-  const isAdmin = me?.role === 'admin'
+  const isOwner = me?.role === 'owner'
+  const canEditTrips = me?.role === 'owner' || me?.role === 'zone_head'
+  const photoOnly = me?.role === 'volunteer'
 
   async function reload() {
     setLoading(true)
@@ -43,6 +45,7 @@ export default function AdminDashboard() {
     return (
       <TripForm
         trip={editing === 'new' ? null : editing}
+        photoOnly={photoOnly}
         onDone={async () => {
           setEditing(null)
           await reload()
@@ -57,7 +60,7 @@ export default function AdminDashboard() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-3xl font-bold text-slate-900">{t('admin.dashboard')}</h1>
         <div className="flex items-center gap-3">
-          {tab === 'trips' && (
+          {tab === 'trips' && canEditTrips && (
             <button
               onClick={() => setEditing('new')}
               className="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
@@ -76,7 +79,7 @@ export default function AdminDashboard() {
 
       {/* Tabs */}
       <div className="mt-6 flex gap-2">
-        {(['trips', 'profile', ...(isAdmin ? (['team'] as Tab[]) : [])] as Tab[]).map((tb) => (
+        {(['trips', 'profile', ...(isOwner ? (['team'] as Tab[]) : [])] as Tab[]).map((tb) => (
           <button
             key={tb}
             onClick={() => setTab(tb)}
@@ -90,7 +93,7 @@ export default function AdminDashboard() {
       </div>
 
       {tab === 'profile' && <MyProfileForm />}
-      {tab === 'team' && isAdmin && <TeamManager />}
+      {tab === 'team' && isOwner && <TeamManager />}
       {tab === 'trips' && (loading ? (
         <p className="py-20 text-center text-slate-400">{t('trips.loading')}</p>
       ) : trips.length === 0 ? (
@@ -132,9 +135,9 @@ export default function AdminDashboard() {
                   onClick={() => setEditing(trip)}
                   className="rounded-full border border-brand-200 px-4 py-2 text-sm font-medium text-brand-700 transition hover:bg-brand-50"
                 >
-                  {t('admin.edit')}
+                  {photoOnly ? t('admin.updatePhoto') : t('admin.edit')}
                 </button>
-                {isAdmin && (
+                {isOwner && (
                   <button
                     onClick={() => handleDelete(trip)}
                     className="rounded-full border border-rose-200 px-4 py-2 text-sm font-medium text-rose-600 transition hover:bg-rose-50"

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Trip } from '../lib/types'
-import { tripTitle, formatPrice, whatsappBookingLink } from '../lib/trips'
+import { tripTitle, formatPrice, whatsappBookingLink, communityPrice } from '../lib/trips'
 
 export default function TripCard({ trip }: { trip: Trip }) {
   const { t, i18n } = useTranslation()
@@ -59,6 +59,9 @@ export default function TripCard({ trip }: { trip: Trip }) {
             <p className="text-xl font-bold text-brand-700">
               {formatPrice(trip.price)}
               <span className="ml-1 text-xs font-normal text-slate-400">{t('trips.perPerson')}</span>
+            </p>
+            <p className="mt-0.5 text-xs font-semibold text-sand-600">
+              {t('community.cardLabel', { price: formatPrice(communityPrice(trip.price)) })}
             </p>
           </div>
           <a

@@ -10,7 +10,7 @@ export const sampleTeam: Profile[] = [
     bio: 'Started withinmiles.in with one belief — the best memories are made away from the crowds. Has led 100+ treks across the Sahyadris and Himalayas.',
     photo_url: null,
     instagram: 'withinmiles.in',
-    role: 'admin',
+    role: 'owner',
     is_public: true,
   },
 ]
@@ -49,7 +49,7 @@ export async function upsertMyProfile(input: {
   const { data: userData } = await supabase.auth.getUser()
   const user = userData.user
   if (!user) throw new Error('Not signed in')
-  // Role is never sent from the client on self-upsert; new rows default to 'member'.
+  // Role is never sent from the client on self-upsert; new rows default to 'volunteer'.
   const { error } = await supabase.from('profiles').upsert({ id: user.id, ...input })
   if (error) throw error
 }

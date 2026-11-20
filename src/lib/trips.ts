@@ -50,6 +50,15 @@ export function whatsappGeneralLink(): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`
 }
 
+/** WithinMiles Community: members get 5% off every trip.
+ *  Paste your WhatsApp community invite link below to show the Join button. */
+export const COMMUNITY_INVITE_URL = ''
+export const COMMUNITY_DISCOUNT = 0.05
+
+export function communityPrice(price: number): number {
+  return Math.round(price * (1 - COMMUNITY_DISCOUNT))
+}
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()

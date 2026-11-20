@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Profile } from '../../lib/types'
-import { fetchAllProfiles, updateProfileAdmin } from '../../lib/team'
+import { fetchAllProfiles, updateProfileAdmin, createTeamLogin } from '../../lib/team'
+
+const inputCls =
+  'mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100'
 
 export default function TeamManager() {
   const { t } = useTranslation()
@@ -9,6 +12,28 @@ export default function TeamManager() {
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [newEmail, setNewEmail] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [creating, setCreating] = useState(false)
+  const [created, setCreated] = useState(false)
+
+  async function handleCreate(e: FormEvent) {
+    e.preventDefault()
+    setCreating(true)
+    setError(null)
+    setCreated(false)
+    try {
+      await createTeamLogin(newEmail.trim(), newPassword)
+      setCreated(true)
+      setNewEmail('')
+      setNewPassword('')
+      setTimeout(reload, 1500)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+    } finally {
+      setCreating(false)
+    }
+  }
 
   async function reload() {
     setLoading(true)
@@ -39,7 +64,31 @@ export default function TeamManager() {
 
   return (
     <div className="mt-8">
-      <p className="text-sm text-slate-500">{f('hint')}</p>
+      {/* Add a team member */}
+      <form onSubmit={handleCreate} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+        <h2 className="font-display text-xl font-semibold text-slate-900">{f('addTitle')}</h2>
+        <p className="mt-1 text-sm text-slate-500">{f('addHint')}</p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <label className="block text-sm font-medium text-slate-700">
+            {t('admin.email')} *
+            <input required type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} className={inputCls} />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            {f('tempPassword')} *
+            <input required minLength={6} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className={inputCls} />
+          </label>
+        </div>
+        {created && <p className="mt-3 text-sm font-medium text-emerald-600">{f('createdMsg')}</p>}
+        <button
+          type="submit"
+          disabled={creating}
+          className="mt-4 rounded-full bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
+        >
+          {creating ? '…' : f('createBtn')}
+        </button>
+      </form>
+
+      <p className="mt-6 text-sm text-slate-500">{f('hint')}</p>
       {error && <p className="mt-3 text-sm font-medium text-rose-600">{error}</p>}
       <ul className="mt-5 space-y-3">
         {profiles.map((p) => (

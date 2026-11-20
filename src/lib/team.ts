@@ -1,4 +1,5 @@
 ﻿import { supabase, isSupabaseConfigured } from './supabase'
+import { createClient } from '@supabase/supabase-js'
 import type { Profile } from './types'
 
 /** Sample team shown until Supabase is connected. */
@@ -73,5 +74,19 @@ export async function updateProfileAdmin(
 ): Promise<void> {
   if (!supabase) throw new Error('Supabase is not configured')
   const { error } = await supabase.from('profiles').update(input).eq('id', id)
+  if (error) throw error
+}
+
+/** Owner: create a new team login from the UI without losing the owner session.
+ *  Uses a throwaway client so signUp doesn't replace the current session.
+ *  The new user starts as 'volunteer' (profile auto-created by DB trigger). */
+export async function createTeamLogin(email: string, password: string): Promise<void> {
+  const url = import.meta.env.VITE_SUPABASE_URL as string | undefined
+  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
+  if (!url || !anonKey) throw new Error('Supabase is not configured')
+  const temp = createClient(url, anonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+  const { error } = await temp.auth.signUp({ email, password })
   if (error) throw error
 }

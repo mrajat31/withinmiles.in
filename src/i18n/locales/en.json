@@ -231,6 +231,11 @@
       "saved": "Profile saved!"
     },
     "teamTab": {
+      "addTitle": "Add a team member",
+      "addHint": "Creates their login instantly. New members start as Volunteers; change the role below. Share the email + password with them for withinmiles.in/admin.",
+      "tempPassword": "Temporary password (min 6 chars)",
+      "createBtn": "Create Login",
+      "createdMsg": "Login created! They'll appear in the list below; set their role as needed.",
       "hint": "Owner: full control · Zone Head: add & edit trips · Volunteer: update trip photos only.",
       "role": "Role",
       "owner": "Owner",

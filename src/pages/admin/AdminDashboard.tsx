@@ -2,14 +2,22 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 import { fetchAllTrips, deleteTrip, formatPrice } from '../../lib/trips'
-import type { Trip } from '../../lib/types'
+import { fetchMyProfile } from '../../lib/team'
+import type { Trip, Profile } from '../../lib/types'
 import TripForm from './TripForm'
+import MyProfileForm from './MyProfileForm'
+import TeamManager from './TeamManager'
+
+type Tab = 'trips' | 'profile' | 'team'
 
 export default function AdminDashboard() {
   const { t } = useTranslation()
   const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Trip | 'new' | null>(null)
+  const [tab, setTab] = useState<Tab>('trips')
+  const [me, setMe] = useState<Profile | null>(null)
+  const isAdmin = me?.role === 'admin'
 
   async function reload() {
     setLoading(true)
@@ -22,6 +30,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     reload()
+    fetchMyProfile().then(setMe).catch(() => setMe(null))
   }, [])
 
   async function handleDelete(trip: Trip) {
@@ -48,12 +57,14 @@ export default function AdminDashboard() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-3xl font-bold text-slate-900">{t('admin.dashboard')}</h1>
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => setEditing('new')}
-            className="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
-          >
-            + {t('admin.addTrip')}
-          </button>
+          {tab === 'trips' && (
+            <button
+              onClick={() => setEditing('new')}
+              className="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
+            >
+              + {t('admin.addTrip')}
+            </button>
+          )}
           <button
             onClick={() => supabase?.auth.signOut()}
             className="rounded-full border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
@@ -63,7 +74,24 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {loading ? (
+      {/* Tabs */}
+      <div className="mt-6 flex gap-2">
+        {(['trips', 'profile', ...(isAdmin ? (['team'] as Tab[]) : [])] as Tab[]).map((tb) => (
+          <button
+            key={tb}
+            onClick={() => setTab(tb)}
+            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+              tab === tb ? 'bg-brand-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            {t(`admin.tab_${tb}`)}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'profile' && <MyProfileForm />}
+      {tab === 'team' && isAdmin && <TeamManager />}
+      {tab === 'trips' && (loading ? (
         <p className="py-20 text-center text-slate-400">{t('trips.loading')}</p>
       ) : trips.length === 0 ? (
         <p className="py-20 text-center text-slate-400">{t('admin.noTripsYet')}</p>
@@ -106,17 +134,19 @@ export default function AdminDashboard() {
                 >
                   {t('admin.edit')}
                 </button>
-                <button
-                  onClick={() => handleDelete(trip)}
-                  className="rounded-full border border-rose-200 px-4 py-2 text-sm font-medium text-rose-600 transition hover:bg-rose-50"
-                >
-                  {t('admin.delete')}
-                </button>
+                {isAdmin && (
+                  <button
+                    onClick={() => handleDelete(trip)}
+                    className="rounded-full border border-rose-200 px-4 py-2 text-sm font-medium text-rose-600 transition hover:bg-rose-50"
+                  >
+                    {t('admin.delete')}
+                  </button>
+                )}
               </div>
             </li>
           ))}
         </ul>
-      )}
+      ))}
     </div>
   )
 }

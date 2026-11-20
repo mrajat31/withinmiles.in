@@ -3,6 +3,65 @@
 -- Run this whole file in: Supabase Dashboard → SQL Editor → New query → Run
 -- ============================================================
 
+-- Team profiles with role-based access control
+-- Roles: 'admin' (full control) and 'member' (add/edit trips, own profile).
+-- ⚠️ After team members sign up and save their profile once, make yourself admin:
+--    Table Editor → profiles → your row → set role = 'admin'
+create table if not exists public.profiles (
+  id uuid primary key references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  full_name text not null default '',
+  title text,
+  bio text,
+  photo_url text,
+  instagram text,
+  role text not null default 'member' check (role in ('admin', 'member')),
+  is_public boolean not null default true
+);
+
+alter table public.profiles enable row level security;
+
+-- Helper: is the current user an admin?
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin'
+  );
+$$;
+
+create policy "Public can view public profiles"
+  on public.profiles for select
+  using (is_public = true);
+
+create policy "Team can view all profiles"
+  on public.profiles for select
+  to authenticated
+  using (true);
+
+-- Members manage their own profile but can never set their own role
+create policy "Users can create own profile"
+  on public.profiles for insert
+  to authenticated
+  with check (id = auth.uid() and role = 'member');
+
+create policy "Users can update own profile"
+  on public.profiles for update
+  to authenticated
+  using (id = auth.uid())
+  with check (id = auth.uid() and role = 'member');
+
+create policy "Admins manage all profiles"
+  on public.profiles for all
+  to authenticated
+  using (public.is_admin())
+  with check (public.is_admin());
+
 -- Trips table
 create table if not exists public.trips (
   id uuid primary key default gen_random_uuid(),
@@ -57,7 +116,7 @@ create policy "Team can update trips"
 create policy "Team can delete trips"
   on public.trips for delete
   to authenticated
-  using (true);
+  using (public.is_admin());
 
 -- Storage bucket for trip images (public read, team write)
 insert into storage.buckets (id, name, public)
@@ -108,4 +167,5 @@ create policy "Anyone can submit a review"
 create policy "Team can manage reviews"
   on public.reviews for all
   to authenticated
-  using (true);
+  using (public.is_admin())
+  with check (public.is_admin());

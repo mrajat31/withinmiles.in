@@ -34,7 +34,8 @@ Open http://localhost:5173
    VITE_SUPABASE_ANON_KEY=eyJ...
    ```
 5. **Add team members:** Supabase Dashboard → **Authentication → Users → Add user → Create new user**. Enter each team member's email + a password (tick "Auto confirm user"). These are the logins for `/admin`.
-6. Rebuild/restart the site. The `/admin` page now shows the team login.
+6. **Roles:** everyone starts as a *Member* (can add/edit trips + their own profile). To make yourself (or anyone) an *Admin* (can delete trips, approve reviews, manage team): have them log in to `/admin` once and save their profile, then in Supabase **Table Editor → profiles** set their `role` to `admin`. After that, admins can change roles from the admin panel's **Team** tab.
+7. Rebuild/restart the site. The `/admin` page now shows the team login.
 
 ## 3. Deploy to Hostinger
 

@@ -1,10 +1,18 @@
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { Profile } from '../lib/types'
+import { fetchPublicProfiles } from '../lib/team'
 
 const ABOUT_IMAGE =
   'https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1600&q=80'
 
 export default function About() {
   const { t } = useTranslation()
+  const [team, setTeam] = useState<Profile[]>([])
+
+  useEffect(() => {
+    fetchPublicProfiles().then(setTeam).catch(() => setTeam([]))
+  }, [])
 
   const missions = [
     { title: t('about.mission1Title'), text: t('about.mission1Text') },
@@ -51,6 +59,51 @@ export default function About() {
           ))}
         </div>
       </section>
+
+      {/* Meet the team */}
+      {team.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+          <div className="text-center">
+            <h2 className="font-display text-3xl font-bold text-slate-900">{t('team.title')}</h2>
+            <p className="mt-2 text-slate-500">{t('team.subtitle')}</p>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {team.map((member) => (
+              <div
+                key={member.id}
+                className="rounded-2xl bg-white p-7 text-center shadow-sm ring-1 ring-slate-100"
+              >
+                <span className="mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-full bg-brand-900 font-display text-3xl font-semibold text-sand-300">
+                  {member.photo_url ? (
+                    <img src={member.photo_url} alt={member.full_name} className="h-full w-full object-cover" />
+                  ) : (
+                    (member.full_name.trim()[0] ?? '?').toUpperCase()
+                  )}
+                </span>
+                <h3 className="mt-4 font-display text-xl font-semibold text-slate-900">
+                  {member.full_name}
+                </h3>
+                {member.title && (
+                  <p className="mt-1 text-sm font-medium text-sand-600">{member.title}</p>
+                )}
+                {member.bio && (
+                  <p className="mt-3 text-sm leading-relaxed text-slate-500">{member.bio}</p>
+                )}
+                {member.instagram && (
+                  <a
+                    href={`https://www.instagram.com/${member.instagram}/`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-3 inline-block text-sm font-medium text-rose-600 hover:underline"
+                  >
+                    @{member.instagram}
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="bg-slate-50 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">

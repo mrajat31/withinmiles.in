@@ -57,3 +57,15 @@ export interface Review {
   is_approved: boolean
   created_at?: string
 }
+
+export interface Profile {
+  id: string
+  full_name: string
+  title: string | null
+  bio: string | null
+  photo_url: string | null
+  instagram: string | null
+  role: 'admin' | 'member'
+  is_public: boolean
+  created_at?: string
+}

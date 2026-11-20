@@ -162,6 +162,28 @@
     "saving": "Saving...",
     "cancel": "Cancel",
     "noTripsYet": "No trips yet. Add your first trip!",
+    "tab_trips": "Trips",
+    "tab_profile": "My Profile",
+    "tab_team": "Team",
+    "profile": {
+      "adminBadge": "You are an Admin — you can delete trips and manage the team",
+      "fullName": "Full name",
+      "roleTitle": "Role / designation",
+      "roleTitlePlaceholder": "e.g. Trip Captain",
+      "bio": "Short bio (shown on the website)",
+      "uploadPhoto": "Upload photo",
+      "uploading": "Uploading...",
+      "isPublic": "Show my profile on the website",
+      "save": "Save Profile",
+      "saved": "Profile saved!"
+    },
+    "teamTab": {
+      "hint": "Manage roles and visibility. Admins can delete trips, approve reviews and manage this team.",
+      "role": "Role",
+      "admin": "Admin",
+      "member": "Member",
+      "isPublic": "On website"
+    },
     "setupTitle": "Connect Supabase to enable the admin panel",
     "setupText": "The site is currently showing sample trips. Follow the setup guide in the project README to connect your free Supabase database, then team members can log in here to add and manage trips.",
     "form": {
@@ -190,6 +212,10 @@
   },
   "common": {
     "language": "Language"
+  },
+  "team": {
+    "title": "Meet the Team",
+    "subtitle": "The people who make the magic happen"
   },
   "bot": {
     "role": "Your travel buddy · withinmiles.in",

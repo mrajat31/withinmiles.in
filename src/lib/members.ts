@@ -35,3 +35,24 @@ export async function updateMember(
   const { error } = await supabase.from('members').update(input).eq('id', id)
   if (error) throw error
 }
+
+/** Owner only: directly add an active member (family & friends), 1-year validity. */
+export async function addMemberDirect(input: {
+  full_name: string
+  whatsapp: string
+  city: string | null
+}): Promise<void> {
+  if (!supabase) throw new Error('Membership is not enabled yet')
+  const expires = new Date()
+  expires.setFullYear(expires.getFullYear() + 1)
+  const { error } = await supabase.from('members').insert({
+    ...input,
+    email: null,
+    eligibility: 'two_treks',
+    treks_done: 'Added directly by owner',
+    referred_by: null,
+    status: 'active',
+    expires_at: expires.toISOString().slice(0, 10),
+  })
+  if (error) throw error
+}

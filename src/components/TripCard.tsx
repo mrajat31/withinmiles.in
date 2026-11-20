@@ -18,10 +18,23 @@ export default function TripCard({ trip }: { trip: Trip }) {
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-          <div className="absolute left-3 top-3 flex gap-2">
+          <div className="absolute left-3 top-3 flex flex-wrap gap-2">
             <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 backdrop-blur">
               {t(`categories.${trip.category}`)}
             </span>
+            {trip.difficulty && (
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold backdrop-blur ${
+                  trip.difficulty === 'beginner'
+                    ? 'bg-emerald-500/90 text-white'
+                    : trip.difficulty === 'moderate'
+                      ? 'bg-amber-500/90 text-white'
+                      : 'bg-rose-600/90 text-white'
+                }`}
+              >
+                {t(`difficulty.${trip.difficulty}`)}
+              </span>
+            )}
             {trip.is_featured && (
               <span className="rounded-full bg-sand-400 px-3 py-1 text-xs font-bold text-sand-50 text-white">
                 ★ {t('trips.featured')}

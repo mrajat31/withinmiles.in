@@ -28,6 +28,7 @@ export default function TripForm({ trip, photoOnly = false, onDone, onCancel }: 
     destination: trip?.destination ?? '',
     region: trip?.region ?? 'maharashtra',
     category: trip?.category ?? 'trek',
+    difficulty: trip?.difficulty ?? '',
     duration_days: trip?.duration_days ?? 2,
     duration_nights: trip?.duration_nights ?? 1,
     price: trip?.price ?? 0,
@@ -93,6 +94,7 @@ export default function TripForm({ trip, photoOnly = false, onDone, onCancel }: 
       destination: form.destination.trim(),
       region: form.region,
       category: form.category as TripInput['category'],
+      difficulty: (form.difficulty || null) as TripInput['difficulty'],
       duration_days: Number(form.duration_days),
       duration_nights: Number(form.duration_nights),
       price: Number(form.price),
@@ -186,6 +188,15 @@ export default function TripForm({ trip, photoOnly = false, onDone, onCancel }: 
                   {t(`categories.${c}`)}
                 </option>
               ))}
+            </select>
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            {f('difficulty')}
+            <select value={form.difficulty} onChange={(e) => set('difficulty', e.target.value)} className={inputCls}>
+              <option value="">-</option>
+              <option value="beginner">{t('difficulty.beginner')}</option>
+              <option value="moderate">{t('difficulty.moderate')}</option>
+              <option value="advanced">{t('difficulty.advanced')}</option>
             </select>
           </label>
         </div>

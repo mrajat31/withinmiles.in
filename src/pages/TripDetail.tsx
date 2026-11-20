@@ -52,6 +52,7 @@ export default function TripDetail() {
   const facts = [
     { label: t('tripDetail.destination'), value: trip.destination },
     { label: t('tripDetail.duration'), value: t('trips.days', { days: trip.duration_days, nights: trip.duration_nights }) },
+    ...(trip.difficulty ? [{ label: t('tripDetail.difficulty'), value: t(`difficulty.${trip.difficulty}`) }] : []),
     { label: t('tripDetail.dates'), value: dateRange },
     ...(trip.best_months ? [{ label: t('tripDetail.bestMonths'), value: trip.best_months }] : []),
     ...(trip.pickup_points ? [{ label: t('tripDetail.pickup'), value: trip.pickup_points }] : []),

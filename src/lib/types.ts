@@ -21,6 +21,7 @@ export interface Trip {
   is_featured: boolean
   created_at?: string
   approval_status?: 'pending' | 'approved'
+  difficulty?: 'beginner' | 'moderate' | 'advanced' | null
   // Extended catalog fields (optional)
   best_months?: string | null
   pickup_points?: string | null

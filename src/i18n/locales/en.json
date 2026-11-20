@@ -74,6 +74,11 @@
     "international": "International",
     "pilgrimage": "Pilgrimage"
   },
+  "difficulty": {
+    "beginner": "Beginner",
+    "moderate": "Moderate",
+    "advanced": "Advanced"
+  },
   "regions": {
     "maharashtra": "Maharashtra",
     "himachal": "Himachal",
@@ -114,6 +119,7 @@
     "bookWhatsApp": "Book on WhatsApp",
     "enquire": "Have questions? Chat with us",
     "aboutTrip": "About This Trip",
+    "difficulty": "Difficulty",
     "bestMonths": "Best months",
     "pickup": "Pickup points",
     "itinerary": "Day-by-Day Itinerary",
@@ -193,6 +199,9 @@
       "aboutHint": "The big image at the top of the About page."
     },
     "membersTab": {
+      "addTitle": "Add a member directly",
+      "addHint": "For family, friends and offline sign-ups. Membership activates immediately for 1 year.",
+      "addBtn": "Add Member",
       "hint": "Approve after confirming the ₹500 membership fee on WhatsApp. Membership runs for 1 year from approval.",
       "pending": "Pending",
       "active": "Active until",
@@ -255,6 +264,7 @@
       "destination": "Destination",
       "region": "Region / Section",
       "category": "Category",
+      "difficulty": "Difficulty level",
       "days": "Days",
       "nights": "Nights",
       "price": "Price (₹ per person)",

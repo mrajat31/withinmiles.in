@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Member } from '../../lib/types'
-import { fetchMembers, updateMember } from '../../lib/members'
+import { fetchMembers, updateMember, addMemberDirect } from '../../lib/members'
+
+const inputCls =
+  'mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100'
 
 export default function MembersManager() {
   const { t } = useTranslation()
@@ -9,6 +12,31 @@ export default function MembersManager() {
   const [members, setMembers] = useState<Member[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [newName, setNewName] = useState('')
+  const [newWhatsapp, setNewWhatsapp] = useState('')
+  const [newCity, setNewCity] = useState('')
+  const [adding, setAdding] = useState(false)
+
+  async function handleAdd(e: FormEvent) {
+    e.preventDefault()
+    setAdding(true)
+    setError(null)
+    try {
+      await addMemberDirect({
+        full_name: newName.trim(),
+        whatsapp: newWhatsapp.trim(),
+        city: newCity.trim() || null,
+      })
+      setNewName('')
+      setNewWhatsapp('')
+      setNewCity('')
+      await reload()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+    } finally {
+      setAdding(false)
+    }
+  }
 
   async function reload() {
     setLoading(true)
@@ -52,7 +80,34 @@ export default function MembersManager() {
 
   return (
     <div className="mt-8">
-      <p className="text-sm text-slate-500">{f('hint')}</p>
+      {/* Directly add a member (family & friends) */}
+      <form onSubmit={handleAdd} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+        <h2 className="font-display text-xl font-semibold text-slate-900">{f('addTitle')}</h2>
+        <p className="mt-1 text-sm text-slate-500">{f('addHint')}</p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <label className="block text-sm font-medium text-slate-700">
+            {t('communityPage.name')} *
+            <input required value={newName} onChange={(e) => setNewName(e.target.value)} className={inputCls} />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            {t('communityPage.whatsapp')} *
+            <input required type="tel" placeholder="+91" value={newWhatsapp} onChange={(e) => setNewWhatsapp(e.target.value)} className={inputCls} />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            {t('communityPage.city')}
+            <input value={newCity} onChange={(e) => setNewCity(e.target.value)} className={inputCls} />
+          </label>
+        </div>
+        <button
+          type="submit"
+          disabled={adding}
+          className="mt-4 rounded-full bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
+        >
+          {adding ? '…' : f('addBtn')}
+        </button>
+      </form>
+
+      <p className="mt-6 text-sm text-slate-500">{f('hint')}</p>
       {error && <p className="mt-3 text-sm font-medium text-rose-600">{error}</p>}
       <ul className="mt-5 space-y-3">
         {members.map((m) => (

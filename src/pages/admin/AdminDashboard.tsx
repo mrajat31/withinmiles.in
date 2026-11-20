@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
-import { fetchAllTrips, deleteTrip, formatPrice } from '../../lib/trips'
+import { fetchAllTrips, deleteTrip, updateTrip, formatPrice } from '../../lib/trips'
 import { fetchMyProfile } from '../../lib/team'
 import type { Trip, Profile } from '../../lib/types'
 import TripForm from './TripForm'
@@ -34,6 +34,11 @@ export default function AdminDashboard() {
     reload()
     fetchMyProfile().then(setMe).catch(() => setMe(null))
   }, [])
+
+  async function handleApprove(trip: Trip) {
+    await updateTrip(trip.id, { approval_status: 'approved' })
+    await reload()
+  }
 
   async function handleDelete(trip: Trip) {
     if (!window.confirm(t('admin.deleteConfirm'))) return
@@ -123,6 +128,11 @@ export default function AdminDashboard() {
                   >
                     {trip.is_active ? t('admin.active') : t('admin.inactive')}
                   </span>
+                  {trip.approval_status === 'pending' && (
+                    <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
+                      ⏳ {t('admin.pendingBadge')}
+                    </span>
+                  )}
                   {trip.is_featured && (
                     <span className="rounded-full bg-sand-100 px-2.5 py-0.5 text-xs font-semibold text-sand-600">
                       ★ {t('admin.featuredBadge')}
@@ -131,6 +141,14 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <div className="flex gap-2">
+                {isOwner && trip.approval_status === 'pending' && (
+                  <button
+                    onClick={() => handleApprove(trip)}
+                    className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                  >
+                    {t('admin.approve')}
+                  </button>
+                )}
                 <button
                   onClick={() => setEditing(trip)}
                   className="rounded-full border border-brand-200 px-4 py-2 text-sm font-medium text-brand-700 transition hover:bg-brand-50"

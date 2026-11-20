@@ -159,6 +159,8 @@
     "editTrip": "Edit Trip",
     "newTrip": "New Trip",
     "deleteConfirm": "Delete this trip permanently?",
+    "pendingBadge": "Pending approval",
+    "approve": "Approve & Publish",
     "active": "Active",
     "inactive": "Hidden",
     "featuredBadge": "Featured",

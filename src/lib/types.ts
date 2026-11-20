@@ -20,6 +20,7 @@ export interface Trip {
   is_active: boolean
   is_featured: boolean
   created_at?: string
+  approval_status?: 'pending' | 'approved'
   // Extended catalog fields (optional)
   best_months?: string | null
   pickup_points?: string | null

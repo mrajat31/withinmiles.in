@@ -62,8 +62,15 @@ export default function Home() {
 
   return (
     <div>
-      {/* Compact hero */}
-      <section className="relative flex min-h-[58vh] items-center overflow-hidden">
+      {/* Full-height hero; click the photo to see the next one */}
+      <section
+        className="relative flex min-h-[calc(100svh-4rem)] cursor-pointer items-center overflow-hidden"
+        onClick={(e) => {
+          // Links, buttons and dots keep their own behaviour
+          if ((e.target as HTMLElement).closest('a, button')) return
+          if (slides.length > 1) setSlide((s) => (s + 1) % slides.length)
+        }}
+      >
         {slides.map((src, i) =>
           isVideo(src) ? (
             <video
@@ -137,7 +144,7 @@ export default function Home() {
       </section>
 
       {/* This week's trips, the star of the page */}
-      <section id="latest" className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+      <section id="latest" className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-widest text-brand-600">

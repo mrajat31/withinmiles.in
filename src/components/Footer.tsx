@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import Logo from './Logo'
 import { INSTAGRAM_URL, whatsappGeneralLink } from '../lib/trips'
 
 export default function Footer() {
@@ -9,14 +10,11 @@ export default function Footer() {
     <footer className="bg-brand-950 text-brand-100">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-600 text-white">
-              <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" stroke="currentColor" strokeWidth="2">
-                <path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="12" cy="10" r="2.5" />
-              </svg>
+          <div className="flex items-center gap-2.5">
+            <Logo className="h-10 w-10" />
+            <span className="font-display text-xl font-semibold text-white">
+              withinmiles<span className="text-brand-400">.in</span>
             </span>
-            <span className="font-display text-xl font-semibold text-white">Within Miles</span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-brand-200/80">{t('footer.tagline')}</p>
         </div>
@@ -51,7 +49,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 py-5 text-center text-xs text-brand-300/60">
-        © {new Date().getFullYear()} Within Miles. {t('footer.rights')}
+        © {new Date().getFullYear()} withinmiles.in. {t('footer.rights')}
       </div>
     </footer>
   )

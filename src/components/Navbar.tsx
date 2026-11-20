@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from './LanguageSwitcher'
+import Logo from './Logo'
 import { whatsappGeneralLink } from '../lib/trips'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -23,15 +24,10 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-700 text-white">
-            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" stroke="currentColor" strokeWidth="2">
-              <path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="12" cy="10" r="2.5" />
-            </svg>
-          </span>
+        <Link to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
+          <Logo className="h-10 w-10" />
           <span className="font-display text-xl font-semibold tracking-tight text-slate-900">
-            Within <span className="text-brand-700">Miles</span>
+            withinmiles<span className="text-brand-600">.in</span>
           </span>
         </Link>
 

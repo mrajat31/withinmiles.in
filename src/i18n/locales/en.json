@@ -190,8 +190,8 @@
     "tab_members": "Members",
     "tab_hero": "Homepage Photos",
     "heroTab": {
-      "hint": "Upload your best group photos; they rotate as the homepage background (changes every 6 seconds).",
-      "upload": "Upload photo",
+      "hint": "Upload your best group photos and drone videos (MP4/WebM, under 50 MB); they rotate as the homepage background. Visitors can also click the dots to switch.",
+      "upload": "Upload photo / video",
       "uploading": "Uploading...",
       "deleteConfirm": "Remove this photo from the homepage slideshow?",
       "empty": "No photos yet. Upload your first one, until then a scenic placeholder shows.",

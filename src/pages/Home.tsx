@@ -30,6 +30,8 @@ const REGION_IMAGES: Record<string, string> = {
 const HERO_FALLBACK =
   'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80'
 
+const isVideo = (src: string) => /\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(src)
+
 export default function Home() {
   const { t } = useTranslation()
   const [trips, setTrips] = useState<Trip[]>([])
@@ -42,13 +44,15 @@ export default function Home() {
   }, [])
 
   const slides = heroSlides.length > 0 ? heroSlides : ['/images/hero.jpg']
+  const active = slide % slides.length
 
-  // Screensaver-style rotation when there are multiple hero photos
+  // Auto-advance: images every 6s; videos advance when they finish playing
   useEffect(() => {
     if (slides.length < 2) return
-    const id = setInterval(() => setSlide((s) => (s + 1) % slides.length), 6000)
-    return () => clearInterval(id)
-  }, [slides.length])
+    const ms = isVideo(slides[active]) ? 60000 : 6000 // video fallback timeout
+    const id = setTimeout(() => setSlide((s) => (s + 1) % slides.length), ms)
+    return () => clearTimeout(id)
+  }, [active, slides.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const latest = sortUpcoming(trips).slice(0, 3)
   const regionCounts = trips.reduce<Record<string, number>>((acc, trip) => {
@@ -60,21 +64,53 @@ export default function Home() {
     <div>
       {/* Compact hero */}
       <section className="relative flex min-h-[58vh] items-center overflow-hidden">
-        {slides.map((src, i) => (
-          <img
-            key={src}
-            src={src}
-            onError={(e) => {
-              if (src === '/images/hero.jpg' && e.currentTarget.src !== HERO_FALLBACK) {
-                e.currentTarget.src = HERO_FALLBACK
-              }
-            }}
-            alt="Travellers on an adventure"
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-              i === slide % slides.length ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-        ))}
+        {slides.map((src, i) =>
+          isVideo(src) ? (
+            <video
+              key={`${src}-${i === active ? 'on' : 'off'}`}
+              src={src}
+              muted
+              playsInline
+              autoPlay={i === active}
+              preload="metadata"
+              onEnded={() => {
+                if (i === active) setSlide((s) => (s + 1) % slides.length)
+              }}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+                i === active ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ) : (
+            <img
+              key={src}
+              src={src}
+              onError={(e) => {
+                if (src === '/images/hero.jpg' && e.currentTarget.src !== HERO_FALLBACK) {
+                  e.currentTarget.src = HERO_FALLBACK
+                }
+              }}
+              alt="Travellers on an adventure"
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+                i === active ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ),
+        )}
+        {/* Manual slide controls */}
+        {slides.length > 1 && (
+          <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                aria-label={`Slide ${i + 1}`}
+                onClick={() => setSlide(i)}
+                className={`h-2.5 rounded-full transition-all ${
+                  i === active ? 'w-7 bg-sand-400' : 'w-2.5 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/60 to-brand-950/30" />
         <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6">
           <h1 className="animate-fade-up mt-4 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-6xl">

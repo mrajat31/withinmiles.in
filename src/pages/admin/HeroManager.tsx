@@ -66,7 +66,7 @@ export default function HeroManager() {
         {uploading ? f('uploading') : f('upload')}
         <input
           type="file"
-          accept="image/*"
+          accept="image/*,video/mp4,video/webm,video/quicktime"
           className="hidden"
           disabled={uploading}
           onChange={(e) => {
@@ -84,7 +84,11 @@ export default function HeroManager() {
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {images.map((img) => (
             <div key={img.id} className="group relative overflow-hidden rounded-2xl ring-1 ring-slate-200">
-              <img src={img.image_url} alt="" className="h-36 w-full object-cover" />
+              {/\.(mp4|webm|ogg|mov)(\?|#|$)/i.test(img.image_url) ? (
+                <video src={img.image_url} muted playsInline preload="metadata" className="h-36 w-full object-cover" />
+              ) : (
+                <img src={img.image_url} alt="" className="h-36 w-full object-cover" />
+              )}
               <button
                 onClick={async () => {
                   if (window.confirm(f('deleteConfirm'))) {

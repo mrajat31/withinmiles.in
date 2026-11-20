@@ -12,6 +12,13 @@ export default function About() {
     { title: t('about.mission3Title'), text: t('about.mission3Text') },
   ]
 
+  const why = [
+    { title: t('home.why1Title'), text: t('home.why1Text') },
+    { title: t('home.why2Title'), text: t('home.why2Text') },
+    { title: t('home.why3Title'), text: t('home.why3Text') },
+    { title: t('home.why4Title'), text: t('home.why4Text') },
+  ]
+
   return (
     <div>
       <section className="relative h-[40vh] min-h-[300px]">
@@ -28,6 +35,21 @@ export default function About() {
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <p className="text-lg leading-relaxed text-slate-600">{t('about.story1')}</p>
         <p className="mt-6 text-lg leading-relaxed text-slate-600">{t('about.story2')}</p>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+        <div className="text-center">
+          <h2 className="font-display text-3xl font-bold text-slate-900">{t('home.whyTitle')}</h2>
+          <p className="mt-2 text-slate-500">{t('home.whySubtitle')}</p>
+        </div>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {why.map((item) => (
+            <div key={item.title} className="rounded-2xl bg-white p-7 shadow-sm ring-1 ring-slate-100">
+              <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-500">{item.text}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="bg-slate-50 py-16">

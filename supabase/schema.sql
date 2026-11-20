@@ -15,8 +15,10 @@ create table if not exists public.trips (
   description_hi text,
   description_mr text,
   destination text not null,
+  region text not null default 'other'
+    check (region in ('maharashtra','himachal','uttarakhand','kashmir','arunachal','meghalaya','goa','international','other')),
   category text not null default 'trek'
-    check (category in ('trek','beach','adventure','weekend','international','pilgrimage')),
+    check (category in ('trek','roadtrip','beach','adventure','weekend','international','pilgrimage')),
   duration_days int not null default 1,
   duration_nights int not null default 0,
   price numeric not null default 0,
@@ -80,3 +82,30 @@ create policy "Team can delete trip images"
   on storage.objects for delete
   to authenticated
   using (bucket_id = 'trip-images');
+
+-- Reviews: anyone can submit (hidden until approved), public reads approved only.
+-- Approve a review in: Supabase Dashboard → Table Editor → reviews → set is_approved = true
+create table if not exists public.reviews (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  rating int not null check (rating between 1 and 5),
+  text text not null,
+  trip_name text,
+  is_approved boolean not null default false
+);
+
+alter table public.reviews enable row level security;
+
+create policy "Public can view approved reviews"
+  on public.reviews for select
+  using (is_approved = true);
+
+create policy "Anyone can submit a review"
+  on public.reviews for insert
+  with check (is_approved = false);
+
+create policy "Team can manage reviews"
+  on public.reviews for all
+  to authenticated
+  using (true);

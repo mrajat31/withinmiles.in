@@ -8,7 +8,8 @@ export interface Trip {
   description_hi: string | null
   description_mr: string | null
   destination: string
-  category: 'trek' | 'beach' | 'adventure' | 'weekend' | 'international' | 'pilgrimage'
+  region: string
+  category: 'trek' | 'roadtrip' | 'beach' | 'adventure' | 'weekend' | 'international' | 'pilgrimage'
   duration_days: number
   duration_nights: number
   price: number
@@ -25,9 +26,34 @@ export type TripInput = Omit<Trip, 'id' | 'created_at'>
 
 export const TRIP_CATEGORIES = [
   'trek',
+  'roadtrip',
   'beach',
   'adventure',
   'weekend',
   'international',
   'pilgrimage',
 ] as const
+
+export const REGIONS = [
+  'maharashtra',
+  'himachal',
+  'uttarakhand',
+  'kashmir',
+  'arunachal',
+  'meghalaya',
+  'goa',
+  'international',
+  'other',
+] as const
+
+export type Region = (typeof REGIONS)[number]
+
+export interface Review {
+  id: string
+  name: string
+  rating: number
+  text: string
+  trip_name: string | null
+  is_approved: boolean
+  created_at?: string
+}

@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Trip, TripInput } from '../../lib/types'
-import { TRIP_CATEGORIES } from '../../lib/types'
+import { TRIP_CATEGORIES, REGIONS } from '../../lib/types'
 import { createTrip, updateTrip, uploadTripImage, slugify } from '../../lib/trips'
 
 interface Props {
@@ -25,6 +25,7 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
     description_hi: trip?.description_hi ?? '',
     description_mr: trip?.description_mr ?? '',
     destination: trip?.destination ?? '',
+    region: trip?.region ?? 'maharashtra',
     category: trip?.category ?? 'trek',
     duration_days: trip?.duration_days ?? 2,
     duration_nights: trip?.duration_nights ?? 1,
@@ -70,6 +71,7 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
       description_hi: form.description_hi.trim() || null,
       description_mr: form.description_mr.trim() || null,
       destination: form.destination.trim(),
+      region: form.region,
       category: form.category as TripInput['category'],
       duration_days: Number(form.duration_days),
       duration_nights: Number(form.duration_nights),
@@ -136,6 +138,16 @@ export default function TripForm({ trip, onDone, onCancel }: Props) {
           <label className="block text-sm font-medium text-slate-700">
             {f('destination')} *
             <input required value={form.destination} onChange={(e) => set('destination', e.target.value)} className={inputCls} />
+          </label>
+          <label className="block text-sm font-medium text-slate-700">
+            {f('region')} *
+            <select value={form.region} onChange={(e) => set('region', e.target.value)} className={inputCls}>
+              {REGIONS.map((r) => (
+                <option key={r} value={r}>
+                  {t(`regions.${r}`)}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="block text-sm font-medium text-slate-700">
             {f('category')} *

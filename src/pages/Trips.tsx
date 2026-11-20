@@ -1,29 +1,42 @@
-import { useEffect, useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import TripCard from '../components/TripCard'
 import type { Trip } from '../lib/types'
-import { TRIP_CATEGORIES } from '../lib/types'
-import { fetchActiveTrips, tripTitle } from '../lib/trips'
+import { TRIP_CATEGORIES, REGIONS } from '../lib/types'
+import { fetchActiveTrips, tripTitle, sortUpcoming } from '../lib/trips'
 
 export default function Trips() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language?.slice(0, 2) ?? 'en'
+  const [searchParams, setSearchParams] = useSearchParams()
   const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState<string>('all')
+  const region = searchParams.get('region') ?? 'all'
 
   useEffect(() => {
     fetchActiveTrips()
-      .then(setTrips)
+      .then((data) => setTrips(sortUpcoming(data)))
       .catch(() => setError(true))
       .finally(() => setLoading(false))
   }, [])
 
+  function setRegion(value: string) {
+    if (value === 'all') {
+      searchParams.delete('region')
+    } else {
+      searchParams.set('region', value)
+    }
+    setSearchParams(searchParams, { replace: true })
+  }
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
     return trips.filter((trip) => {
+      if (region !== 'all' && trip.region !== region) return false
       if (category !== 'all' && trip.category !== category) return false
       if (!q) return true
       return (
@@ -32,7 +45,7 @@ export default function Trips() {
         trip.destination.toLowerCase().includes(q)
       )
     })
-  }, [trips, search, category, lang])
+  }, [trips, search, category, region, lang])
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
@@ -62,6 +75,25 @@ export default function Trips() {
             className="w-full rounded-full border border-slate-200 bg-white py-3 pl-12 pr-5 text-sm shadow-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
           />
         </div>
+
+        {/* Region filter */}
+        <div className="no-scrollbar flex w-full max-w-full items-center gap-2 overflow-x-auto pb-1 sm:justify-center">
+          {['all', ...REGIONS].map((r) => (
+            <button
+              key={r}
+              onClick={() => setRegion(r)}
+              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition ${
+                region === r
+                  ? 'bg-brand-900 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              {r === 'all' ? t('trips.allRegions') : t(`regions.${r}`)}
+            </button>
+          ))}
+        </div>
+
+        {/* Category filter */}
         <div className="no-scrollbar flex w-full max-w-full items-center gap-2 overflow-x-auto pb-1 sm:justify-center">
           {['all', ...TRIP_CATEGORIES].map((cat) => (
             <button

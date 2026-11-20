@@ -1,26 +1,25 @@
-/** WM mountain logo mark (recreated from brand asset as scalable SVG). */
+﻿/** WM mountain logo mark (matches the brand t-shirt print).
+ *  Draws in currentColor so it adapts to light/dark backgrounds. */
 export default function Logo({ className = '' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 100 100" className={className} aria-hidden="true">
-      <rect width="100" height="100" rx="24" fill="#0b0b0f" />
+    <svg viewBox="0 0 100 86" className={className} aria-hidden="true" fill="currentColor">
       <path
-        d="M50 13 L81 47 H19 Z"
+        d="M50 2 L84 40 H16 Z"
         fill="none"
-        stroke="#fff"
-        strokeWidth="6"
+        stroke="currentColor"
+        strokeWidth="7"
         strokeLinejoin="round"
       />
-      <path d="M39 28 L55 47 H24 Z" fill="#fff" />
+      <path d="M37 18 L55 40 H20 Z" />
       <text
         x="50"
-        y="84"
+        y="80"
         textAnchor="middle"
         fontFamily="'Inter', sans-serif"
         fontWeight="900"
         fontStyle="italic"
-        fontSize="37"
+        fontSize="42"
         letterSpacing="-2"
-        fill="#fff"
       >
         WM
       </text>

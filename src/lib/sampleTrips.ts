@@ -15,12 +15,13 @@ export const sampleTrips: Trip[] = [
     description_mr:
       'बर्फाच्छादित देवदार जंगलांमधून हिमालयातील सर्वात सुंदर शिखर दृश्यांपैकी एकापर्यंत चाला. पहिल्यांदा ट्रेक करणाऱ्यांसाठी उत्तम, या ५ दिवसांच्या साहसात ताऱ्यांनी भरलेल्या आकाशाखाली कॅम्पसाईट, शेकोटी आणि १२,५०० फुटांवर सूर्योदय शिखर चढाई समाविष्ट आहे.',
     destination: 'Uttarakhand',
+    region: 'uttarakhand',
     category: 'trek',
     duration_days: 5,
     duration_nights: 4,
     price: 8999,
-    start_date: null,
-    end_date: null,
+    start_date: '2026-12-18',
+    end_date: '2026-12-22',
     image_url:
       'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
     highlights: ['Summit at 12,500 ft', 'Snow camping', 'Bonfire nights', 'All meals included'],
@@ -40,12 +41,13 @@ export const sampleTrips: Trip[] = [
     description_mr:
       'ऊन, वाळू आणि सूर्यास्त! ४ दिवसांची किनारी सहल ज्यात उत्तर गोव्याचे समुद्रकिनारे, बागा येथे वॉटर स्पोर्ट्स, मांडोवी नदीवर सनसेट क्रूझ आणि ओल्ड गोवा वारसा भ्रमंती समाविष्ट आहे. न्याहारीसह बीचसाइड रिसॉर्टमध्ये रहा.',
     destination: 'Goa',
+    region: 'goa',
     category: 'beach',
     duration_days: 4,
     duration_nights: 3,
     price: 12499,
-    start_date: null,
-    end_date: null,
+    start_date: '2026-12-05',
+    end_date: '2026-12-08',
     image_url:
       'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80',
     highlights: ['Beachside resort', 'Sunset cruise', 'Water sports', 'Breakfast included'],
@@ -65,12 +67,13 @@ export const sampleTrips: Trip[] = [
     description_mr:
       'सह्याद्रीतील प्रसिद्ध कोकण कड्यापर्यंत थरारक वीकेंड रात्र ट्रेक. महाराष्ट्रातील सर्वात नाट्यमय दृश्यस्थळांपैकी एकावरून सूर्योदय पहा, प्राचीन लेणी आणि केदारेश्वर मंदिर एक्सप्लोर करा. पुणे आणि मुंबईहून वाहतूक समाविष्ट.',
     destination: 'Maharashtra',
+    region: 'maharashtra',
     category: 'weekend',
     duration_days: 2,
     duration_nights: 1,
     price: 1799,
-    start_date: null,
-    end_date: null,
+    start_date: '2026-11-28',
+    end_date: '2026-11-29',
     image_url:
       'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
     highlights: ['Konkan Kada sunrise', 'Ancient caves', 'Pune & Mumbai pickup', 'Expert trek leads'],
@@ -90,7 +93,8 @@ export const sampleTrips: Trip[] = [
     description_mr:
       'स्पितीच्या थंड वाळवंटी पर्वतांमधून ७ दिवसांची भव्य रोड ट्रिप. १००० वर्ष जुन्या की मठाला, हिक्किम येथील जगातील सर्वात उंच पोस्ट ऑफिसला आणि चंद्रताल तलावाला भेट द्या, आणि भारतातील सर्वात गडद रात्रीच्या आकाशाखाली आरामदायी होमस्टेमध्ये रहा.',
     destination: 'Himachal Pradesh',
-    category: 'adventure',
+    region: 'himachal',
+    category: 'roadtrip',
     duration_days: 7,
     duration_nights: 6,
     price: 18999,
@@ -115,6 +119,7 @@ export const sampleTrips: Trip[] = [
     description_mr:
       'देवतांच्या बेटावर ६ दिवसांची आंतरराष्ट्रीय सहल. उबुदची भातशेती, उलुवातु क्लिफ मंदिराचे सूर्यास्त, नुसा पेनिडा बेटाची डे-ट्रिप आणि प्रायव्हेट पूल व्हिलामध्ये मुक्काम. व्हिसा ऑन अरायव्हल, विमानतळ हस्तांतरण आणि दररोज न्याहारी समाविष्ट.',
     destination: 'Bali, Indonesia',
+    region: 'international',
     category: 'international',
     duration_days: 6,
     duration_nights: 5,
@@ -140,6 +145,7 @@ export const sampleTrips: Trip[] = [
     description_mr:
       'वाराणसी आणि अयोध्येची ५ दिवसांची आध्यात्मिक यात्रा. दशाश्वमेध घाटावर भव्य गंगा आरती पहा, गंगेत सूर्योदय नौकाविहार, काशी विश्वनाथ आणि राम मंदिर दर्शन, संपूर्ण प्रवासात आरामदायी हॉटेल मुक्काम.',
     destination: 'Uttar Pradesh',
+    region: 'other',
     category: 'pilgrimage',
     duration_days: 5,
     duration_nights: 4,

@@ -10,11 +10,9 @@ export default function Footer() {
     <footer className="bg-brand-950 text-brand-100">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
-          <div className="flex items-center gap-2.5">
-            <Logo className="h-10 w-10" />
-            <span className="font-display text-xl font-semibold text-white">
-              withinmiles<span className="text-brand-400">.in</span>
-            </span>
+          <div className="flex items-center gap-2.5 text-white">
+            <Logo className="h-9 w-10" />
+            <span className="font-display text-xl font-semibold text-white">withinmiles.in</span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-brand-200/80">{t('footer.tagline')}</p>
         </div>

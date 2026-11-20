@@ -20,6 +20,15 @@
     "statRating": "Average Rating"
   },
   "home": {
+    "seeLatest": "See This Week's Trips",
+    "thisWeekKicker": "Fresh off the trail",
+    "thisWeekTitle": "This Week's Trips",
+    "thisWeekSubtitle": "The latest departures — grab your spot before they fill up",
+    "destinationsTitle": "Explore by Destination",
+    "destinationsSubtitle": "Pick a place, we'll handle the rest",
+    "tripCount": "{{count}} trips",
+    "tripCount_one": "{{count}} trip",
+    "comingSoon": "Coming soon",
     "featuredTitle": "Featured Experiences",
     "featuredSubtitle": "Handpicked escapes our travellers can't stop talking about",
     "viewAll": "View All Trips",
@@ -45,6 +54,7 @@
     "subtitle": "Find your next adventure — treks, beaches, road trips and more",
     "searchPlaceholder": "Search trips or destinations...",
     "all": "All",
+    "allRegions": "All Destinations",
     "noTrips": "No trips match your search. Try a different keyword or category.",
     "loading": "Loading trips...",
     "error": "Could not load trips. Please try again.",
@@ -56,11 +66,35 @@
   },
   "categories": {
     "trek": "Trek",
+    "roadtrip": "Road Trip",
     "beach": "Beach",
     "adventure": "Adventure",
     "weekend": "Weekend",
     "international": "International",
     "pilgrimage": "Pilgrimage"
+  },
+  "regions": {
+    "maharashtra": "Maharashtra",
+    "himachal": "Himachal",
+    "uttarakhand": "Uttarakhand",
+    "kashmir": "Kashmir",
+    "arunachal": "Arunachal",
+    "meghalaya": "Meghalaya",
+    "goa": "Goa",
+    "international": "International",
+    "other": "Other"
+  },
+  "reviews": {
+    "title": "Traveller Stories",
+    "subtitle": "Real reviews from real adventures",
+    "writeReview": "Write a Review",
+    "googleButton": "Review us on Google",
+    "yourName": "Your name",
+    "tripName": "Which trip did you join? (optional)",
+    "rating": "Your rating",
+    "yourReview": "Your review",
+    "submit": "Submit Review",
+    "submitted": "Thank you! Your review will appear once our team approves it."
   },
   "tripDetail": {
     "notFound": "Trip not found",
@@ -137,6 +171,7 @@
       "descHi": "Description (Hindi — optional)",
       "descMr": "Description (Marathi — optional)",
       "destination": "Destination",
+      "region": "Region / Section",
       "category": "Category",
       "days": "Days",
       "nights": "Nights",

@@ -25,9 +25,9 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/90 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <Logo className="h-10 w-10" />
+          <Logo className="h-9 w-10 text-slate-900" />
           <span className="font-display text-xl font-semibold tracking-tight text-slate-900">
-            withinmiles<span className="text-brand-600">.in</span>
+            withinmiles.in
           </span>
         </Link>
 
@@ -47,7 +47,7 @@ export default function Navbar() {
             rel="noreferrer"
             className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
           >
-            {t('nav.bookNow')}
+            {t('hero.ctaSecondary')}
           </a>
         </div>
 
@@ -89,7 +89,7 @@ export default function Navbar() {
               rel="noreferrer"
               className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white"
             >
-              {t('nav.bookNow')}
+              {t('hero.ctaSecondary')}
             </a>
           </div>
         </div>

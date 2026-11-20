@@ -1,9 +1,17 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import TripCard from '../components/TripCard'
+import ReviewsSection from '../components/ReviewsSection'
 import type { Trip } from '../lib/types'
-import { fetchActiveTrips, whatsappGeneralLink, INSTAGRAM_URL } from '../lib/trips'
+import { REGIONS } from '../lib/types'
+import {
+  fetchActiveTrips,
+  sortUpcoming,
+  whatsappGeneralLink,
+  INSTAGRAM_URL,
+  REGION_IMAGES,
+} from '../lib/trips'
 
 const HERO_IMAGE =
   'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80'
@@ -13,89 +21,40 @@ export default function Home() {
   const [trips, setTrips] = useState<Trip[]>([])
 
   useEffect(() => {
-    fetchActiveTrips()
-      .then((all) => {
-        const featured = all.filter((x) => x.is_featured)
-        setTrips((featured.length > 0 ? featured : all).slice(0, 3))
-      })
-      .catch(() => setTrips([]))
+    fetchActiveTrips().then(setTrips).catch(() => setTrips([]))
   }, [])
 
-  const stats = [
-    { value: '500+', label: t('hero.statTravellers') },
-    { value: '120+', label: t('hero.statTrips') },
-    { value: '45+', label: t('hero.statDestinations') },
-    { value: '4.9★', label: t('hero.statRating') },
-  ]
-
-  const why = [
-    {
-      title: t('home.why1Title'),
-      text: t('home.why1Text'),
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7" stroke="currentColor" strokeWidth="1.8">
-          <path d="M8 21l4-9 4 9M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5L12 3z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
-    },
-    {
-      title: t('home.why2Title'),
-      text: t('home.why2Text'),
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7" stroke="currentColor" strokeWidth="1.8">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="10" cy="7" r="4" />
-        </svg>
-      ),
-    },
-    {
-      title: t('home.why3Title'),
-      text: t('home.why3Text'),
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7" stroke="currentColor" strokeWidth="1.8">
-          <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
-    },
-    {
-      title: t('home.why4Title'),
-      text: t('home.why4Text'),
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7" stroke="currentColor" strokeWidth="1.8">
-          <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
-    },
-  ]
+  const latest = sortUpcoming(trips).slice(0, 3)
+  const regionCounts = trips.reduce<Record<string, number>>((acc, trip) => {
+    acc[trip.region] = (acc[trip.region] ?? 0) + 1
+    return acc
+  }, {})
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative flex min-h-[88vh] items-center overflow-hidden">
+      {/* Compact hero */}
+      <section className="relative flex min-h-[58vh] items-center overflow-hidden">
         <img
           src={HERO_IMAGE}
           alt="Mountain landscape"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/60 to-brand-950/30" />
-        <div className="relative mx-auto w-full max-w-7xl px-4 py-24 sm:px-6">
+        <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6">
           <p className="animate-fade-up text-sm font-semibold uppercase tracking-[0.3em] text-sand-300">
             {t('hero.tagline')}
           </p>
-          <h1 className="animate-fade-up-delay-1 mt-4 max-w-3xl font-display text-4xl font-bold leading-tight text-white sm:text-6xl">
+          <h1 className="animate-fade-up-delay-1 mt-4 max-w-3xl font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
             {t('hero.title')}{' '}
             <span className="italic text-brand-300">{t('hero.titleAccent')}</span>
           </h1>
-          <p className="animate-fade-up-delay-2 mt-6 max-w-xl text-lg leading-relaxed text-white/80">
-            {t('hero.subtitle')}
-          </p>
-          <div className="animate-fade-up-delay-3 mt-10 flex flex-wrap gap-4">
-            <Link
-              to="/trips"
+          <div className="animate-fade-up-delay-2 mt-8 flex flex-wrap gap-4">
+            <a
+              href="#latest"
               className="rounded-full bg-sand-400 px-8 py-3.5 font-semibold text-brand-950 shadow-lg shadow-sand-500/25 transition hover:bg-sand-300"
             >
-              {t('hero.cta')}
-            </Link>
+              {t('home.seeLatest')}
+            </a>
             <a
               href={whatsappGeneralLink()}
               target="_blank"
@@ -105,69 +64,79 @@ export default function Home() {
               {t('hero.ctaSecondary')}
             </a>
           </div>
-
-          <div className="animate-fade-up-delay-3 mt-16 grid max-w-2xl grid-cols-2 gap-6 sm:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <p className="font-display text-3xl font-bold text-white">{s.value}</p>
-                <p className="mt-1 text-sm text-white/60">{s.label}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Featured trips */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+      {/* This week's trips — the star of the page */}
+      <section id="latest" className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">
-              {t('home.featuredTitle')}
+            <p className="text-sm font-bold uppercase tracking-widest text-brand-600">
+              {t('home.thisWeekKicker')}
+            </p>
+            <h2 className="mt-1 font-display text-3xl font-bold text-slate-900 sm:text-4xl">
+              {t('home.thisWeekTitle')}
             </h2>
-            <p className="mt-2 text-slate-500">{t('home.featuredSubtitle')}</p>
+            <p className="mt-2 text-slate-500">{t('home.thisWeekSubtitle')}</p>
           </div>
           <Link
             to="/trips"
             className="rounded-full border border-brand-600 px-5 py-2.5 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
           >
-            {t('home.viewAll')} →
+            {t('home.viewAll')} &rarr;
           </Link>
         </div>
         <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {trips.map((trip) => (
+          {latest.map((trip) => (
             <TripCard key={trip.id} trip={trip} />
           ))}
         </div>
       </section>
 
-      {/* Why us */}
-      <section className="bg-slate-50 py-20">
+      {/* Explore by destination */}
+      <section className="bg-brand-950 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="text-center">
-            <h2 className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">
-              {t('home.whyTitle')}
-            </h2>
-            <p className="mt-2 text-slate-500">{t('home.whySubtitle')}</p>
-          </div>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {why.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl bg-white p-7 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md"
+          <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
+            {t('home.destinationsTitle')}
+          </h2>
+          <p className="mt-2 text-brand-200/70">{t('home.destinationsSubtitle')}</p>
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {REGIONS.filter((r) => r !== 'other').map((region) => (
+              <Link
+                key={region}
+                to={`/trips?region=${region}`}
+                className="group relative h-40 overflow-hidden rounded-2xl sm:h-48"
               >
-                <div className="grid h-14 w-14 place-items-center rounded-xl bg-brand-50 text-brand-700">
-                  {item.icon}
+                <img
+                  src={REGION_IMAGES[region]}
+                  alt={t(`regions.${region}`)}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute bottom-3 left-4 right-3">
+                  <p className="font-display text-lg font-semibold text-white">
+                    {t(`regions.${region}`)}
+                  </p>
+                  {regionCounts[region] ? (
+                    <p className="text-xs text-white/70">
+                      {t('home.tripCount', { count: regionCounts[region] })}
+                    </p>
+                  ) : (
+                    <p className="text-xs text-white/70">{t('home.comingSoon')}</p>
+                  )}
                 </div>
-                <h3 className="mt-5 text-lg font-semibold text-slate-900">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">{item.text}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Reviews */}
+      <ReviewsSection />
+
       {/* Instagram band */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-fuchsia-600 via-rose-500 to-amber-400 p-10 text-white sm:p-14">
           <div className="flex flex-wrap items-center justify-between gap-6">
             <div className="max-w-xl">
@@ -187,7 +156,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="bg-brand-900 py-20 text-center">
+      <section className="bg-brand-900 py-16 text-center">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
             {t('home.ctaTitle')}

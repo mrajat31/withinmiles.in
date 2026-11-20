@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import Logo from './Logo'
 import { INSTAGRAM_URL, whatsappGeneralLink } from '../lib/trips'
 
 export default function Footer() {
@@ -10,10 +9,7 @@ export default function Footer() {
     <footer className="bg-brand-950 text-brand-100">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
-          <div className="flex items-center gap-2.5 text-white">
-            <Logo className="h-9 w-10" />
-            <span className="font-display text-xl font-semibold text-white">withinmiles.in</span>
-          </div>
+          <span className="font-display text-2xl font-semibold text-white">withinmiles.in</span>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-brand-200/80">{t('footer.tagline')}</p>
           <div className="mt-4 flex items-center gap-3">
             <span className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-xl bg-white p-1">
@@ -35,6 +31,8 @@ export default function Footer() {
             <li><Link to="/trips" className="hover:text-white">{t('nav.trips')}</Link></li>
             <li><Link to="/about" className="hover:text-white">{t('nav.about')}</Link></li>
             <li><Link to="/contact" className="hover:text-white">{t('nav.contact')}</Link></li>
+            <li><Link to="/review" className="hover:text-white">{t('reviews.writeReview')}</Link></li>
+            <li><Link to="/community" className="hover:text-white">{t('nav.member')}</Link></li>
             <li><Link to="/admin" className="text-brand-300/60 hover:text-white">{t('nav.admin')}</Link></li>
           </ul>
         </div>

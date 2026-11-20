@@ -10,8 +10,8 @@
   },
   "hero": {
     "tagline": "Happiness is just within miles",
-    "title": "We don't sell trips,",
-    "titleAccent": "we sell happiness",
+    "title": "Happiness is just",
+    "titleAccent": "within miles",
     "subtitle": "Handcrafted, crowd-free experiences across India and beyond, hidden trails, quiet beaches, secret sunsets and small groups that feel like family. You just show up; we make the memories happen.",
     "cta": "Find Your Escape",
     "ctaSecondary": "Talk to Us",
@@ -89,6 +89,7 @@
     "title": "Traveller Stories",
     "subtitle": "Real reviews from real adventures",
     "writeReview": "Write a Review",
+    "emptyInvite": "Been on a trip with us? Be the first to share your story, it takes a minute!",
     "googleButton": "Review us on Google",
     "yourName": "Your name",
     "tripName": "Which trip did you join? (optional)",

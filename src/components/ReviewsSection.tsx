@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Review } from '../lib/types'
 import { fetchApprovedReviews, submitReview } from '../lib/reviews'
@@ -55,8 +56,23 @@ export default function ReviewsSection() {
     }
   }
 
-  // Hide the whole section until the first real review is approved
-  if (isSupabaseConfigured && reviews.length === 0 && !submitted) return null
+  // Until the first approved review exists, show an invite instead of stories
+  if (isSupabaseConfigured && reviews.length === 0 && !submitted) {
+    return (
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
+          <h2 className="font-display text-3xl font-bold text-slate-900">{t('reviews.title')}</h2>
+          <p className="mt-3 text-slate-500">{t('reviews.emptyInvite')}</p>
+          <Link
+            to="/review"
+            className="mt-6 inline-block rounded-full bg-brand-600 px-7 py-3 font-semibold text-white transition hover:bg-brand-700"
+          >
+            {t('reviews.writeReview')}
+          </Link>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="bg-slate-50 py-20">

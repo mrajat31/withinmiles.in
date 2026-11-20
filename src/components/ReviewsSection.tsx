@@ -67,15 +67,20 @@ export default function ReviewsSection() {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {reviews.slice(0, 6).map((r) => (
-            <figure key={r.id} className="rounded-2xl bg-white p-7 shadow-sm ring-1 ring-slate-100">
-              <Stars value={r.rating} />
-              <blockquote className="mt-4 text-sm leading-relaxed text-slate-600">
-                “{r.text}”
-              </blockquote>
-              <figcaption className="mt-5">
-                <p className="font-semibold text-slate-900">{r.name}</p>
-                {r.trip_name && <p className="text-xs text-slate-400">{r.trip_name}</p>}
-              </figcaption>
+            <figure key={r.id} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
+              {r.photo_url && (
+                <img src={r.photo_url} alt="" loading="lazy" className="h-44 w-full object-cover" />
+              )}
+              <div className="p-7">
+                <Stars value={r.rating} />
+                <blockquote className="mt-4 text-sm leading-relaxed text-slate-600">
+                  “{r.text}”
+                </blockquote>
+                <figcaption className="mt-5">
+                  <p className="font-semibold text-slate-900">{r.name}</p>
+                  {r.trip_name && <p className="text-xs text-slate-400">{r.trip_name}</p>}
+                </figcaption>
+              </div>
             </figure>
           ))}
         </div>

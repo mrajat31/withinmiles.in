@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { submitReview } from '../lib/reviews'
+import { submitReview, uploadReviewPhoto } from '../lib/reviews'
 import { isSupabaseConfigured } from '../lib/supabase'
 
 const inputCls =
@@ -13,9 +13,23 @@ export default function ReviewPage() {
   const [rating, setRating] = useState(5)
   const [text, setText] = useState('')
   const [tripName, setTripName] = useState('')
+  const [photoUrl, setPhotoUrl] = useState('')
+  const [uploading, setUploading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  async function handlePhoto(file: File) {
+    setUploading(true)
+    setError(null)
+    try {
+      setPhotoUrl(await uploadReviewPhoto(file))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+    } finally {
+      setUploading(false)
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -27,6 +41,7 @@ export default function ReviewPage() {
         rating,
         text: text.trim(),
         trip_name: tripName.trim() || null,
+        photo_url: photoUrl || null,
       })
       setSubmitted(true)
     } catch (err) {
@@ -82,10 +97,32 @@ export default function ReviewPage() {
             {t('reviews.yourReview')} *
             <textarea required rows={5} value={text} onChange={(e) => setText(e.target.value)} className={inputCls} />
           </label>
+
+          {/* Optional photo */}
+          <div className="mt-4">
+            <p className="text-sm font-medium text-slate-700">{t('reviews.addPhoto')}</p>
+            {photoUrl && (
+              <img src={photoUrl} alt="" className="mt-2 h-40 w-full rounded-xl object-cover" />
+            )}
+            <label className="mt-2 inline-block cursor-pointer rounded-full bg-brand-50 px-5 py-2.5 text-sm font-semibold text-brand-800 transition hover:bg-brand-100">
+              {uploading ? t('reviews.uploading') : photoUrl ? t('reviews.changePhoto') : t('reviews.uploadPhoto')}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                disabled={uploading}
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) handlePhoto(file)
+                }}
+              />
+            </label>
+          </div>
+
           {error && <p className="mt-3 text-sm text-rose-600">{error}</p>}
           <button
             type="submit"
-            disabled={busy}
+            disabled={busy || uploading}
             className="mt-6 w-full rounded-full bg-brand-600 py-3.5 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
           >
             {t('reviews.submit')}

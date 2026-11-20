@@ -149,6 +149,9 @@ export default function ReviewsManager() {
                 </span>
               </div>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{r.text}</p>
+              {r.photo_url && (
+                <img src={r.photo_url} alt="" className="mt-3 h-28 w-40 rounded-xl object-cover" />
+              )}
             </li>
           ))}
           {reviews.length === 0 && (

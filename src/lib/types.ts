@@ -64,6 +64,7 @@ export interface Review {
   rating: number
   text: string
   trip_name: string | null
+  photo_url?: string | null
   is_approved: boolean
   created_at?: string
 }

@@ -94,7 +94,11 @@
     "rating": "Your rating",
     "yourReview": "Your review",
     "submit": "Submit Review",
-    "submitted": "Thank you! Your review will appear once our team approves it."
+    "submitted": "Thank you! Your review will appear once our team approves it.",
+    "addPhoto": "Add a photo from your trip (optional)",
+    "uploadPhoto": "Upload photo",
+    "changePhoto": "Change photo",
+    "uploading": "Uploading..."
   },
   "tripDetail": {
     "notFound": "Trip not found",

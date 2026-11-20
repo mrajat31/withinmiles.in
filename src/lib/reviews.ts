@@ -83,8 +83,23 @@ export async function submitReview(input: {
   rating: number
   text: string
   trip_name: string | null
+  photo_url?: string | null
 }): Promise<void> {
   if (!supabase) throw new Error('Reviews are not enabled yet')
   const { error } = await supabase.from('reviews').insert({ ...input, is_approved: false })
   if (error) throw error
+}
+
+/** Upload a customer's review photo (anonymous allowed); returns public URL. */
+export async function uploadReviewPhoto(file: File): Promise<string> {
+  if (!supabase) throw new Error('Reviews are not enabled yet')
+  const ext = file.name.split('.').pop() ?? 'jpg'
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+  const { error } = await supabase.storage.from('review-photos').upload(path, file, {
+    cacheControl: '31536000',
+    upsert: false,
+  })
+  if (error) throw error
+  const { data } = supabase.storage.from('review-photos').getPublicUrl(path)
+  return data.publicUrl
 }

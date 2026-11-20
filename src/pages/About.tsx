@@ -31,13 +31,7 @@ export default function About() {
     <div>
       <section className="relative h-[40vh] min-h-[300px]">
         <img src={ABOUT_IMAGE} alt="Travellers on a trail" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-brand-950/60" />
-        <div className="absolute inset-0 grid place-items-center px-4 text-center">
-          <div>
-            <h1 className="font-display text-4xl font-bold text-white sm:text-5xl">{t('about.title')}</h1>
-            <p className="mt-3 text-lg text-white/80">{t('about.subtitle')}</p>
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-brand-950/30" />
       </section>
 
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">

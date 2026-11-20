@@ -11,6 +11,19 @@ import {
   whatsappGeneralLink,
   INSTAGRAM_URL,
 } from '../lib/trips'
+import { fetchHeroImages } from '../lib/heroImages'
+
+/** Verified destination thumbnails (each from that place's own Wikipedia article). */
+const REGION_IMAGES: Record<string, string> = {
+  maharashtra: '/images/harishchandragad.jpg',
+  himachal: '/images/region-himachal.jpg',
+  uttarakhand: '/images/region-uttarakhand.jpg',
+  kashmir: '/images/region-kashmir.jpg',
+  arunachal: '/images/region-arunachal.jpg',
+  meghalaya: '/images/region-meghalaya.jpg',
+  goa: '/images/region-goa.jpg',
+  international: '/images/region-international.jpg',
+}
 
 /** Put your real group photo at public/images/hero.jpg, it loads automatically.
  *  Until then this scenic placeholder is shown. */
@@ -20,10 +33,22 @@ const HERO_FALLBACK =
 export default function Home() {
   const { t } = useTranslation()
   const [trips, setTrips] = useState<Trip[]>([])
+  const [heroSlides, setHeroSlides] = useState<string[]>([])
+  const [slide, setSlide] = useState(0)
 
   useEffect(() => {
     fetchActiveTrips().then(setTrips).catch(() => setTrips([]))
+    fetchHeroImages().then(setHeroSlides).catch(() => setHeroSlides([]))
   }, [])
+
+  const slides = heroSlides.length > 0 ? heroSlides : ['/images/hero.jpg']
+
+  // Screensaver-style rotation when there are multiple hero photos
+  useEffect(() => {
+    if (slides.length < 2) return
+    const id = setInterval(() => setSlide((s) => (s + 1) % slides.length), 6000)
+    return () => clearInterval(id)
+  }, [slides.length])
 
   const latest = sortUpcoming(trips).slice(0, 3)
   const regionCounts = trips.reduce<Record<string, number>>((acc, trip) => {
@@ -35,22 +60,26 @@ export default function Home() {
     <div>
       {/* Compact hero */}
       <section className="relative flex min-h-[58vh] items-center overflow-hidden">
-        <img
-          src="/images/hero.jpg"
-          onError={(e) => {
-            if (e.currentTarget.src !== HERO_FALLBACK) e.currentTarget.src = HERO_FALLBACK
-          }}
-          alt="Travellers on an adventure"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        {slides.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            onError={(e) => {
+              if (src === '/images/hero.jpg' && e.currentTarget.src !== HERO_FALLBACK) {
+                e.currentTarget.src = HERO_FALLBACK
+              }
+            }}
+            alt="Travellers on an adventure"
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+              i === slide % slides.length ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/60 to-brand-950/30" />
         <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6">
-          <p className="animate-fade-up text-sm font-semibold uppercase tracking-[0.3em] text-sand-300">
-            {t('hero.tagline')}
-          </p>
-          <h1 className="animate-fade-up-delay-1 mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
+          <h1 className="animate-fade-up mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
             {t('hero.title')}{' '}
-            <span className="italic text-sand-300">{t('hero.titleAccent')}</span>
+            <span className="text-sand-300">{t('hero.titleAccent')}</span>
           </h1>
           <div className="animate-fade-up-delay-2 mt-8 flex flex-wrap gap-4">
             <a
@@ -109,26 +138,27 @@ export default function Home() {
               <Link
                 key={region}
                 to={`/trips?region=${region}`}
-                className="group relative flex h-36 flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br from-brand-800 to-brand-950 p-4 ring-1 ring-white/10 transition hover:ring-sand-400/60 sm:h-40"
+                className="group relative h-40 overflow-hidden rounded-2xl ring-1 ring-white/10 transition hover:ring-sand-400/60 sm:h-48"
               >
-                {/* Mountain watermark */}
-                <svg
-                  viewBox="0 0 100 100"
-                  className="absolute -right-3 -top-3 h-28 w-28 text-white opacity-[0.06] transition group-hover:opacity-[0.12]"
-                  fill="currentColor"
-                >
-                  <path d="M22 70 L44 42 L50 49 L61 32 L90 70 Z" />
-                </svg>
-                <p className="font-display text-lg font-semibold text-white">
-                  {t(`regions.${region}`)}
-                </p>
-                {regionCounts[region] ? (
-                  <p className="text-xs text-sand-300">
-                    {t('home.tripCount', { count: regionCounts[region] })}
+                <img
+                  src={REGION_IMAGES[region]}
+                  alt={t(`regions.${region}`)}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+                <div className="absolute bottom-3 left-4 right-3">
+                  <p className="font-display text-lg font-semibold text-white">
+                    {t(`regions.${region}`)}
                   </p>
-                ) : (
-                  <p className="text-xs text-white/50">{t('home.comingSoon')}</p>
-                )}
+                  {regionCounts[region] ? (
+                    <p className="text-xs text-sand-300">
+                      {t('home.tripCount', { count: regionCounts[region] })}
+                    </p>
+                  ) : (
+                    <p className="text-xs text-white/60">{t('home.comingSoon')}</p>
+                  )}
+                </div>
               </Link>
             ))}
           </div>

@@ -23,11 +23,8 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-brand-950/95 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <Logo className="h-9 w-10 text-white" />
-          <span className="font-display text-xl font-semibold tracking-tight text-white">
-            withinmiles.in
-          </span>
+        <Link to="/" className="flex items-center" onClick={() => setOpen(false)} aria-label="withinmiles.in home">
+          <Logo className="h-11 w-12 text-white" />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

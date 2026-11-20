@@ -10,7 +10,6 @@ import {
   whatsappBookingLink,
   whatsappGeneralLink,
   communityPrice,
-  COMMUNITY_INVITE_URL,
 } from '../lib/trips'
 
 export default function TripDetail() {
@@ -195,16 +194,12 @@ export default function TripDetail() {
                 {t('community.detailLabel', { price: formatPrice(communityPrice(trip.price)) })}
               </p>
               <p className="mt-0.5 text-xs text-slate-500">{t('community.detailText')}</p>
-              {COMMUNITY_INVITE_URL && (
-                <a
-                  href={COMMUNITY_INVITE_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-1.5 inline-block text-xs font-semibold text-brand-700 hover:underline"
-                >
-                  {t('community.join')} →
-                </a>
-              )}
+              <Link
+                to="/community"
+                className="mt-1.5 inline-block text-xs font-semibold text-brand-700 hover:underline"
+              >
+                {t('community.join')} →
+              </Link>
             </div>
             <a
               href={whatsappBookingLink(trip, lang)}

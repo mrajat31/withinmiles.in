@@ -53,10 +53,10 @@ security definer
 set search_path = public, extensions
 as $$
 declare
-  owner_phone text := 'OWNER_PHONE_HERE';     -- e.g. +919876543210 (your personal WhatsApp)
+  owner_phone text := '+919762610325';        -- your personal WhatsApp for approvals
   callmebot_key text := 'CALLMEBOT_KEY_HERE'; -- the API key CallMeBot sent you
 begin
-  if owner_phone = 'OWNER_PHONE_HERE' then
+  if callmebot_key = 'CALLMEBOT_KEY_HERE' then
     return; -- not configured yet; skip silently
   end if;
   perform net.http_get(
@@ -108,3 +108,25 @@ drop trigger if exists trips_notify_pending on public.trips;
 create trigger trips_notify_pending
   after insert or update on public.trips
   for each row execute function public.notify_trip_pending();
+
+-- Notify when a customer submits a review
+create or replace function public.notify_review_submitted()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if new.is_approved = false then
+    perform public.notify_owner_whatsapp(
+      'withinmiles.in: New review from ' || new.name || ' ('
+      || new.rating || ' stars). Approve it in the admin panel.');
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists reviews_notify on public.reviews;
+create trigger reviews_notify
+  after insert on public.reviews
+  for each row execute function public.notify_review_submitted();

@@ -1,10 +1,7 @@
-import { useEffect, useState, type FormEvent } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Review } from '../../lib/types'
-import { fetchAllReviews, addReviewAdmin, setReviewApproval, deleteReview } from '../../lib/reviews'
-
-const inputCls =
-  'mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100'
+import { fetchAllReviews, setReviewApproval, deleteReview } from '../../lib/reviews'
 
 export default function ReviewsManager() {
   const { t } = useTranslation()
@@ -12,11 +9,6 @@ export default function ReviewsManager() {
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [name, setName] = useState('')
-  const [rating, setRating] = useState(5)
-  const [text, setText] = useState('')
-  const [tripName, setTripName] = useState('')
-  const [busy, setBusy] = useState(false)
 
   async function reload() {
     setLoading(true)
@@ -33,77 +25,18 @@ export default function ReviewsManager() {
     reload()
   }, [])
 
-  async function handleAdd(e: FormEvent) {
-    e.preventDefault()
-    setBusy(true)
-    setError(null)
-    try {
-      await addReviewAdmin({
-        name: name.trim(),
-        rating,
-        text: text.trim(),
-        trip_name: tripName.trim() || null,
-      })
-      setName('')
-      setText('')
-      setTripName('')
-      setRating(5)
-      await reload()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err))
-    } finally {
-      setBusy(false)
-    }
-  }
+  const pending = reviews.filter((r) => !r.is_approved).length
 
   return (
     <div className="mt-8">
-      <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
-        <h2 className="font-display text-xl font-semibold text-slate-900">{f('addTitle')}</h2>
-        <p className="mt-1 text-sm text-slate-500">{f('addHint')}</p>
-        <form onSubmit={handleAdd} className="mt-4 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block text-sm font-medium text-slate-700">
-              {t('reviews.yourName')} *
-              <input required value={name} onChange={(e) => setName(e.target.value)} className={inputCls} />
-            </label>
-            <label className="block text-sm font-medium text-slate-700">
-              {t('reviews.tripName')}
-              <input value={tripName} onChange={(e) => setTripName(e.target.value)} className={inputCls} />
-            </label>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-slate-700">{t('reviews.rating')}</p>
-            <div className="mt-1 flex gap-1">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button
-                  key={n}
-                  type="button"
-                  onClick={() => setRating(n)}
-                  className={`text-2xl ${n <= rating ? 'text-sand-400' : 'text-slate-200'}`}
-                >
-                  ★
-                </button>
-              ))}
-            </div>
-          </div>
-          <label className="block text-sm font-medium text-slate-700">
-            {t('reviews.yourReview')} *
-            <textarea required rows={3} value={text} onChange={(e) => setText(e.target.value)} className={inputCls} />
-          </label>
-          <button
-            type="submit"
-            disabled={busy}
-            className="rounded-full bg-brand-600 px-6 py-2.5 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
-          >
-            {f('publish')}
-          </button>
-        </form>
-      </div>
-
-      <div className="mt-6 rounded-2xl bg-brand-50 px-5 py-4 text-sm text-slate-600 ring-1 ring-brand-100">
+      <div className="rounded-2xl bg-brand-50 px-5 py-4 text-sm text-slate-600 ring-1 ring-brand-100">
         {f('shareHint')}{' '}
         <span className="font-semibold text-brand-800">withinmiles.in/review</span>
+        {pending > 0 && (
+          <span className="ml-2 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
+            {pending} {f('pending').toLowerCase()}
+          </span>
+        )}
       </div>
 
       {error && <p className="mt-4 text-sm font-medium text-rose-600">{error}</p>}
@@ -131,7 +64,11 @@ export default function ReviewsManager() {
                       await setReviewApproval(r.id, !r.is_approved)
                       await reload()
                     }}
-                    className="rounded-full border border-brand-200 px-3.5 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-50"
+                    className={`rounded-full px-4 py-1.5 text-xs font-semibold transition ${
+                      r.is_approved
+                        ? 'border border-brand-200 text-brand-700 hover:bg-brand-50'
+                        : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                    }`}
                   >
                     {r.is_approved ? f('hide') : f('approveBtn')}
                   </button>
@@ -142,7 +79,7 @@ export default function ReviewsManager() {
                         await reload()
                       }
                     }}
-                    className="rounded-full border border-rose-200 px-3.5 py-1.5 text-xs font-medium text-rose-600 hover:bg-rose-50"
+                    className="rounded-full border border-rose-200 px-4 py-1.5 text-xs font-medium text-rose-600 hover:bg-rose-50"
                   >
                     {t('admin.delete')}
                   </button>
@@ -150,7 +87,7 @@ export default function ReviewsManager() {
               </div>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{r.text}</p>
               {r.photo_url && (
-                <img src={r.photo_url} alt="" className="mt-3 h-28 w-40 rounded-xl object-cover" />
+                <img src={r.photo_url} alt="" className="mt-3 h-32 w-44 rounded-xl object-cover" />
               )}
             </li>
           ))}

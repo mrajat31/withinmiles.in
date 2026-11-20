@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from './LanguageSwitcher'
 import Logo from './Logo'
-import { whatsappGeneralLink } from '../lib/trips'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
@@ -41,14 +40,12 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher dark />
-          <a
-            href={whatsappGeneralLink()}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to="/community"
             className="rounded-full bg-sand-400 px-4 py-2 text-sm font-semibold text-brand-950 shadow-sm transition hover:bg-sand-300"
           >
-            {t('hero.ctaSecondary')}
-          </a>
+            {t('nav.member')}
+          </Link>
         </div>
 
         <button
@@ -83,14 +80,13 @@ export default function Navbar() {
           </div>
           <div className="mt-3 flex items-center justify-between gap-3">
             <LanguageSwitcher dark />
-            <a
-              href={whatsappGeneralLink()}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to="/community"
+              onClick={() => setOpen(false)}
               className="rounded-full bg-sand-400 px-4 py-2 text-sm font-semibold text-brand-950"
             >
-              {t('hero.ctaSecondary')}
-            </a>
+              {t('nav.member')}
+            </Link>
           </div>
         </div>
       )}

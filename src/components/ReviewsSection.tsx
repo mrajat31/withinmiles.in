@@ -55,6 +55,9 @@ export default function ReviewsSection() {
     }
   }
 
+  // Hide the whole section until the first real review is approved
+  if (isSupabaseConfigured && reviews.length === 0 && !submitted) return null
+
   return (
     <section className="bg-slate-50 py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">

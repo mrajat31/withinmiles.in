@@ -14,7 +14,7 @@ interface Msg {
   text: string
 }
 
-type Step = 'start' | 'regions' | 'vibe' | 'trips' | 'pax' | 'date' | 'summary'
+type Step = 'start' | 'regions' | 'vibe' | 'budget' | 'days' | 'trips' | 'noresults' | 'pax' | 'date' | 'summary'
 
 /** Hiker / traveller avatar for Bunny. */
 function HikerIcon({ className = '' }: { className?: string }) {
@@ -41,6 +41,8 @@ export default function BunnyChat() {
   const [trips, setTrips] = useState<Trip[]>([])
   const [shortlist, setShortlist] = useState<Trip[]>([])
   const [chosen, setChosen] = useState<Trip | null>(null)
+  const [vibe, setVibe] = useState<string>('')
+  const [budget, setBudget] = useState<string>('any')
   const [pax, setPax] = useState('')
   const [date, setDate] = useState('')
   const [input, setInput] = useState('')
@@ -106,14 +108,38 @@ export default function BunnyChat() {
     pushBot([list.length ? t('bot.pickTrip') : t('bot.noTrips')])
   }
 
-  function pickVibe(vibe: string) {
-    pushUser(t(`bot.vibe_${vibe}`))
+  function pickVibe(v: string) {
+    pushUser(t(`bot.vibe_${v}`))
+    setVibe(v)
+    setStep('budget')
+    pushBot([t('bot.askBudget')])
+  }
+
+  function pickBudget(b: string) {
+    pushUser(t(`bot.budget_${b}`))
+    setBudget(b)
+    setStep('days')
+    pushBot([t('bot.askDays')])
+  }
+
+  function pickDays(d: string) {
+    pushUser(t(`bot.days_${d}`))
     const cat = VIBE_TO_CATEGORY[vibe]
     let list = trips.filter((trip) => trip.category === cat)
-    if (list.length === 0) list = trips
-    setShortlist(list.slice(0, 4))
-    setStep('trips')
-    pushBot([t('bot.pickTrip')])
+    if (budget === 'u2k') list = list.filter((trip) => trip.price < 2000)
+    if (budget === 'b2k5k') list = list.filter((trip) => trip.price >= 2000 && trip.price <= 5000)
+    if (budget === 'a5k') list = list.filter((trip) => trip.price > 5000)
+    if (d === 'd1') list = list.filter((trip) => trip.duration_days <= 1)
+    if (d === 'd23') list = list.filter((trip) => trip.duration_days >= 2 && trip.duration_days <= 3)
+    if (d === 'd4') list = list.filter((trip) => trip.duration_days >= 4)
+    if (list.length > 0) {
+      setShortlist(list.slice(0, 4))
+      setStep('trips')
+      pushBot([t('bot.pickTrip')])
+    } else {
+      setStep('noresults')
+      pushBot([t('bot.noMatch'), t('bot.recoIntro'), t(`bot.reco_${vibe}`), t('bot.afterReco')])
+    }
   }
 
   function pickTrip(trip: Trip) {
@@ -210,6 +236,36 @@ export default function BunnyChat() {
                 {t(`bot.vibe_${vibe}`)}
               </button>
             ))}
+          </>
+        )
+      case 'budget':
+        return (
+          <>
+            {['u2k', 'b2k5k', 'a5k', 'any'].map((b) => (
+              <button key={b} className={chipCls} onClick={() => pickBudget(b)}>
+                {t(`bot.budget_${b}`)}
+              </button>
+            ))}
+          </>
+        )
+      case 'days':
+        return (
+          <>
+            {['d1', 'd23', 'd4', 'any'].map((d) => (
+              <button key={d} className={chipCls} onClick={() => pickDays(d)}>
+                {t(`bot.days_${d}`)}
+              </button>
+            ))}
+          </>
+        )
+      case 'noresults':
+        return (
+          <>
+            <button className={chipCls} onClick={chooseThisWeek}>{t('bot.optThisWeek')}</button>
+            <a className={chipCls} href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer">
+              {t('bot.optHuman')}
+            </a>
+            <button className={chipCls} onClick={restart}>{t('bot.restart')}</button>
           </>
         )
       case 'trips':

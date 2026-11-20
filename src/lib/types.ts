@@ -82,3 +82,17 @@ export interface Profile {
 }
 
 export const ROLES = ['owner', 'zone_head', 'volunteer'] as const
+
+export interface Member {
+  id: string
+  created_at?: string
+  full_name: string
+  whatsapp: string
+  email: string | null
+  city: string | null
+  eligibility: 'two_treks' | 'one_trek_with_member'
+  treks_done: string
+  referred_by: string | null
+  status: 'pending' | 'active' | 'rejected'
+  expires_at: string | null
+}

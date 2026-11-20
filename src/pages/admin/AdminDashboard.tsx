@@ -8,8 +8,9 @@ import TripForm from './TripForm'
 import MyProfileForm from './MyProfileForm'
 import TeamManager from './TeamManager'
 import ReviewsManager from './ReviewsManager'
+import MembersManager from './MembersManager'
 
-type Tab = 'trips' | 'profile' | 'team' | 'reviews'
+type Tab = 'trips' | 'profile' | 'team' | 'reviews' | 'members'
 
 export default function AdminDashboard() {
   const { t } = useTranslation()
@@ -85,7 +86,7 @@ export default function AdminDashboard() {
 
       {/* Tabs */}
       <div className="mt-6 flex gap-2">
-        {(['trips', 'profile', ...(isOwner ? (['team', 'reviews'] as Tab[]) : [])] as Tab[]).map((tb) => (
+        {(['trips', 'profile', ...(isOwner ? (['team', 'reviews', 'members'] as Tab[]) : [])] as Tab[]).map((tb) => (
           <button
             key={tb}
             onClick={() => setTab(tb)}
@@ -101,6 +102,7 @@ export default function AdminDashboard() {
       {tab === 'profile' && <MyProfileForm />}
       {tab === 'team' && isOwner && <TeamManager />}
       {tab === 'reviews' && isOwner && <ReviewsManager />}
+      {tab === 'members' && isOwner && <MembersManager />}
       {tab === 'trips' && (loading ? (
         <p className="py-20 text-center text-slate-400">{t('trips.loading')}</p>
       ) : trips.length === 0 ? (

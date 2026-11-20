@@ -38,8 +38,8 @@ export async function fetchApprovedReviews(): Promise<Review[]> {
     .order('created_at', { ascending: false })
     .limit(9)
   if (error) throw error
-  const reviews = (data ?? []) as Review[]
-  return reviews.length > 0 ? reviews : sampleReviews
+  // Real reviews only once the database is live; no sample fallback.
+  return (data ?? []) as Review[]
 }
 
 /** Owner only: all reviews including pending (enforced by RLS). */

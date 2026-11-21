@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Trip, GalleryPhoto } from '../lib/types'
@@ -24,6 +24,26 @@ export default function TripDetail() {
   const [gallery, setGallery] = useState<GalleryPhoto[]>([])
   const [lightbox, setLightbox] = useState<number | null>(null)
   const [heroPortrait, setHeroPortrait] = useState(false)
+  const stripRef = useRef<HTMLDivElement>(null)
+  const stripPaused = useRef(false)
+
+  // Gallery strip: drift to the next photo every 4s, loop at the end,
+  // pause while the visitor hovers or touches it.
+  useEffect(() => {
+    if (gallery.length < 2) return
+    const id = setInterval(() => {
+      const el = stripRef.current
+      if (!el || stripPaused.current) return
+      const step = 256 + 12 // card width + gap
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - step / 2
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: 'smooth' })
+    }, 4000)
+    return () => clearInterval(id)
+  }, [gallery.length])
+
+  const scrollStrip = (dir: 1 | -1) => {
+    stripRef.current?.scrollBy({ left: dir * (256 + 12), behavior: 'smooth' })
+  }
 
   useEffect(() => {
     if (!slug) return
@@ -204,22 +224,51 @@ export default function TripDetail() {
               <h2 className="mt-10 font-display text-xl font-semibold text-slate-900">
                 {t('tripDetail.gallery')}
               </h2>
-              <div className="no-scrollbar mt-4 flex snap-x gap-3 overflow-x-auto pb-2">
-                {gallery.map((p, i) => (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => setLightbox(i)}
-                    className="group shrink-0 snap-start overflow-hidden rounded-xl"
-                  >
-                    <img
-                      src={p.image_url}
-                      alt={p.caption ?? ''}
-                      loading="lazy"
-                      className="h-44 w-64 object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </button>
-                ))}
+              <div className="relative mt-4">
+                {gallery.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label="Previous photos"
+                      onClick={() => scrollStrip(-1)}
+                      className="absolute -left-3 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white text-lg text-slate-700 shadow-md ring-1 ring-slate-200 transition hover:bg-slate-900 hover:text-white"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next photos"
+                      onClick={() => scrollStrip(1)}
+                      className="absolute -right-3 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white text-lg text-slate-700 shadow-md ring-1 ring-slate-200 transition hover:bg-slate-900 hover:text-white"
+                    >
+                      →
+                    </button>
+                  </>
+                )}
+                <div
+                  ref={stripRef}
+                  onMouseEnter={() => { stripPaused.current = true }}
+                  onMouseLeave={() => { stripPaused.current = false }}
+                  onTouchStart={() => { stripPaused.current = true }}
+                  onTouchEnd={() => { setTimeout(() => { stripPaused.current = false }, 8000) }}
+                  className="no-scrollbar flex snap-x gap-3 overflow-x-auto scroll-smooth pb-2"
+                >
+                  {gallery.map((p, i) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setLightbox(i)}
+                      className="group shrink-0 snap-start overflow-hidden rounded-xl"
+                    >
+                      <img
+                        src={p.image_url}
+                        alt={p.caption ?? ''}
+                        loading="lazy"
+                        className="h-44 w-64 object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
             </>
           )}

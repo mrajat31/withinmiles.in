@@ -91,6 +91,16 @@ export interface Profile {
 
 export const ROLES = ['owner', 'zone_head', 'volunteer'] as const
 
+export interface GalleryPhoto {
+  id: string
+  created_at?: string
+  trip_id: string | null
+  image_url: string
+  caption: string | null
+  sort_order: number
+  uploaded_by?: string | null
+}
+
 export interface Member {
   id: string
   created_at?: string

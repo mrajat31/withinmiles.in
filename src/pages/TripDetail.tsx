@@ -1,8 +1,10 @@
 ﻿import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import type { Trip } from '../lib/types'
+import type { Trip, GalleryPhoto } from '../lib/types'
 import { tripTags } from '../lib/types'
+import { fetchTripGallery } from '../lib/gallery'
+import Lightbox from '../components/Lightbox'
 import {
   fetchTripBySlug,
   tripTitle,
@@ -19,12 +21,17 @@ export default function TripDetail() {
   const lang = i18n.language?.slice(0, 2) ?? 'en'
   const [trip, setTrip] = useState<Trip | null>(null)
   const [loading, setLoading] = useState(true)
+  const [gallery, setGallery] = useState<GalleryPhoto[]>([])
+  const [lightbox, setLightbox] = useState<number | null>(null)
 
   useEffect(() => {
     if (!slug) return
     setLoading(true)
     fetchTripBySlug(slug)
-      .then(setTrip)
+      .then((tr) => {
+        setTrip(tr)
+        if (tr) fetchTripGallery(tr.id).then(setGallery).catch(() => setGallery([]))
+      })
       .catch(() => setTrip(null))
       .finally(() => setLoading(false))
   }, [slug])
@@ -177,6 +184,31 @@ export default function TripDetail() {
               </ul>
             </>
           )}
+
+          {gallery.length > 0 && (
+            <>
+              <h2 className="mt-10 font-display text-xl font-semibold text-slate-900">
+                {t('tripDetail.gallery')}
+              </h2>
+              <div className="no-scrollbar mt-4 flex snap-x gap-3 overflow-x-auto pb-2">
+                {gallery.map((p, i) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setLightbox(i)}
+                    className="group shrink-0 snap-start overflow-hidden rounded-xl"
+                  >
+                    <img
+                      src={p.image_url}
+                      alt={p.caption ?? ''}
+                      loading="lazy"
+                      className="h-44 w-64 object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Booking card */}
@@ -227,6 +259,15 @@ export default function TripDetail() {
           </div>
         </aside>
       </div>
+
+      {lightbox !== null && (
+        <Lightbox
+          items={gallery.map((p) => ({ src: p.image_url, caption: p.caption }))}
+          index={lightbox}
+          onClose={() => setLightbox(null)}
+          onIndex={setLightbox}
+        />
+      )}
     </div>
   )
 }

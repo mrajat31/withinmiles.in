@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "trips": "Trips",
+    "gallery": "Gallery",
     "about": "About",
     "contact": "Contact",
     "admin": "Team Login",
@@ -108,10 +109,19 @@
     "changePhoto": "Change photo",
     "uploading": "Uploading..."
   },
+  "gallery": {
+    "title": "Trip Gallery",
+    "subtitle": "Real moments from real treks. No filters needed when the Sahyadris look like this.",
+    "all": "All photos",
+    "travellers": "By our travellers",
+    "byTraveller": "Photo by {{name}}",
+    "empty": "Photos from our latest treks are coming here soon. Follow us on Instagram till then!"
+  },
   "tripDetail": {
     "notFound": "Trip not found",
     "backToTrips": "Back to all trips",
     "highlights": "Trip Highlights",
+    "gallery": "Photos from this trip",
     "duration": "Duration",
     "destination": "Destination",
     "price": "Price",
@@ -198,6 +208,20 @@
     "tab_reviews": "Reviews",
     "tab_members": "Members",
     "tab_hero": "Homepage Photos",
+    "tab_gallery": "Gallery",
+    "galleryTab": {
+      "title": "Trip Gallery",
+      "hint": "Upload the best photos from your treks. They appear on the Gallery page and on the trip's own page. Photos are compressed automatically, so upload freely.",
+      "trip": "Which trip are these from?",
+      "general": "General / no specific trip",
+      "caption": "Caption (optional)",
+      "captionPlaceholder": "e.g. Kalsubai sunrise, Jan 2026 batch",
+      "upload": "Upload photos",
+      "uploading": "Uploading {{current}} of {{total}}...",
+      "deleteConfirm": "Remove this photo from the gallery?",
+      "delete": "Delete photo",
+      "empty": "No gallery photos yet. Upload the first ones from your latest trek!"
+    },
     "heroTab": {
       "hint": "Upload your best group photos and drone videos (MP4/WebM, under 50 MB); they rotate as the homepage background. Visitors can also click the dots to switch.",
       "upload": "Upload photo / video",

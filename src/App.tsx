@@ -9,6 +9,7 @@ import Trips from './pages/Trips'
 import TripDetail from './pages/TripDetail'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Gallery from './pages/Gallery'
 import ReviewPage from './pages/ReviewPage'
 import Community from './pages/Community'
 import Admin from './pages/admin/Admin'
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/trips" element={<Trips />} />
           <Route path="/trips/:slug" element={<TripDetail />} />
           <Route path="/about" element={<About />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/community" element={<Community />} />

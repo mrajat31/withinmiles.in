@@ -10,10 +10,11 @@ import TeamManager from './TeamManager'
 import ReviewsManager from './ReviewsManager'
 import MembersManager from './MembersManager'
 import HeroManager from './HeroManager'
+import GalleryManager from './GalleryManager'
 import { parseTripTemplate } from '../../lib/templateParser'
 import type { TripInput } from '../../lib/types'
 
-type Tab = 'trips' | 'profile' | 'team' | 'reviews' | 'members' | 'hero'
+type Tab = 'trips' | 'profile' | 'gallery' | 'team' | 'reviews' | 'members' | 'hero'
 
 export default function AdminDashboard() {
   const { t } = useTranslation()
@@ -106,7 +107,7 @@ export default function AdminDashboard() {
 
       {/* Tabs */}
       <div className="mt-6 flex gap-2">
-        {(['trips', 'profile', ...(isOwner ? (['team', 'reviews', 'members', 'hero'] as Tab[]) : [])] as Tab[]).map((tb) => (
+        {(['trips', 'profile', 'gallery', ...(isOwner ? (['team', 'reviews', 'members', 'hero'] as Tab[]) : [])] as Tab[]).map((tb) => (
           <button
             key={tb}
             onClick={() => setTab(tb)}
@@ -172,6 +173,7 @@ export default function AdminDashboard() {
       )}
 
       {tab === 'profile' && <MyProfileForm />}
+      {tab === 'gallery' && <GalleryManager canDeleteAll={isOwner} />}
       {tab === 'team' && isOwner && <TeamManager />}
       {tab === 'reviews' && isOwner && <ReviewsManager />}
       {tab === 'members' && isOwner && <MembersManager />}

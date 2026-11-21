@@ -8,8 +8,8 @@ interface Props {
 
 /**
  * Thumbnail that adapts to the photo's shape: landscape photos fill the
- * box edge to edge, while portrait (vertical) photos are shown complete
- * with a blurred copy filling the sides.
+ * box edge to edge, while portrait (vertical) photos are shown complete,
+ * framed on a dark backdrop.
  */
 export default function SmartImage({ src, alt, className = '' }: Props) {
   const [portrait, setPortrait] = useState(false)
@@ -31,19 +31,14 @@ export default function SmartImage({ src, alt, className = '' }: Props) {
     )
   }
 
+  // Vertical photo: show it complete, framed on a clean dark backdrop
   return (
-    <div className="relative h-full w-full overflow-hidden bg-slate-900">
-      <img
-        src={src}
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-lg"
-      />
+    <div className="isolate h-full w-full overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800">
       <img
         src={src}
         alt={alt}
         loading="lazy"
-        className={`relative z-[1] h-full w-full object-contain ${className}`}
+        className={`h-full w-full object-contain ${className}`}
       />
     </div>
   )

@@ -23,10 +23,12 @@ export default function TripDetail() {
   const [loading, setLoading] = useState(true)
   const [gallery, setGallery] = useState<GalleryPhoto[]>([])
   const [lightbox, setLightbox] = useState<number | null>(null)
+  const [heroPortrait, setHeroPortrait] = useState(false)
 
   useEffect(() => {
     if (!slug) return
     setLoading(true)
+    setHeroPortrait(false)
     fetchTripBySlug(slug)
       .then((tr) => {
         setTrip(tr)
@@ -69,21 +71,23 @@ export default function TripDetail() {
 
   return (
     <div>
-      {/* Hero image: full photo visible, blurred copy fills the edges */}
-      <section className="relative h-[60vh] min-h-[420px] overflow-hidden bg-slate-900">
-        <img
-          src={trip.image_url}
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
-        />
+      {/* Hero image: landscape fills the screen, vertical posters sit framed on dark */}
+      <section className="relative h-[60vh] min-h-[420px] overflow-hidden bg-gradient-to-b from-slate-900 to-slate-800">
         <img
           src={trip.image_url}
           alt={tripTitle(trip, lang)}
-          className="relative z-[1] h-full w-full object-contain"
+          onLoad={(e) => {
+            const img = e.currentTarget
+            if (img.naturalHeight > img.naturalWidth * 1.05) setHeroPortrait(true)
+          }}
+          className={
+            heroPortrait
+              ? 'h-full w-full object-contain px-4 pb-24 pt-6'
+              : 'h-full w-full object-cover'
+          }
         />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 z-[3]">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <div className="absolute inset-x-0 bottom-0">
           <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6">
             <Link to="/trips" className="text-sm font-medium text-white/80 hover:text-white">
               ← {t('tripDetail.backToTrips')}

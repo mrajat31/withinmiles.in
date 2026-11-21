@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Review } from '../lib/types'
@@ -19,10 +19,45 @@ function Stars({ value }: { value: number }) {
 export default function ReviewsSection() {
   const { t } = useTranslation()
   const [reviews, setReviews] = useState<Review[]>([])
+  const trackRef = useRef<HTMLDivElement>(null)
+  const pausedRef = useRef(false)
+  const [active, setActive] = useState(0)
 
   useEffect(() => {
     fetchApprovedReviews().then(setReviews).catch(() => setReviews([]))
   }, [])
+
+  // Gentle auto-scroll: advance one card every 5s, loop back at the end.
+  // Pauses while the visitor is hovering, touching or dragging.
+  useEffect(() => {
+    if (reviews.length < 2) return
+    const id = setInterval(() => {
+      const el = trackRef.current
+      if (!el || pausedRef.current) return
+      const card = el.querySelector<HTMLElement>('[data-review-card]')
+      if (!card) return
+      const step = card.offsetWidth + 24
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - step / 2
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: 'smooth' })
+    }, 5000)
+    return () => clearInterval(id)
+  }, [reviews.length])
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = trackRef.current
+    if (!el) return
+    const card = el.querySelector<HTMLElement>('[data-review-card]')
+    const step = card ? card.offsetWidth + 24 : el.clientWidth
+    el.scrollBy({ left: dir * step, behavior: 'smooth' })
+  }
+
+  const onTrackScroll = () => {
+    const el = trackRef.current
+    if (!el) return
+    const card = el.querySelector<HTMLElement>('[data-review-card]')
+    if (!card) return
+    setActive(Math.round(el.scrollLeft / (card.offsetWidth + 24)))
+  }
 
   // Until the first approved review exists, show an invite instead of stories
   if (isSupabaseConfigured && reviews.length === 0) {
@@ -52,39 +87,87 @@ export default function ReviewsSection() {
           <p className="mt-2 text-slate-500">{t('reviews.subtitle')}</p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {reviews.slice(0, 6).map((r) => {
-            const photos = reviewPhotos(r)
-            return (
-              <figure key={r.id} className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
-                {photos[0] && (
-                  <img src={photos[0]} alt="" loading="lazy" className="h-44 w-full object-cover" />
-                )}
-                <div className="p-7">
-                  <Stars value={r.rating} />
-                  <blockquote className="mt-4 text-sm leading-relaxed text-slate-600">
-                    "{r.text}"
-                  </blockquote>
-                  {photos.length > 1 && (
-                    <div className="mt-4 flex gap-2">
-                      {photos.slice(1, 4).map((p) => (
-                        <img key={p} src={p} alt="" loading="lazy" className="h-14 w-14 rounded-lg object-cover" />
-                      ))}
-                      {photos.length > 4 && (
-                        <span className="grid h-14 w-14 place-items-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-500">
-                          +{photos.length - 4}
-                        </span>
-                      )}
-                    </div>
+        <div className="relative mt-12">
+          {reviews.length > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label="Previous reviews"
+                onClick={() => scrollByCard(-1)}
+                className="absolute -left-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white text-xl text-slate-700 shadow-md ring-1 ring-slate-200 transition hover:bg-slate-900 hover:text-white md:grid"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                aria-label="Next reviews"
+                onClick={() => scrollByCard(1)}
+                className="absolute -right-4 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white text-xl text-slate-700 shadow-md ring-1 ring-slate-200 transition hover:bg-slate-900 hover:text-white md:grid"
+              >
+                →
+              </button>
+            </>
+          )}
+
+          <div
+            ref={trackRef}
+            onScroll={onTrackScroll}
+            onMouseEnter={() => { pausedRef.current = true }}
+            onMouseLeave={() => { pausedRef.current = false }}
+            onTouchStart={() => { pausedRef.current = true }}
+            onTouchEnd={() => { setTimeout(() => { pausedRef.current = false }, 8000) }}
+            className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2"
+          >
+            {reviews.map((r) => {
+              const photos = reviewPhotos(r)
+              return (
+                <figure
+                  key={r.id}
+                  data-review-card
+                  className="w-[85%] shrink-0 snap-center overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 sm:w-[380px] sm:snap-start"
+                >
+                  {photos[0] && (
+                    <img src={photos[0]} alt="" loading="lazy" className="h-44 w-full object-cover" />
                   )}
-                  <figcaption className="mt-5">
-                    <p className="font-semibold text-slate-900">{r.name}</p>
-                    {r.trip_name && <p className="text-xs text-slate-400">{r.trip_name}</p>}
-                  </figcaption>
-                </div>
-              </figure>
-            )
-          })}
+                  <div className="p-7">
+                    <Stars value={r.rating} />
+                    <blockquote className="mt-4 text-sm leading-relaxed text-slate-600">
+                      "{r.text}"
+                    </blockquote>
+                    {photos.length > 1 && (
+                      <div className="mt-4 flex gap-2">
+                        {photos.slice(1, 4).map((p) => (
+                          <img key={p} src={p} alt="" loading="lazy" className="h-14 w-14 rounded-lg object-cover" />
+                        ))}
+                        {photos.length > 4 && (
+                          <span className="grid h-14 w-14 place-items-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-500">
+                            +{photos.length - 4}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <figcaption className="mt-5">
+                      <p className="font-semibold text-slate-900">{r.name}</p>
+                      {r.trip_name && <p className="text-xs text-slate-400">{r.trip_name}</p>}
+                    </figcaption>
+                  </div>
+                </figure>
+              )
+            })}
+          </div>
+
+          {reviews.length > 1 && (
+            <div className="mt-6 flex justify-center gap-2">
+              {reviews.map((r, i) => (
+                <span
+                  key={r.id}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === active ? 'w-6 bg-sand-400' : 'w-1.5 bg-slate-300'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">

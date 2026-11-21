@@ -128,6 +128,8 @@ create table if not exists public.trips (
     check (region in ('maharashtra','himachal','uttarakhand','kashmir','arunachal','meghalaya','goa','international','other')),
   category text not null default 'trek'
     check (category in ('trek','roadtrip','beach','adventure','weekend','pilgrimage')),
+  categories text[] not null default '{}'
+    check (categories <@ array['trek','roadtrip','beach','adventure','weekend','pilgrimage','international']::text[]),
   duration_days int not null default 1,
   duration_nights int not null default 0,
   price numeric not null default 0,

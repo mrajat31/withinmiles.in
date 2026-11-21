@@ -12,7 +12,7 @@ TRIP 1
 ====================================================================
 Trip name           : 
 Region              : (choose one: Maharashtra / Himachal / Uttarakhand / Kashmir / Arunachal / Meghalaya / Goa / International / Other)
-Category            : (choose one: Trek / Road Trip / Beach / Adventure / Weekend / International / Pilgrimage)
+Category            : (one or more, comma separated: Trek / Road Trip / Beach / Adventure / Weekend / Pilgrimage, e.g. Trek, Adventure)
 Destination label   : (what shows on the card, e.g. "Maharashtra" or "Spiti, Himachal")
 Days / Nights       : (e.g. 2D/1N)
 Price per person    : ₹

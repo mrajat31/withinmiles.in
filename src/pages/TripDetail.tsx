@@ -2,6 +2,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Trip } from '../lib/types'
+import { tripTags } from '../lib/types'
 import {
   fetchTripBySlug,
   tripTitle,
@@ -71,9 +72,11 @@ export default function TripDetail() {
               ← {t('tripDetail.backToTrips')}
             </Link>
             <div className="mt-2 flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                {t(`categories.${trip.category}`)}
-              </span>
+              {tripTags(trip).map((tag) => (
+                <span key={tag} className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                  {t(`categories.${tag}`)}
+                </span>
+              ))}
             </div>
             <h1 className="mt-3 font-display text-3xl font-bold text-white sm:text-5xl">
               {tripTitle(trip, lang)}

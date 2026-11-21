@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import TripCard from '../components/TripCard'
 import type { Trip } from '../lib/types'
-import { TRIP_CATEGORIES, REGIONS } from '../lib/types'
+import { TRIP_CATEGORIES, REGIONS, tripTags } from '../lib/types'
 import { fetchActiveTrips, tripTitle, sortUpcoming } from '../lib/trips'
 
 export default function Trips() {
@@ -37,7 +37,7 @@ export default function Trips() {
     const q = search.trim().toLowerCase()
     return trips.filter((trip) => {
       if (region !== 'all' && trip.region !== region) return false
-      if (category !== 'all' && trip.category !== category) return false
+      if (category !== 'all' && !tripTags(trip).includes(category)) return false
       if (!q) return true
       return (
         tripTitle(trip, lang).toLowerCase().includes(q) ||

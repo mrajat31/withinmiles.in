@@ -64,8 +64,12 @@ export function parseTripTemplate(text: string): Partial<TripInput> {
         const found = REGION_KEYS.find((r) => value.toLowerCase().includes(r))
         if (found) out.region = found
       } else if (label === 'category') {
-        const key = Object.keys(CATEGORY_MAP).find((c) => value.toLowerCase().includes(c))
-        if (key) out.category = CATEGORY_MAP[key]
+        const keys = Object.keys(CATEGORY_MAP).filter((c) => value.toLowerCase().includes(c))
+        const tags = [...new Set(keys.map((k) => CATEGORY_MAP[k]))]
+        if (tags.length > 0) {
+          out.category = tags[0]
+          out.categories = tags
+        }
       } else if (label.startsWith('difficulty')) {
         const v = value.toLowerCase()
         if (v.includes('begin') || v.includes('easy')) out.difficulty = 'beginner'

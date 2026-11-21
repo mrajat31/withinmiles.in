@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Trip } from '../lib/types'
+import { tripTags } from '../lib/types'
 import { tripTitle, formatPrice, whatsappBookingLink, communityPrice } from '../lib/trips'
 
 export default function TripCard({ trip }: { trip: Trip }) {
@@ -19,9 +20,11 @@ export default function TripCard({ trip }: { trip: Trip }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-            <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 backdrop-blur">
-              {t(`categories.${trip.category}`)}
-            </span>
+            {tripTags(trip).slice(0, 3).map((tag) => (
+              <span key={tag} className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 backdrop-blur">
+                {t(`categories.${tag}`)}
+              </span>
+            ))}
             {trip.difficulty && (
               <span
                 className={`rounded-full px-3 py-1 text-xs font-semibold backdrop-blur ${

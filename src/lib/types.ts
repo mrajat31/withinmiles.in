@@ -10,6 +10,8 @@ export interface Trip {
   destination: string
   region: string
   category: 'trek' | 'roadtrip' | 'beach' | 'adventure' | 'weekend' | 'international' | 'pilgrimage'
+  /** Multiple tags; the legacy single `category` mirrors the first tag. */
+  categories?: string[] | null
   duration_days: number
   duration_nights: number
   price: number
@@ -57,6 +59,11 @@ export const REGIONS = [
 ] as const
 
 export type Region = (typeof REGIONS)[number]
+
+/** All tags for a trip, falling back to the legacy single category. */
+export function tripTags(trip: Pick<Trip, 'category' | 'categories'>): string[] {
+  return trip.categories && trip.categories.length > 0 ? trip.categories : [trip.category]
+}
 
 export interface Review {
   id: string

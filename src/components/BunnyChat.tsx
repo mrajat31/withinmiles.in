@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Trip } from '../lib/types'
+import { tripTags } from '../lib/types'
 import {
   fetchActiveTrips,
   sortUpcoming,
@@ -125,7 +126,7 @@ export default function BunnyChat() {
   function pickDays(d: string) {
     pushUser(t(`bot.days_${d}`))
     const cat = VIBE_TO_CATEGORY[vibe]
-    let list = trips.filter((trip) => trip.category === cat)
+    let list = trips.filter((trip) => tripTags(trip).includes(cat))
     if (budget === 'u2k') list = list.filter((trip) => trip.price < 2000)
     if (budget === 'b2k5k') list = list.filter((trip) => trip.price >= 2000 && trip.price <= 5000)
     if (budget === 'a5k') list = list.filter((trip) => trip.price > 5000)

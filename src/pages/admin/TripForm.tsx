@@ -31,7 +31,6 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
     description_mr: seed?.description_mr ?? '',
     destination: seed?.destination ?? '',
     region: seed?.region ?? 'maharashtra',
-    category: seed?.category ?? 'trek',
     difficulty: seed?.difficulty ?? '',
     duration_days: seed?.duration_days ?? 2,
     duration_nights: seed?.duration_nights ?? 1,
@@ -54,6 +53,17 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [categories, setCategories] = useState<string[]>(
+    seed?.categories && seed.categories.length > 0
+      ? seed.categories
+      : seed?.category
+        ? [seed.category]
+        : ['trek'],
+  )
+
+  function toggleTag(tag: string) {
+    setCategories((prev) => (prev.includes(tag) ? prev.filter((x) => x !== tag) : [...prev, tag]))
+  }
 
   function set<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -76,6 +86,11 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
     e.preventDefault()
     setSaving(true)
     setError(null)
+    if (!photoOnly && categories.length === 0) {
+      setError(t('admin.form.categoryRequired'))
+      setSaving(false)
+      return
+    }
     // Volunteers: only the photo is sent (the database enforces this too)
     if (photoOnly && trip) {
       try {
@@ -97,7 +112,8 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
       description_mr: form.description_mr.trim() || null,
       destination: form.destination.trim(),
       region: form.region,
-      category: form.category as TripInput['category'],
+      category: categories[0] as TripInput['category'],
+      categories,
       difficulty: (form.difficulty || null) as TripInput['difficulty'],
       duration_days: Number(form.duration_days),
       duration_nights: Number(form.duration_nights),
@@ -184,16 +200,30 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
               ))}
             </select>
           </label>
-          <label className="block text-sm font-medium text-slate-700">
+          <div className="block text-sm font-medium text-slate-700">
             {f('category')} *
-            <select value={form.category} onChange={(e) => set('category', e.target.value as Trip['category'])} className={inputCls}>
-              {TRIP_CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {t(`categories.${c}`)}
-                </option>
-              ))}
-            </select>
-          </label>
+            <p className="mt-0.5 text-xs font-normal text-slate-400">{f('categoryHint')}</p>
+            <div className="mt-1.5 flex flex-wrap gap-2">
+              {TRIP_CATEGORIES.map((c) => {
+                const selected = categories.includes(c)
+                return (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => toggleTag(c)}
+                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                      selected
+                        ? 'bg-brand-600 text-white'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {selected ? '✓ ' : ''}
+                    {t(`categories.${c}`)}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
           <label className="block text-sm font-medium text-slate-700">
             {f('difficulty')}
             <select value={form.difficulty} onChange={(e) => set('difficulty', e.target.value)} className={inputCls}>

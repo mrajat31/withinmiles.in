@@ -69,11 +69,21 @@ export default function TripDetail() {
 
   return (
     <div>
-      {/* Hero image */}
-      <section className="relative h-[55vh] min-h-[380px]">
-        <img src={trip.image_url} alt={tripTitle(trip, lang)} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0">
+      {/* Hero image: full photo visible, blurred copy fills the edges */}
+      <section className="relative h-[60vh] min-h-[420px] overflow-hidden bg-slate-900">
+        <img
+          src={trip.image_url}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
+        />
+        <img
+          src={trip.image_url}
+          alt={tripTitle(trip, lang)}
+          className="relative z-[1] h-full w-full object-contain"
+        />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 z-[3]">
           <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6">
             <Link to="/trips" className="text-sm font-medium text-white/80 hover:text-white">
               ← {t('tripDetail.backToTrips')}

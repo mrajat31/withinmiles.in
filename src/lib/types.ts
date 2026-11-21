@@ -41,7 +41,6 @@ export const TRIP_CATEGORIES = [
   'beach',
   'adventure',
   'weekend',
-  'international',
   'pilgrimage',
 ] as const
 

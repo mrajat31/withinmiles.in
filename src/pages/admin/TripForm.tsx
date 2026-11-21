@@ -6,6 +6,8 @@ import { createTrip, updateTrip, uploadTripImage, slugify } from '../../lib/trip
 
 interface Props {
   trip: Trip | null
+  /** Optional pre-fill values when creating a new trip (e.g. from a template). */
+  initial?: Partial<TripInput> | null
   photoOnly?: boolean
   onDone: () => void
   onCancel: () => void
@@ -14,38 +16,40 @@ interface Props {
 const inputCls =
   'mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100'
 
-export default function TripForm({ trip, photoOnly = false, onDone, onCancel }: Props) {
+export default function TripForm({ trip, initial = null, photoOnly = false, onDone, onCancel }: Props) {
   const { t } = useTranslation()
   const f = (key: string) => t(`admin.form.${key}`)
 
+  const seed: Partial<Trip> | null = trip ?? (initial as Partial<Trip> | null)
+
   const [form, setForm] = useState({
-    title_en: trip?.title_en ?? '',
-    title_hi: trip?.title_hi ?? '',
-    title_mr: trip?.title_mr ?? '',
-    description_en: trip?.description_en ?? '',
-    description_hi: trip?.description_hi ?? '',
-    description_mr: trip?.description_mr ?? '',
-    destination: trip?.destination ?? '',
-    region: trip?.region ?? 'maharashtra',
-    category: trip?.category ?? 'trek',
-    difficulty: trip?.difficulty ?? '',
-    duration_days: trip?.duration_days ?? 2,
-    duration_nights: trip?.duration_nights ?? 1,
-    price: trip?.price ?? 0,
-    start_date: trip?.start_date ?? '',
-    end_date: trip?.end_date ?? '',
-    image_url: trip?.image_url ?? '',
-    highlights: (trip?.highlights ?? []).join('\n'),
-    best_months: trip?.best_months ?? '',
-    pickup_points: trip?.pickup_points ?? '',
-    departure_note: trip?.departure_note ?? '',
-    price_note: trip?.price_note ?? '',
-    itinerary: trip?.itinerary ?? '',
-    includes: (trip?.includes ?? []).join('\n'),
-    excludes: (trip?.excludes ?? []).join('\n'),
-    things_to_carry: (trip?.things_to_carry ?? []).join('\n'),
-    is_active: trip?.is_active ?? true,
-    is_featured: trip?.is_featured ?? false,
+    title_en: seed?.title_en ?? '',
+    title_hi: seed?.title_hi ?? '',
+    title_mr: seed?.title_mr ?? '',
+    description_en: seed?.description_en ?? '',
+    description_hi: seed?.description_hi ?? '',
+    description_mr: seed?.description_mr ?? '',
+    destination: seed?.destination ?? '',
+    region: seed?.region ?? 'maharashtra',
+    category: seed?.category ?? 'trek',
+    difficulty: seed?.difficulty ?? '',
+    duration_days: seed?.duration_days ?? 2,
+    duration_nights: seed?.duration_nights ?? 1,
+    price: seed?.price ?? 0,
+    start_date: seed?.start_date ?? '',
+    end_date: seed?.end_date ?? '',
+    image_url: seed?.image_url ?? '',
+    highlights: (seed?.highlights ?? []).join('\n'),
+    best_months: seed?.best_months ?? '',
+    pickup_points: seed?.pickup_points ?? '',
+    departure_note: seed?.departure_note ?? '',
+    price_note: seed?.price_note ?? '',
+    itinerary: seed?.itinerary ?? '',
+    includes: (seed?.includes ?? []).join('\n'),
+    excludes: (seed?.excludes ?? []).join('\n'),
+    things_to_carry: (seed?.things_to_carry ?? []).join('\n'),
+    is_active: seed?.is_active ?? true,
+    is_featured: seed?.is_featured ?? false,
   })
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)

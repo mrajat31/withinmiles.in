@@ -10,6 +10,8 @@ import TeamManager from './TeamManager'
 import ReviewsManager from './ReviewsManager'
 import MembersManager from './MembersManager'
 import HeroManager from './HeroManager'
+import { parseTripTemplate } from '../../lib/templateParser'
+import type { TripInput } from '../../lib/types'
 
 type Tab = 'trips' | 'profile' | 'team' | 'reviews' | 'members' | 'hero'
 
@@ -18,6 +20,10 @@ export default function AdminDashboard() {
   const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Trip | 'new' | null>(null)
+  const [importOpen, setImportOpen] = useState(false)
+  const [importText, setImportText] = useState('')
+  const [importError, setImportError] = useState<string | null>(null)
+  const [importedInitial, setImportedInitial] = useState<Partial<TripInput> | null>(null)
   const [tab, setTab] = useState<Tab>('trips')
   const [me, setMe] = useState<Profile | null>(null)
   const isOwner = me?.role === 'owner'
@@ -53,12 +59,17 @@ export default function AdminDashboard() {
     return (
       <TripForm
         trip={editing === 'new' ? null : editing}
+        initial={editing === 'new' ? importedInitial : null}
         photoOnly={photoOnly}
         onDone={async () => {
           setEditing(null)
+          setImportedInitial(null)
           await reload()
         }}
-        onCancel={() => setEditing(null)}
+        onCancel={() => {
+          setEditing(null)
+          setImportedInitial(null)
+        }}
       />
     )
   }
@@ -69,12 +80,20 @@ export default function AdminDashboard() {
         <h1 className="font-display text-3xl font-bold text-slate-900">{t('admin.dashboard')}</h1>
         <div className="flex items-center gap-3">
           {tab === 'trips' && canEditTrips && (
-            <button
-              onClick={() => setEditing('new')}
-              className="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
-            >
-              + {t('admin.addTrip')}
-            </button>
+            <>
+              <button
+                onClick={() => setImportOpen((v) => !v)}
+                className="rounded-full border border-brand-300 px-5 py-2.5 text-sm font-semibold text-brand-800 transition hover:bg-brand-50"
+              >
+                📄 {t('admin.tpl.button')}
+              </button>
+              <button
+                onClick={() => setEditing('new')}
+                className="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
+              >
+                + {t('admin.addTrip')}
+              </button>
+            </>
           )}
           <button
             onClick={() => supabase?.auth.signOut()}
@@ -99,6 +118,58 @@ export default function AdminDashboard() {
           </button>
         ))}
       </div>
+
+      {/* Template import panel */}
+      {tab === 'trips' && importOpen && (
+        <div className="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
+          <h2 className="font-display text-xl font-semibold text-slate-900">{t('admin.tpl.title')}</h2>
+          <p className="mt-1 text-sm text-slate-500">{t('admin.tpl.hint')}</p>
+          <div className="mt-3">
+            <label className="inline-block cursor-pointer rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-800 transition hover:bg-brand-100">
+              {t('admin.tpl.file')}
+              <input
+                type="file"
+                accept=".txt,.md,text/plain"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (!file) return
+                  const reader = new FileReader()
+                  reader.onload = () => setImportText(String(reader.result ?? ''))
+                  reader.readAsText(file)
+                  e.target.value = ''
+                }}
+              />
+            </label>
+          </div>
+          <textarea
+            rows={10}
+            value={importText}
+            onChange={(e) => setImportText(e.target.value)}
+            placeholder={t('admin.tpl.paste')}
+            className="mt-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-mono text-xs outline-none transition focus:border-brand-500"
+          />
+          {importError && <p className="mt-2 text-sm font-medium text-rose-600">{importError}</p>}
+          <button
+            onClick={() => {
+              setImportError(null)
+              try {
+                const parsed = parseTripTemplate(importText)
+                setImportedInitial(parsed)
+                setImportOpen(false)
+                setImportText('')
+                setEditing('new')
+              } catch (e) {
+                setImportError(e instanceof Error ? e.message : String(e))
+              }
+            }}
+            disabled={!importText.trim()}
+            className="mt-3 rounded-full bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
+          >
+            {t('admin.tpl.load')}
+          </button>
+        </div>
+      )}
 
       {tab === 'profile' && <MyProfileForm />}
       {tab === 'team' && isOwner && <TeamManager />}

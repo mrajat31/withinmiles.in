@@ -115,8 +115,13 @@ export async function createTrip(input: TripInput): Promise<void> {
 
 export async function updateTrip(id: string, input: Partial<TripInput>): Promise<void> {
   if (!supabase) throw new Error('Supabase is not configured')
-  const { error } = await supabase.from('trips').update(input).eq('id', id)
+  const { data, error } = await supabase.from('trips').update(input).eq('id', id).select('id')
   if (error) throw error
+  if (!data || data.length === 0) {
+    throw new Error(
+      'The update was not saved. Your account may lack permission for this change, or your session expired. Try signing out and in again.',
+    )
+  }
 }
 
 export async function deleteTrip(id: string): Promise<void> {

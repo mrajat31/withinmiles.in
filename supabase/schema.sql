@@ -127,7 +127,7 @@ create table if not exists public.trips (
   region text not null default 'other'
     check (region in ('maharashtra','himachal','uttarakhand','kashmir','arunachal','meghalaya','goa','international','other')),
   category text not null default 'trek'
-    check (category in ('trek','roadtrip','beach','adventure','weekend','international','pilgrimage')),
+    check (category in ('trek','roadtrip','beach','adventure','weekend','pilgrimage')),
   duration_days int not null default 1,
   duration_nights int not null default 0,
   price numeric not null default 0,

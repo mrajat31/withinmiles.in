@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { Trip } from '../lib/types'
 import { tripTags } from '../lib/types'
 import { tripTitle, formatPrice, whatsappBookingLink, communityPrice } from '../lib/trips'
+import SmartImage from './SmartImage'
 
 export default function TripCard({ trip }: { trip: Trip }) {
   const { t, i18n } = useTranslation()
@@ -12,11 +13,10 @@ export default function TripCard({ trip }: { trip: Trip }) {
     <article className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition duration-300 hover:-translate-y-1 hover:shadow-xl">
       <Link to={`/trips/${trip.slug}`} className="block">
         <div className="relative h-56 overflow-hidden">
-          <img
+          <SmartImage
             src={trip.image_url}
             alt={tripTitle(trip, lang)}
-            loading="lazy"
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            className="transition duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           <div className="absolute left-3 top-3 flex flex-wrap gap-2">

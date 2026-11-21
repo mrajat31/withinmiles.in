@@ -1,3 +1,9 @@
+export interface TripBatch {
+  start: string
+  end: string | null
+  note?: string | null
+}
+
 export interface Trip {
   id: string
   slug: string
@@ -17,6 +23,8 @@ export interface Trip {
   price: number
   start_date: string | null
   end_date: string | null
+  /** Multiple departure dates; start_date/end_date mirror the next upcoming batch. */
+  batches?: TripBatch[] | null
   image_url: string
   highlights: string[]
   is_active: boolean

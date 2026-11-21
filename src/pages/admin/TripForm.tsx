@@ -35,8 +35,6 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
     duration_days: seed?.duration_days ?? 2,
     duration_nights: seed?.duration_nights ?? 1,
     price: seed?.price ?? 0,
-    start_date: seed?.start_date ?? '',
-    end_date: seed?.end_date ?? '',
     image_url: seed?.image_url ?? '',
     highlights: (seed?.highlights ?? []).join('\n'),
     best_months: seed?.best_months ?? '',
@@ -63,6 +61,21 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
 
   function toggleTag(tag: string) {
     setCategories((prev) => (prev.includes(tag) ? prev.filter((x) => x !== tag) : [...prev, tag]))
+  }
+
+  type BatchRow = { start: string; end: string; note: string }
+  const [batches, setBatches] = useState<BatchRow[]>(() => {
+    if (seed?.batches && seed.batches.length > 0) {
+      return seed.batches.map((b) => ({ start: b.start ?? '', end: b.end ?? '', note: b.note ?? '' }))
+    }
+    if (seed?.start_date) {
+      return [{ start: seed.start_date, end: seed.end_date ?? '', note: '' }]
+    }
+    return []
+  })
+
+  function setBatch(i: number, key: keyof BatchRow, value: string) {
+    setBatches((prev) => prev.map((b, idx) => (idx === i ? { ...b, [key]: value } : b)))
   }
 
   function set<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
@@ -102,6 +115,13 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
       }
       return
     }
+    const cleanBatches = batches
+      .filter((b) => b.start)
+      .map((b) => ({ start: b.start, end: b.end || null, note: b.note.trim() || null }))
+      .sort((a, b) => a.start.localeCompare(b.start))
+    // Mirror the next upcoming batch (or the first) into the legacy date fields
+    const today = new Date().toISOString().slice(0, 10)
+    const nextBatch = cleanBatches.find((b) => (b.end ?? b.start) >= today) ?? cleanBatches[0] ?? null
     const input: TripInput = {
       slug: trip?.slug ?? slugify(form.title_en),
       title_en: form.title_en.trim(),
@@ -118,8 +138,9 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
       duration_days: Number(form.duration_days),
       duration_nights: Number(form.duration_nights),
       price: Number(form.price),
-      start_date: form.start_date || null,
-      end_date: form.end_date || null,
+      start_date: nextBatch?.start ?? null,
+      end_date: nextBatch?.end ?? null,
+      batches: cleanBatches,
       image_url: form.image_url.trim(),
       highlights: form.highlights
         .split('\n')
@@ -250,15 +271,57 @@ export default function TripForm({ trip, initial = null, photoOnly = false, onDo
           </label>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <label className="block text-sm font-medium text-slate-700">
-            {f('startDate')}
-            <input type="date" value={form.start_date} onChange={(e) => set('start_date', e.target.value)} className={inputCls} />
-          </label>
-          <label className="block text-sm font-medium text-slate-700">
-            {f('endDate')}
-            <input type="date" value={form.end_date} onChange={(e) => set('end_date', e.target.value)} className={inputCls} />
-          </label>
+        <div>
+          <p className="text-sm font-medium text-slate-700">{f('batches')}</p>
+          <p className="mt-0.5 text-xs text-slate-400">{f('batchesHint')}</p>
+          <div className="mt-2 space-y-3">
+            {batches.map((b, i) => (
+              <div key={i} className="grid gap-3 rounded-xl bg-slate-50 p-3 sm:grid-cols-[1fr_1fr_1.2fr_auto]">
+                <label className="block text-xs font-medium text-slate-500">
+                  {f('startDate')}
+                  <input
+                    type="date"
+                    value={b.start}
+                    onChange={(e) => setBatch(i, 'start', e.target.value)}
+                    className={inputCls}
+                  />
+                </label>
+                <label className="block text-xs font-medium text-slate-500">
+                  {f('endDate')}
+                  <input
+                    type="date"
+                    value={b.end}
+                    onChange={(e) => setBatch(i, 'end', e.target.value)}
+                    className={inputCls}
+                  />
+                </label>
+                <label className="block text-xs font-medium text-slate-500">
+                  {f('batchNote')}
+                  <input
+                    value={b.note}
+                    onChange={(e) => setBatch(i, 'note', e.target.value)}
+                    placeholder={f('batchNotePlaceholder')}
+                    className={inputCls}
+                  />
+                </label>
+                <button
+                  type="button"
+                  aria-label={f('removeBatch')}
+                  onClick={() => setBatches((prev) => prev.filter((_, idx) => idx !== i))}
+                  className="self-end rounded-full px-3 py-2.5 text-sm font-semibold text-rose-500 transition hover:bg-rose-50"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => setBatches((prev) => [...prev, { start: '', end: '', note: '' }])}
+            className="mt-3 rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-800 transition hover:bg-brand-100"
+          >
+            + {f('addBatch')}
+          </button>
         </div>
         </>}
 

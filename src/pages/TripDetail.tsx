@@ -73,11 +73,37 @@ export default function TripDetail() {
     )
   }
 
-  const dateRange = trip.departure_note
-    ? trip.departure_note
-    : trip.start_date && trip.end_date
-      ? `${new Date(trip.start_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short' })} - ${new Date(trip.end_date).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, { day: 'numeric', month: 'short', year: 'numeric' })}`
-      : t('tripDetail.flexible')
+  const fmtDate = (d: string, withYear = false) =>
+    new Date(d).toLocaleDateString(lang === 'en' ? 'en-IN' : lang, {
+      day: 'numeric',
+      month: 'short',
+      ...(withYear ? { year: 'numeric' } : {}),
+    })
+
+  const today = new Date().toISOString().slice(0, 10)
+  const upcomingBatches = (trip.batches ?? [])
+    .filter((b) => b.start && (b.end ?? b.start) >= today)
+    .sort((a, b) => a.start.localeCompare(b.start))
+
+  const dateRange =
+    upcomingBatches.length > 0 ? (
+      <span className="block space-y-1">
+        {upcomingBatches.slice(0, 6).map((b) => (
+          <span key={b.start + (b.note ?? '')} className="block">
+            {b.end && b.end !== b.start
+              ? `${fmtDate(b.start)} - ${fmtDate(b.end, true)}`
+              : fmtDate(b.start, true)}
+            {b.note && <span className="text-slate-400"> · {b.note}</span>}
+          </span>
+        ))}
+      </span>
+    ) : trip.departure_note ? (
+      trip.departure_note
+    ) : trip.start_date && trip.end_date ? (
+      `${fmtDate(trip.start_date)} - ${fmtDate(trip.end_date, true)}`
+    ) : (
+      t('tripDetail.flexible')
+    )
 
   const facts = [
     { label: t('tripDetail.destination'), value: trip.destination },

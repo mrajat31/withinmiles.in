@@ -135,6 +135,7 @@ create table if not exists public.trips (
   price numeric not null default 0,
   start_date date,
   end_date date,
+  batches jsonb not null default '[]'::jsonb,
   image_url text not null,
   highlights text[] not null default '{}',
   is_active boolean not null default true,
